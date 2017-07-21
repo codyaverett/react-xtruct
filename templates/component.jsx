@@ -1,6 +1,7 @@
 import React from 'react';
+import styles from 'styles.css'
 
-class XCOMPONENTX extends React.Component {
+class Home extends React.Component {
     constructor(props) {
         super(props);
 
@@ -10,10 +11,10 @@ class XCOMPONENTX extends React.Component {
     render() {
         return (
             <div>
-                XCOMPONENTX works!
+                Home works!
             </div>
         )
     }
 }
 
-export default XCOMPONENTX;
+export default Home;
