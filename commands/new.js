@@ -5,6 +5,7 @@ const path = require('path');
 const chalk = require('chalk');
 const git = require('./git');
 const generate = require('./generate');
+const npm = require('./install');
 
 class Structure {
     constructor() {
@@ -38,7 +39,9 @@ class Structure {
                         git.init(() => {
                             git.add(() => {
                                 git.commit(() => {
-                                    console.log(chalk.blue('Done creating git repo!'));
+                                    npm.install(() => {
+                                        console.log(chalk.blue('Done setting project!'));
+                                    });
                                 });
                             })
                         });
@@ -65,7 +68,9 @@ class Structure {
                     git.init(() => {
                         git.add(() => {
                             git.commit(() => {
-                                console.log(chalk.blue('Done creating git repo!'));
+                                npm.install(() => {
+                                    console.log(chalk.blue('Done setting project!'));
+                                });
                             });
                         })
                     });
