@@ -16,6 +16,13 @@ program
     });
 
 program
+    .command('generate <type> <name>')
+    .description('Creates new project or library')
+    .action((type, name, options) => {
+        commands.generate({type, name});
+    });
+
+program
     .command('serve')
     .description('Serves project or library')
     .option("-e, --environment <env>", "Which environment to serve")
