@@ -14,16 +14,11 @@ describe('Home', () => {
         ReactDOM.unmountComponentAtNode(container);
     });
 
-    it('has expected content with deep render', () => {
-        const initialState = {
-            checkBox: {checked: false},
-            number: {value: 999}
-        };
-
-        const store = createStore(rootReducer, initialState);
+    it('has expected', () => {
+        const initialState = {};
 
         component = ReactDOM.render(
-            <Home store={store}/>,
+            <Home/>,
             container
         );
 
