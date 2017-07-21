@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const git = require('./git');
+const generate = require('./generate');
 
 class Structure {
     constructor() {
@@ -23,7 +24,7 @@ class Structure {
                     return console.warn(chalk.red(error));
 
                 fs.createReadStream(path.resolve(__dirname, './../templates/index.html')).pipe(fs.createWriteStream(path.join(projectPath, './index.html')));
-
+                fs.createReadStream(path.resolve(__dirname, './../templates/gitignore')).pipe(fs.createWriteStream(path.join(projectPath, './.gitignore')));
                 fs.createReadStream(path.resolve(__dirname, './../templates/package.json')).pipe(fs.createWriteStream(path.join(projectPath, './package.json')));
 
                 fs.mkdir(src, (error, data) => {
@@ -32,10 +33,15 @@ class Structure {
 
                     fs.createReadStream(path.resolve(__dirname, './../templates/bootstrap.js')).pipe(fs.createWriteStream(path.join(src, 'index.js')));
 
-                    fs.mkdir(path.join(src, './home'), (error, data) => {
-
-                        fs.createReadStream(path.resolve(__dirname, './../templates/component.jsx')).pipe(fs.createWriteStream(path.join(src, './home/home.component.jsx')));
-
+                    // fs.createReadStream(path.resolve(__dirname, './../templates/component.jsx')).pipe(fs.createWriteStream(path.join(src, './home/home.component.jsx')));
+                    generate({type: 'component', name: 'home'}, (error, data) => {
+                        git.init(() => {
+                            git.add(() => {
+                                git.commit(() => {
+                                    console.log(chalk.blue('Done creating git repo!'));
+                                });
+                            })
+                        });
                     });
 
                 });
@@ -45,7 +51,7 @@ class Structure {
             src = path.join(projectPath, './src');
 
             fs.createReadStream(path.resolve(__dirname, './../templates/index.html')).pipe(fs.createWriteStream(path.join(projectPath, './index.html')));
-            fs.createReadStream(path.resolve(__dirname, './../templates/.gitignore')).pipe(fs.createWriteStream(path.join(projectPath, './.gitignore')));
+            fs.createReadStream(path.resolve(__dirname, './../templates/gitignore')).pipe(fs.createWriteStream(path.join(projectPath, './.gitignore')));
             fs.createReadStream(path.resolve(__dirname, './../templates/package.json')).pipe(fs.createWriteStream(path.join(projectPath, './package.json')));
 
             fs.mkdir(src, (error, data) => {
@@ -54,13 +60,14 @@ class Structure {
 
                 fs.createReadStream(path.resolve(__dirname, './../templates/bootstrap.js')).pipe(fs.createWriteStream(path.join(src, 'index.js')));
 
-                fs.mkdir(path.join(src, './home'), (error, data) => {
-
-                    fs.createReadStream(path.resolve(__dirname, './../templates/component.jsx')).pipe(fs.createWriteStream(path.join(src, './home/home.component.jsx')));
-
-
-                    git.init();
-
+                generate({type: 'component', name: 'home'}, (error, data) => {
+                    git.init(() => {
+                        git.add(() => {
+                            git.commit(() => {
+                                console.log(chalk.blue('Done creating git repo!'));
+                            });
+                        })
+                    });
                 });
 
             });

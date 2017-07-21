@@ -9,7 +9,7 @@ class Generate {
 
     }
 
-    component(options) {
+    component(options, callback) {
         let projectPath;
         let componentPath;
 
@@ -24,16 +24,19 @@ class Generate {
                 fs.createReadStream(path.resolve(__dirname, './../templates/component.jsx')).pipe(fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)));
                 fs.createReadStream(path.resolve(__dirname, './../templates/spec.jsx')).pipe(fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)));
                 fs.createReadStream(path.resolve(__dirname, './../templates/styles.css')).pipe(fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)));
+
+
+                callback(null, 'done');
             });
         }
     }
 }
 
-function generate(options) {
+function generate(options, callback) {
     const gen = new Generate();
 
     if (options.type.toLowerCase() === 'component') {
-        gen.component(options);
+        gen.component(options, callback);
     }
 }
 
