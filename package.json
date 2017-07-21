@@ -4,7 +4,7 @@
   "description": "a simple cli for react",
   "main": "index.js",
   "bin": {
-    "reactru": "index.js"
+    "rea": "index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
