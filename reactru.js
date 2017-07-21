@@ -18,6 +18,7 @@ program
 program
     .command('generate <type> <name>')
     .description('Creates new project or library')
+    .alias('g')
     .action((type, name, options) => {
         commands.generate({type, name});
     });
@@ -26,6 +27,7 @@ program
     .command('serve')
     .description('Serves project or library')
     .option("-e, --environment <env>", "Which environment to serve")
+    .alias('s')
     .action((options) => {
         commands.serve(options);
     });
@@ -33,6 +35,7 @@ program
 program
     .command('build')
     .description('Builds project or library')
+    .alias('b')
     .option("-e, --environment <env>", "Which environment to build")
     .action((options) => {
         commands.build(options);
