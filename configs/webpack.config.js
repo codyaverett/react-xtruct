@@ -34,7 +34,19 @@ module.exports = {
                         'react'
                     ]
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader',
+            },
+            {
+                test: /\.css$/,
+                loader: 'css-loader',
+                query: {
+                    modules: true
+                }
             }
+
         ]
     },
     plugins: [
@@ -45,6 +57,6 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: [".js", ".jsx"]
+        extensions: ['.js', '.jsx', '.css']
     }
 };
