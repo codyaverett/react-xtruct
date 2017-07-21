@@ -20,7 +20,8 @@ program
     .description('Creates new project or library')
     .alias('g')
     .action((type, name, options) => {
-        commands.generate({type, name});
+        commands.generate({type, name}, () => {
+        });
     });
 
 program

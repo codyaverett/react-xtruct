@@ -1,20 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Home from "./home.component";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Home from './home.component';
 
-describe("Home", () => {
+describe('Home', () => {
     let component;
     let container;
 
     beforeEach(() => {
-        container = document.createElement("div");
+        container = document.createElement('div');
     });
 
     afterEach(() => {
         ReactDOM.unmountComponentAtNode(container);
     });
 
-    it("has expected content with deep render", () => {
+    it('has expected content with deep render', () => {
         const initialState = {
             checkBox: {checked: false},
             number: {value: 999}

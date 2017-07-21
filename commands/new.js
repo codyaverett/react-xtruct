@@ -32,8 +32,8 @@ class Structure {
                         return console.warn(chalk.red(error));
 
                     fs.createReadStream(path.resolve(__dirname, './../templates/bootstrap.js')).pipe(fs.createWriteStream(path.join(src, 'index.js')));
+                    fs.createReadStream(path.resolve(__dirname, './../templates/app.jsx')).pipe(fs.createWriteStream(path.join(src, './app.component.jsx')));
 
-                    // fs.createReadStream(path.resolve(__dirname, './../templates/component.jsx')).pipe(fs.createWriteStream(path.join(src, './home/home.component.jsx')));
                     generate({type: 'component', name: 'home'}, (error, data) => {
                         git.init(() => {
                             git.add(() => {
@@ -59,6 +59,7 @@ class Structure {
                     return console.warn(chalk.red(error));
 
                 fs.createReadStream(path.resolve(__dirname, './../templates/bootstrap.js')).pipe(fs.createWriteStream(path.join(src, 'index.js')));
+                fs.createReadStream(path.resolve(__dirname, './../templates/app.jsx')).pipe(fs.createWriteStream(path.join(src, './app.component.jsx')));
 
                 generate({type: 'component', name: 'home'}, (error, data) => {
                     git.init(() => {

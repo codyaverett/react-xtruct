@@ -36,7 +36,10 @@ function generate(options, callback) {
     const gen = new Generate();
 
     if (options.type.toLowerCase() === 'component') {
-        gen.component(options, callback);
+        gen.component(options, (error, data) => {
+            callback(error, data)
+        });
+
     }
 }
 
