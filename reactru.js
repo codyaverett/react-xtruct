@@ -26,7 +26,8 @@ program
 program
     .command('serve')
     .description('Serves project or library')
-    .option("-e, --environment <env>", "Which environment to serve")
+    .option('-p, --port <port>', 'Which port to use to serve')
+    .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
     .action((options) => {
         commands.serve(options);
@@ -36,7 +37,7 @@ program
     .command('build')
     .description('Builds project or library')
     .alias('b')
-    .option("-e, --environment <env>", "Which environment to build")
+    .option('-e, --environment <env>', 'Which environment to build')
     .action((options) => {
         commands.build(options);
     });
