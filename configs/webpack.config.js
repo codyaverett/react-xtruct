@@ -1,11 +1,16 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+console.log(path.resolve(__dirname, './../node_modules/'));
+console.log(path.resolve(__dirname, './..'));
+
+
 const entryPath = path.resolve(process.cwd(), './src/index.js');
 const outputPath = path.resolve(process.cwd(), './dist');
 const indexPath = path.resolve(process.cwd(), './index.html');
 
 module.exports = {
+    context: path.join(__dirname, './..'),
     entry: entryPath,
     output: {
         path: outputPath,
@@ -16,7 +21,6 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/,
                 query: {
                     presets: [
                         'es2015',
@@ -27,7 +31,6 @@ module.exports = {
             {
                 test: /\.jsx$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/,
                 query: {
                     presets: [
                         'es2015',
@@ -57,6 +60,9 @@ module.exports = {
         })
     ],
     resolve: {
+        modules: [
+            path.resolve(__dirname, './../node_modules')
+        ],
         extensions: ['.js', '.jsx', '.css']
     }
 };
