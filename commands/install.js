@@ -1,8 +1,5 @@
 'use strict';
 
-'use strict';
-
-const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
 
@@ -11,16 +8,13 @@ class NPM {
     }
 
     install(callback) {
-        let projectPath = path.join(process.cwd(), './');
+        const npm = spawn(
+            'npm', ['i'],
+            {stdio: 'inherit'}
+        );
 
-        const npm = spawn('npm', ['i']);
-
-        npm.stdout.on('data', (data) => {
-            console.log(chalk.green(data.toString()));
-        });
-
-        npm.stderr.on('data', (data) => {
-            console.error(chalk.red(data.toString()));
+        npm.on('error', (data) => {
+            console.log(chalk.red(data));
         });
 
         npm.on('close', (code) => {

@@ -5,6 +5,7 @@
 const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
+const processCwd = process.cwd();
 
 class Git {
     constructor() {
@@ -12,15 +13,11 @@ class Git {
     }
 
     init(callback) {
-        let projectPath = path.join(process.cwd(), './');
+        let projectPath = path.join(processCwd, './');
 
-        const gitInit = spawn('git', ['init', projectPath]);
+        const gitInit = spawn('git', ['init', projectPath], {stdio: 'inherit'});
 
-        gitInit.stdout.on('data', (data) => {
-            console.log(chalk.green(data.toString()));
-        });
-
-        gitInit.stderr.on('data', (data) => {
+        gitInit.on('error', (data) => {
             console.error(chalk.red(data.toString()));
         });
 
@@ -30,15 +27,15 @@ class Git {
     }
 
     add(callback) {
-        let projectPath = path.join(process.cwd(), './*.*');
+        let projectPath = path.join(processCwd, './*.*');
 
-        const gitAdd = spawn('git', ['add', projectPath]);
+        const gitAdd = spawn(
+            'git',
+            ['add', projectPath],
+            {stdio: 'inherit'}
+        );
 
-        gitAdd.stdout.on('data', (data) => {
-            console.log(chalk.green(data.toString()));
-        });
-
-        gitAdd.stderr.on('data', (data) => {
+        gitAdd.on('error', (data) => {
             console.error(chalk.red(data.toString()));
         });
 
@@ -48,15 +45,15 @@ class Git {
     }
 
     commit(callback) {
-        let projectPath = path.join(process.cwd(), './');
+        let projectPath = path.join(processCwd, './');
 
-        const gitCommit = spawn('git', ['commit', '-m', 'Initial Commit', projectPath]);
+        const gitCommit = spawn(
+            'git',
+            ['commit', '-m', 'Initial Commit', projectPath],
+            {stdio: 'inherit'}
+        );
 
-        gitCommit.stdout.on('data', (data) => {
-            console.log(chalk.green(data.toString()));
-        });
-
-        gitCommit.stderr.on('data', (data) => {
+        gitCommit.on('error', (data) => {
             console.error(chalk.red(data.toString()));
         });
 
