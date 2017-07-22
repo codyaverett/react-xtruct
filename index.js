@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-const reactru = require('./reactru');
+const reactTools = require('./react-tools');
 
-module.exports = reactru;
+module.exports = reactTools;
