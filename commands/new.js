@@ -39,10 +39,6 @@ class Structure {
 
     }
 
-    library(options) {
-
-    }
-
     createProjectDirectoryFiles(fromPath, toPath) {
         fs.createReadStream(path.resolve(fromPath, './../templates/index.html')).on('data', (data) => {
             fs.createWriteStream(path.join(toPath, './index.html')).write(data.toString());

@@ -1,20 +1,18 @@
 import React from 'react';
-import './home.styles';
+import './xxNamexx.styles';
 
-class Home extends React.Component {
+class _XXNameXX_ extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {}
     }
 
     render() {
         return (
             <h1>
-                Home works!
+                _XXNameXX_ works!
             </h1>
         )
     }
 }
 
-export default Home;
+export default _XXNameXX_;

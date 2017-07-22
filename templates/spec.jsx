@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './home.component';
+import _XXNameXX_ from './xxNamexx.component';
 
-describe('Home', () => {
+describe('_XXNameXX_', () => {
     let component;
     let container;
 
@@ -15,10 +15,8 @@ describe('Home', () => {
     });
 
     it('has expected', () => {
-        const initialState = {};
-
         component = ReactDOM.render(
-            <Home/>,
+            <_XXNameXX_/>,
             container
         );
 

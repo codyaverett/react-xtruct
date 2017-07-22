@@ -21,7 +21,7 @@ program
     .alias('g')
     .action((type, name, options) => {
         commands.generate({type, name}, () => {
-            console.log(chalk.green(`Generated ${type} ${name} successful!`));
+            console.log(chalk.green(`Generated ${type} "${name}" successful!`));
         });
     });
 
