@@ -6,12 +6,12 @@ const chalk = require('chalk');
 
 class Generate {
     constructor() {
-
     }
 
     component(options, callback) {
         let projectPath;
         let componentPath;
+        const pathToTemplates = path.resolve(__dirname, './../templates');
 
         if (options.type.toLowerCase() === 'component') {
             projectPath = path.join(process.cwd(), `./src`);
@@ -21,7 +21,7 @@ class Generate {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                fs.createReadStream(path.resolve(__dirname, './../templates/component.jsx')).on('data', (data) => {
+                fs.createReadStream(path.resolve(pathToTemplates, './component.jsx')).on('data', (data) => {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
@@ -29,7 +29,8 @@ class Generate {
 
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
                 });
-                fs.createReadStream(path.resolve(__dirname, './../templates/spec.jsx')).on('data', (data) => {
+
+                fs.createReadStream(path.resolve(pathToTemplates, './spec.jsx')).on('data', (data) => {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
@@ -37,7 +38,8 @@ class Generate {
 
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
                 });
-                fs.createReadStream(path.resolve(__dirname, './../templates/styles.css')).on('data', (data) => {
+
+                fs.createReadStream(path.resolve(pathToTemplates, './styles.css')).on('data', (data) => {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
@@ -52,7 +54,7 @@ class Generate {
     }
 
     toTitleCase(name) {
-        const nameTemp = name.split(" ");
+        const nameTemp = name.split(' ');
 
         for (let i = 0; i < nameTemp.length; i++) {
             let j = nameTemp[i].charAt(0).toUpperCase();
@@ -60,7 +62,7 @@ class Generate {
             nameTemp[i] = j + nameTemp[i].substr(1);
         }
 
-        return nameTemp.join(" ");
+        return nameTemp.join(' ');
     }
 }
 
