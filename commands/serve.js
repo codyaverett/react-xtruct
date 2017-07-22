@@ -6,7 +6,6 @@ const spawn = require('cross-spawn');
 
 class Serve {
     constructor() {
-
     }
 
     serve(options, callback) {

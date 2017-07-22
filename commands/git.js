@@ -9,13 +9,16 @@ const processCwd = process.cwd();
 
 class Git {
     constructor() {
-
     }
 
     init(callback) {
         let projectPath = path.join(processCwd, './');
 
-        const gitInit = spawn('git', ['init', projectPath], {stdio: 'inherit'});
+        const gitInit = spawn(
+            'git',
+            ['init', projectPath],
+            {stdio: 'ignore'}
+        );
 
         gitInit.on('error', (data) => {
             console.error(chalk.red(data.toString()));
@@ -32,7 +35,7 @@ class Git {
         const gitAdd = spawn(
             'git',
             ['add', projectPath],
-            {stdio: 'inherit'}
+            {stdio: 'ignore'}
         );
 
         gitAdd.on('error', (data) => {
@@ -50,7 +53,7 @@ class Git {
         const gitCommit = spawn(
             'git',
             ['commit', '-m', 'Initial Commit', projectPath],
-            {stdio: 'inherit'}
+            {stdio: 'ignore'}
         );
 
         gitCommit.on('error', (data) => {

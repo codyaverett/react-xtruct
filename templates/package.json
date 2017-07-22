@@ -1,21 +1,24 @@
 {
-  "name": "Reactru",
+  "name": "xxNamexx",
   "version": "0.0.1",
   "description": "simple react application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rts build",
+    "start": "rts serve"
   },
+  "repository": "xxNamexx",
   "keywords": [
     "react",
     "cli",
-    "reactru"
+    "react-tools"
   ],
   "author": "author",
   "license": "MIT",
   "dependencies": {
     "react": "^15.6.1",
-    "reactru": "https://github.com/btinoco/reactru.git",
+    "react-tools": "0.0.1-beta.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "redux": "^3.7.2"

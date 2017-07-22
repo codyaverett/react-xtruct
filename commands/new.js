@@ -24,22 +24,23 @@ class Structure {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                this.createProjectDirectoryFiles(__dirname, projectPath);
+                this.createProjectDirectoryFiles(options, __dirname, projectPath);
 
                 this.createSrcDirectory(__dirname, src);
             });
         } else {
             projectPath = process.cwd();
             src = path.join(projectPath, './src');
+            options.name = path.basename(process.cwd());
 
-            this.createProjectDirectoryFiles(__dirname, projectPath);
+            this.createProjectDirectoryFiles(options, __dirname, projectPath);
 
             this.createSrcDirectory(__dirname, src);
         }
 
     }
 
-    createProjectDirectoryFiles(fromPath, toPath) {
+    createProjectDirectoryFiles(options, fromPath, toPath) {
         fs.createReadStream(path.resolve(fromPath, './../templates/index.html')).on('data', (data) => {
             fs.createWriteStream(path.join(toPath, './index.html')).write(data.toString());
         });
@@ -49,7 +50,10 @@ class Structure {
         });
 
         fs.createReadStream(path.resolve(fromPath, './../templates/package.json')).on('data', (data) => {
-            fs.createWriteStream(path.join(toPath, './package.json')).write(data.toString());
+            const data2String = data.toString();
+            let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+
+            fs.createWriteStream(path.join(toPath, './package.json')).write(dataReplaced);
         });
     }
 
@@ -90,6 +94,8 @@ class Structure {
 
 function createNewStructure(options) {
     const structure = new Structure();
+
+    console.log(chalk.green(`New ${options.type}'s structure creation in progress...`));
 
     if (options.type === 'library') {
         structure.library(options)
