@@ -44,7 +44,7 @@ class Structure {
 
         fs.createReadStream(path.resolve(templatePath, './index.html')).on('data', (data) => {
             const data2String = data.toString();
-            let dataReplaced = data2String.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
+            let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
 
             fs.createWriteStream(path.join(projectPath, './index.html')).write(dataReplaced);
         });
@@ -55,14 +55,14 @@ class Structure {
 
         fs.createReadStream(path.resolve(templatePath, './package.json')).on('data', (data) => {
             const data2String = data.toString();
-            let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+            let dataReplaced = data2String.replace(/xxNamexx/g, options.name);
 
             fs.createWriteStream(path.join(projectPath, './package.json')).write(dataReplaced);
         });
 
         fs.createReadStream(path.resolve(templatePath, './react-xtruct.js')).on('data', (data) => {
             const data2String = data.toString();
-            let dataReplaced = data2String.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
+            let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
 
             fs.createWriteStream(path.join(projectPath, './react-xtruct.js')).write(dataReplaced);
         });
