@@ -64,7 +64,7 @@ class Structure {
             const data2String = data.toString();
             let dataReplaced = data2String.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
-            fs.createWriteStream(path.join(projectPath, './react-xtruct')).write(dataReplaced);
+            fs.createWriteStream(path.join(projectPath, './react-xtruct.js')).write(dataReplaced);
         });
     }
 
