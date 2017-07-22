@@ -1,4 +1,23 @@
-.idea
-.idea/*
+# Editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-node_modules
+# Node and NPM
+/node_modules
+npm-debug.log
+
+# Outputs Directories
+/dist
+
+# System Files
+.DS_Store
+Thumbs.db
