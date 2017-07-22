@@ -11,7 +11,9 @@
   },
   "keywords": [
     "react",
-    "cli"
+    "cli",
+    "react-xtruct",
+    "xtruct"
   ],
   "author": "btinoco",
   "license": "MIT",
