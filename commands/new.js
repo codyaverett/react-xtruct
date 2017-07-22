@@ -7,9 +7,9 @@ const git = require('./git');
 const generate = require('./generate');
 const npm = require('./install');
 
+
 class Structure {
     constructor() {
-
     }
 
     project(options) {
@@ -24,65 +24,71 @@ class Structure {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                fs.createReadStream(path.resolve(__dirname, './../templates/index.html')).pipe(fs.createWriteStream(path.join(projectPath, './index.html')));
-                fs.createReadStream(path.resolve(__dirname, './../templates/gitignore')).pipe(fs.createWriteStream(path.join(projectPath, './.gitignore')));
-                fs.createReadStream(path.resolve(__dirname, './../templates/package.json')).pipe(fs.createWriteStream(path.join(projectPath, './package.json')));
+                this.createProjectDirectoryFiles(__dirname, projectPath);
 
-                fs.mkdir(src, (error, data) => {
-                    if (error)
-                        return console.warn(chalk.red(error));
-
-                    fs.createReadStream(path.resolve(__dirname, './../templates/bootstrap.js')).pipe(fs.createWriteStream(path.join(src, 'index.js')));
-                    fs.createReadStream(path.resolve(__dirname, './../templates/app.jsx')).pipe(fs.createWriteStream(path.join(src, './app.component.jsx')));
-
-                    generate({type: 'component', name: 'home'}, (error, data) => {
-                        git.init(() => {
-                            git.add(() => {
-                                git.commit(() => {
-                                    npm.install(() => {
-                                        console.log(chalk.blue('Done setting project!'));
-                                    });
-                                });
-                            })
-                        });
-                    });
-
-                });
+                this.createSrcDirectory(__dirname, src);
             });
         } else {
             projectPath = process.cwd();
             src = path.join(projectPath, './src');
 
-            fs.createReadStream(path.resolve(__dirname, './../templates/index.html')).pipe(fs.createWriteStream(path.join(projectPath, './index.html')));
-            fs.createReadStream(path.resolve(__dirname, './../templates/gitignore')).pipe(fs.createWriteStream(path.join(projectPath, './.gitignore')));
-            fs.createReadStream(path.resolve(__dirname, './../templates/package.json')).pipe(fs.createWriteStream(path.join(projectPath, './package.json')));
+            this.createProjectDirectoryFiles(__dirname, projectPath);
 
-            fs.mkdir(src, (error, data) => {
-                if (error)
-                    return console.warn(chalk.red(error));
-
-                fs.createReadStream(path.resolve(__dirname, './../templates/bootstrap.js')).pipe(fs.createWriteStream(path.join(src, 'index.js')));
-                fs.createReadStream(path.resolve(__dirname, './../templates/app.jsx')).pipe(fs.createWriteStream(path.join(src, './app.component.jsx')));
-
-                generate({type: 'component', name: 'home'}, (error, data) => {
-                    git.init(() => {
-                        git.add(() => {
-                            git.commit(() => {
-                                npm.install(() => {
-                                    console.log(chalk.blue('Done setting project!'));
-                                });
-                            });
-                        })
-                    });
-                });
-
-            });
+            this.createSrcDirectory(__dirname, src);
         }
 
     }
 
     library(options) {
 
+    }
+
+    createProjectDirectoryFiles(fromPath, toPath) {
+        fs.createReadStream(path.resolve(fromPath, './../templates/index.html')).on('data', (data) => {
+            fs.createWriteStream(path.join(toPath, './index.html')).write(data.toString());
+        });
+
+        fs.createReadStream(path.resolve(fromPath, './../templates/gitignore')).on('data', (data) => {
+            fs.createWriteStream(path.join(toPath, './.gitignore')).write(data.toString());
+        });
+
+        fs.createReadStream(path.resolve(fromPath, './../templates/package.json')).on('data', (data) => {
+            fs.createWriteStream(path.join(toPath, './package.json')).write(data.toString());
+        });
+    }
+
+    createSrcDirectoryFiles(fromPath, toPath) {
+        fs.createReadStream(path.resolve(fromPath, './../templates/bootstrap.js')).on('data', (data) => {
+            fs.createWriteStream(path.join(toPath, 'index.js')).write(data.toString());
+        });
+        fs.createReadStream(path.resolve(fromPath, './../templates/app.jsx')).on('data', (data) => {
+            fs.createWriteStream(path.join(toPath, './app.component.jsx')).write(data.toString());
+        });
+    }
+
+    createSrcDirectory(fromPath, toPath) {
+        fs.mkdir(toPath, (error, data) => {
+            if (error)
+                return console.warn(chalk.red(error));
+
+            this.createSrcDirectoryFiles(fromPath, toPath);
+
+            this.createHomeComponent();
+        });
+    }
+
+    createHomeComponent() {
+        generate({type: 'component', name: 'home'}, (error, data) => {
+            git.init(() => {
+                git.add(() => {
+                    git.commit(() => {
+                        npm.install(() => {
+                            console.log(chalk.blue('Done setting project!'));
+                        });
+                    });
+                })
+            });
+        });
     }
 }
 
