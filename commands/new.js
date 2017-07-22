@@ -8,81 +8,90 @@ const generate = require('./generate');
 const npm = require('./install');
 const common = require('./common');
 
-
 class Structure {
     constructor() {
     }
 
     project(options) {
         let projectPath;
-        let src;
+        let projectSourcePath;
 
         if (options.name) {
             projectPath = path.join(process.cwd(), `./${options.name}`);
-            src = path.join(projectPath, './src');
+            projectSourcePath = path.join(projectPath, './src');
 
             fs.mkdir(projectPath, (error, data) => {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                this.createProjectDirectoryFiles(options, __dirname, projectPath);
+                this.createProjectDirectoryFiles(options, projectPath);
 
-                this.createSourceDirectory(__dirname, src);
+                this.createSourceDirectory(projectSourcePath);
             });
         } else {
             projectPath = process.cwd();
-            src = path.join(projectPath, './src');
+            projectSourcePath = path.join(projectPath, './src');
             options.name = path.basename(process.cwd());
 
-            this.createProjectDirectoryFiles(options, __dirname, projectPath);
+            this.createProjectDirectoryFiles(options, projectPath);
 
-            this.createSourceDirectory(__dirname, src);
+            this.createSourceDirectory(projectSourcePath);
         }
-
     }
 
-    createProjectDirectoryFiles(options, fromPath, toPath) {
-        fs.createReadStream(path.resolve(fromPath, './../templates/index.html')).on('data', (data) => {
+    createProjectDirectoryFiles(options, projectPath) {
+        const templatePath = path.resolve(__dirname, './../templates/project');
+
+        fs.createReadStream(path.resolve(templatePath, './index.html')).on('data', (data) => {
             const data2String = data.toString();
             let dataReplaced = data2String.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
-            fs.createWriteStream(path.join(toPath, './index.html')).write(dataReplaced);
+            fs.createWriteStream(path.join(projectPath, './index.html')).write(dataReplaced);
         });
 
-        fs.createReadStream(path.resolve(fromPath, './../templates/gitignore')).on('data', (data) => {
-            fs.createWriteStream(path.join(toPath, './.gitignore')).write(data.toString());
+        fs.createReadStream(path.resolve(templatePath, './gitignore')).on('data', (data) => {
+            fs.createWriteStream(path.join(projectPath, './.gitignore')).write(data.toString());
         });
 
-        fs.createReadStream(path.resolve(fromPath, './../templates/package.json')).on('data', (data) => {
+        fs.createReadStream(path.resolve(templatePath, './package.json')).on('data', (data) => {
             const data2String = data.toString();
             let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
-            fs.createWriteStream(path.join(toPath, './package.json')).write(dataReplaced);
+            fs.createWriteStream(path.join(projectPath, './package.json')).write(dataReplaced);
+        });
+
+        fs.createReadStream(path.resolve(templatePath, './react-xtruct.js')).on('data', (data) => {
+            const data2String = data.toString();
+            let dataReplaced = data2String.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
+
+            fs.createWriteStream(path.join(projectPath, './react-xtruct')).write(dataReplaced);
         });
     }
 
-    createSourceDirectoryFiles(fromPath, toPath) {
-        fs.createReadStream(path.resolve(fromPath, './../templates/bootstrap.js')).on('data', (data) => {
-            fs.createWriteStream(path.join(toPath, 'index.js')).write(data.toString());
+    createSourceDirectoryFiles(sourcePath) {
+        const templatePath = path.resolve(__dirname, './../templates/source');
+
+        fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {
+            fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
         });
-        fs.createReadStream(path.resolve(fromPath, './../templates/app.jsx')).on('data', (data) => {
-            fs.createWriteStream(path.join(toPath, './app.component.jsx')).write(data.toString());
+        fs.createReadStream(path.resolve(templatePath, './app.jsx')).on('data', (data) => {
+            fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(data.toString());
         });
     }
 
-    createSourceDirectory(fromPath, toPath) {
-        fs.mkdir(toPath, (error, data) => {
+    createSourceDirectory(sourcePath) {
+        fs.mkdir(sourcePath, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
 
-            this.createSourceDirectoryFiles(fromPath, toPath);
+            this.createSourceDirectoryFiles(sourcePath);
 
-            this.createHomeComponent();
+            this.createHomeComponent({type: 'component', name: 'home'});
         });
     }
 
-    createHomeComponent() {
-        generate({type: 'component', name: 'home'}, (error, data) => {
+    createHomeComponent(options) {
+        generate(options, (error, data) => {
             git.init(() => {
                 git.add(() => {
                     git.commit(() => {

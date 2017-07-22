@@ -12,7 +12,7 @@ class Generate {
     component(options, callback) {
         let projectPath;
         let componentPath;
-        const pathToTemplates = path.resolve(__dirname, './../templates');
+        const pathToComponentTemplates = path.resolve(__dirname, './../templates/component');
 
         if (options.type.toLowerCase() === 'component') {
             projectPath = path.join(process.cwd(), `./src`);
@@ -22,7 +22,7 @@ class Generate {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                fs.createReadStream(path.resolve(pathToTemplates, './component.jsx')).on('data', (data) => {
+                fs.createReadStream(path.resolve(pathToComponentTemplates, './component.jsx')).on('data', (data) => {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
@@ -31,7 +31,7 @@ class Generate {
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
                 });
 
-                fs.createReadStream(path.resolve(pathToTemplates, './spec.jsx')).on('data', (data) => {
+                fs.createReadStream(path.resolve(pathToComponentTemplates, './spec.jsx')).on('data', (data) => {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
@@ -40,7 +40,7 @@ class Generate {
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
                 });
 
-                fs.createReadStream(path.resolve(pathToTemplates, './styles.css')).on('data', (data) => {
+                fs.createReadStream(path.resolve(pathToComponentTemplates, './styles.css')).on('data', (data) => {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
