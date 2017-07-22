@@ -44,7 +44,7 @@ class Structure {
     createProjectDirectoryFiles(options, fromPath, toPath) {
         fs.createReadStream(path.resolve(fromPath, './../templates/index.html')).on('data', (data) => {
             const data2String = data.toString();
-            let dataReplaced = data2String.replace(/XXNameXX/g, common.toTitleCase(options.name));
+            let dataReplaced = data2String.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
             fs.createWriteStream(path.join(toPath, './index.html')).write(dataReplaced);
         });
