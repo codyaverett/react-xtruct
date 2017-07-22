@@ -49,6 +49,10 @@ class Structure {
             fs.createWriteStream(path.join(projectPath, './index.html')).write(dataReplaced);
         });
 
+        fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
+            fs.createWriteStream(path.join(projectPath, './styles.css')).write(data.toString());
+        });
+
         fs.createReadStream(path.resolve(templatePath, './gitignore')).on('data', (data) => {
             fs.createWriteStream(path.join(projectPath, './.gitignore')).write(data.toString());
         });
@@ -65,6 +69,10 @@ class Structure {
             let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
 
             fs.createWriteStream(path.join(projectPath, './react-xtruct.js')).write(dataReplaced);
+        });
+
+        fs.createReadStream(path.resolve(templatePath, './editorconfig')).on('data', (data) => {
+            fs.createWriteStream(path.join(projectPath, './.editorconfig')).write(data.toString());
         });
     }
 
