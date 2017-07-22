@@ -1,10 +1,10 @@
 {
-  "name": "react-tools",
+  "name": "react-xtruct",
   "version": "0.0.1",
-  "description": "a simple cli for react",
+  "description": "a simple cli for react projects",
   "main": "index.js",
   "bin": {
-    "rts": "index.js"
+    "rx": "index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,7 @@
   ],
   "author": "btinoco",
   "license": "MIT",
-  "repository": "https://github.com/btinoco/react-tools.git",
+  "repository": "https://github.com/btinoco/react-xtruct.git",
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
