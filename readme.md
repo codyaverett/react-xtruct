@@ -26,6 +26,7 @@ To build your project:
 # Serve Project
 To serve your project:
 + `rts serve` or `rts s`
+
 To serve your project in a specific port
 + `rts s --port 8700` or `rts s -p 8700`
 
