@@ -49,10 +49,6 @@ class Structure {
             fs.createWriteStream(path.join(projectPath, './index.html')).write(dataReplaced);
         });
 
-        fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './styles.css')).write(data.toString());
-        });
-
         fs.createReadStream(path.resolve(templatePath, './gitignore')).on('data', (data) => {
             fs.createWriteStream(path.join(projectPath, './.gitignore')).write(data.toString());
         });
@@ -82,8 +78,13 @@ class Structure {
         fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {
             fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
         });
+
         fs.createReadStream(path.resolve(templatePath, './app.jsx')).on('data', (data) => {
             fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(data.toString());
+        });
+
+        fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
+            fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
         });
     }
 
