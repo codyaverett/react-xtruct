@@ -6,32 +6,30 @@ const spawn = require('cross-spawn');
 
 class Build {
     constructor() {
-
     }
 
-    run(options) {
+    run(options, callback) {
         const pathToWebpack = path.resolve(__dirname, './../node_modules/.bin/webpack');
         const pathToWebpackConfig = path.resolve(__dirname, './../configs/webpack.config.js');
-        const webpack = spawn(pathToWebpack, ['--config', pathToWebpackConfig]);
+        const webpack = spawn(
+            pathToWebpack,
+            ['--config', pathToWebpackConfig],
+            {stdio: 'inherit'}
+        );
 
-        webpack.stdout.on('data', (data) => {
-            console.log(chalk.green(data.toString()));
+        webpack.on('close', (code) => {
+            callback(code)
         });
-
-        webpack.stderr.on('data', (data) => {
-            console.error(chalk.red(data.toString()));
-        });
-
     }
 }
 
-function build(options) {
+function build(options, callback) {
     const build = new Build();
 
     if (options.env === 'prod') {
-        build.run(options)
+        build.run(options, callback);
     } else {
-        build.run(options)
+        build.run(options, callback);
     }
 }
 
