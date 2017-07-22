@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const common = require('./common');
 
 class Generate {
     constructor() {
@@ -25,7 +26,7 @@ class Generate {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
-                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, this.toTitleCase(options.name));
+                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
                 });
@@ -34,7 +35,7 @@ class Generate {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
-                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, this.toTitleCase(options.name));
+                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
                 });
@@ -43,7 +44,7 @@ class Generate {
                     const data2String = data.toString();
                     let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
-                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, this.toTitleCase(options.name));
+                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
                 });
@@ -51,18 +52,6 @@ class Generate {
                 callback(null, 'done');
             });
         }
-    }
-
-    toTitleCase(name) {
-        const nameTemp = name.split(' ');
-
-        for (let i = 0; i < nameTemp.length; i++) {
-            let j = nameTemp[i].charAt(0).toUpperCase();
-
-            nameTemp[i] = j + nameTemp[i].substr(1);
-        }
-
-        return nameTemp.join(' ');
     }
 }
 

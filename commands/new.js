@@ -6,6 +6,7 @@ const chalk = require('chalk');
 const git = require('./git');
 const generate = require('./generate');
 const npm = require('./install');
+const common = require('./common');
 
 
 class Structure {
@@ -26,7 +27,7 @@ class Structure {
 
                 this.createProjectDirectoryFiles(options, __dirname, projectPath);
 
-                this.createSrcDirectory(__dirname, src);
+                this.createSourceDirectory(__dirname, src);
             });
         } else {
             projectPath = process.cwd();
@@ -35,14 +36,17 @@ class Structure {
 
             this.createProjectDirectoryFiles(options, __dirname, projectPath);
 
-            this.createSrcDirectory(__dirname, src);
+            this.createSourceDirectory(__dirname, src);
         }
 
     }
 
     createProjectDirectoryFiles(options, fromPath, toPath) {
         fs.createReadStream(path.resolve(fromPath, './../templates/index.html')).on('data', (data) => {
-            fs.createWriteStream(path.join(toPath, './index.html')).write(data.toString());
+            const data2String = data.toString();
+            let dataReplaced = data2String.replace(/XXNameXX/g, common.toTitleCase(options.name));
+
+            fs.createWriteStream(path.join(toPath, './index.html')).write(dataReplaced);
         });
 
         fs.createReadStream(path.resolve(fromPath, './../templates/gitignore')).on('data', (data) => {
@@ -57,7 +61,7 @@ class Structure {
         });
     }
 
-    createSrcDirectoryFiles(fromPath, toPath) {
+    createSourceDirectoryFiles(fromPath, toPath) {
         fs.createReadStream(path.resolve(fromPath, './../templates/bootstrap.js')).on('data', (data) => {
             fs.createWriteStream(path.join(toPath, 'index.js')).write(data.toString());
         });
@@ -66,12 +70,12 @@ class Structure {
         });
     }
 
-    createSrcDirectory(fromPath, toPath) {
+    createSourceDirectory(fromPath, toPath) {
         fs.mkdir(toPath, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
 
-            this.createSrcDirectoryFiles(fromPath, toPath);
+            this.createSourceDirectoryFiles(fromPath, toPath);
 
             this.createHomeComponent();
         });

@@ -1,7 +1,5 @@
 'use strict';
 
-'use strict';
-
 const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
