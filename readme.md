@@ -1,5 +1,5 @@
 # react-tools [BETA - Proto]
-> A simple cli to create a react project, generate components with specs and styles, run test, build and serve
+> A simple cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, an more.
 
 # Prerequisites
 + Open a `command line` to run the commands below
@@ -33,6 +33,6 @@ To serve your project in a specific port (default port is 8080)
 # Comming Soon
 + Lint your project
 + Test your project
-+ Options for the commands above
-+ More loaders for different resources (Images, CSS Modules, Sass, Less, Files, etc)
-+ And more!
++ Many more options for the commands above
++ Many more loaders for different resources (Images, CSS Modules, Sass, Less, Files, etc)
++ And much more!
