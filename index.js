@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-const reactTools = require('./react-xtruct');
+const reactxtruct = require('./react-xtruct');
 
-module.exports = reactTools;
+module.exports = reactxtruct;
