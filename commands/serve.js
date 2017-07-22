@@ -9,30 +9,29 @@ class Serve {
 
     }
 
-    serve(options) {
+    serve(options, callback) {
         const pathToWebpackDevServer = path.resolve(__dirname, './../node_modules/.bin/webpack-dev-server');
         const pathToWebpackDevServerConfig = path.resolve(__dirname, './../configs/webpack.config.js');
         const portNumber = options.port || 8080;
-        const webpackDevServer = spawn(pathToWebpackDevServer, ['--config', pathToWebpackDevServerConfig, '--port', portNumber]);
+        const webpackDevServer = spawn(
+            pathToWebpackDevServer,
+            ['--config', pathToWebpackDevServerConfig, '--port', portNumber],
+            {stdio: 'inherit'}
+        );
 
-        webpackDevServer.stdout.on('data', (data) => {
-            console.log(chalk.green(data.toString()));
+        webpackDevServer.on('close', (code) => {
+            callback(code);
         });
-
-        webpackDevServer.stderr.on('data', (data) => {
-            console.error(chalk.red(data.toString()));
-        });
-
     }
 }
 
-function serve(options) {
+function serve(options, callback) {
     const server = new Serve();
 
     if (options.env === 'prod') {
-        server.serve(options);
+        server.serve(options, callback);
     } else {
-        server.serve(options);
+        server.serve(options, callback);
     }
 }
 
