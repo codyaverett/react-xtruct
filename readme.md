@@ -8,7 +8,7 @@
 Using npm you can install react-tools
 + `npm i -g react-tools`
 
-# Creating New Project
+# Creating New Project (creates structure, sets git repo and installs dependencies for the project.  ready to run.)
 To create a new project in an already existent directory:
 + `rts new project`
 
@@ -16,7 +16,7 @@ To create a new project with a root directory:
 + `rts new project NAME`
 
 # Generate Component
-To generate a new component in your project:
+To generate a new component in your project (this will create a component, spec and styles):
 + `rts generate component NAME` or `rts g component NAME`
 
 # Build Project
