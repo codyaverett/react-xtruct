@@ -21,6 +21,7 @@ program
     .alias('g')
     .action((type, name, options) => {
         commands.generate({type, name}, () => {
+            console.log(chalk.green(`Generated ${type} ${name} successful!`));
         });
     });
 
@@ -31,7 +32,9 @@ program
     .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
     .action((options) => {
-        commands.serve(options);
+        commands.serve(options, () => {
+            console.log(chalk.green('Serve in progress...'));
+        });
     });
 
 program
@@ -40,7 +43,9 @@ program
     .alias('b')
     .option('-e, --environment <env>', 'Which environment to build')
     .action((options) => {
-        commands.build(options);
+        commands.build(options, () => {
+            console.log(chalk.green('Build project completed!'));
+        });
     });
 
 program
