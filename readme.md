@@ -1,4 +1,4 @@
-# react-tools [BETA - Proto]
+# react-xtruct [BETA]
 > A simple cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, an more.
 
 # Prerequisites
@@ -9,8 +9,8 @@ To get learn more about the cli type:
 + `rx --help`
 
 # Installing
-Using npm you can install react-tools
-+ `npm i -g react-tools`
+Using npm you can install react-xtruct
++ `npm i -g react-xtruct`
 
 # Creating New Project (creates structure, sets git repo and installs dependencies for the project.  ready to run.)
 To create a new project in an already existent directory:
