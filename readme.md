@@ -31,7 +31,7 @@ To build your project:
 To serve your project:
 + `rx serve` or `rx s`
 
-To serve your project in a specific port (default port is 8080)
+To serve your project using a specific port (default port is `8080`)
 + `rx s --port 8700` or `rx s -p 8700`
 
 ## Comming Soon
