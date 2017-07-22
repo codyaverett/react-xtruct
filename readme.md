@@ -4,13 +4,13 @@
 # Prerequisites
 + Open a `command line` to run the commands below
 
-# Help
-To get learn more about the cli type:
-+ `rx --help`
-
 # Installing
 Using npm you can install react-xtruct
 + `npm i -g react-xtruct`
+
+# Help
+To learn more about the cli, type:
++ `rx --help`
 
 # Creating New Project (creates structure, sets git repo and installs dependencies for the project.  ready to run.)
 To create a new project in an already existent directory:
