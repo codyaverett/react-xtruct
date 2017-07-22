@@ -79,7 +79,7 @@ class Structure {
                 git.add(() => {
                     git.commit(() => {
                         npm.install(() => {
-                            console.log(chalk.blue('Done setting project!'));
+                            console.log(chalk.blue('New project created successful!'));
                         });
                     });
                 })
