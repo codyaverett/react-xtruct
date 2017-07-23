@@ -47,4 +47,5 @@ To serve your project using a specific port (default port is `8080`)
 + Test your project
 + CSS modules with sass and less
 + Many more options for the commands above
++ Project with react-router and react-redux
 + And much more!
