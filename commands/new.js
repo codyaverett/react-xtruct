@@ -30,9 +30,16 @@ class Structure {
 
                 this.createSourceDirectoryAndFiles(projectSourcePath);
 
-                generate({type: 'component', name: 'home', style: this.style}, (error, data) => {
+                generate({
+                    type: 'component',
+                    name: 'home',
+                    style: this.style,
+                    projectPath: projectPath
+                }, (error, data) => {
                     if (error)
                         return console.log(chalk.error(error));
+
+                    options.path = projectPath;
 
                     this.initGitAndInstallDependencies(options);
                 });
@@ -46,7 +53,12 @@ class Structure {
 
             this.createSourceDirectoryAndFiles(projectSourcePath);
 
-            generate({type: 'component', name: 'home', style: this.style}, (error, data) => {
+            generate({
+                type: 'component',
+                name: 'home',
+                style:
+                this.style
+            }, (error, data) => {
                 if (error)
                     return console.log(chalk.error(error));
 
@@ -123,7 +135,7 @@ class Structure {
             git.add(() => {
                 git.commit(() => {
                     if (!options.cmd.skipDependencies) {
-                        npm.install(() => {
+                        npm.install(options, () => {
                             console.log(chalk.green('New project created successful!'));
                         });
                     } else {

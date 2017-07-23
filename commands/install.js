@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
 
@@ -7,10 +8,14 @@ class NPM {
     constructor() {
     }
 
-    install(callback) {
+    install(options, callback) {
         const npm = spawn(
-            'npm', ['i'],
-            {stdio: 'inherit'}
+            'npm',
+            ['i'],
+            {
+                cwd: options.path || './',
+                stdio: 'inherit'
+            }
         );
 
         npm.on('error', (data) => {

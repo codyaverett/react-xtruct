@@ -16,7 +16,7 @@ class Generate {
         const style = options.style || common.config().project.styles;
 
         if (options.type.toLowerCase() === 'component') {
-            projectPath = path.join(process.cwd(), `./src`);
+            projectPath = options.projectPath ? path.join(options.projectPath, './src') : path.join(process.cwd(), './src');
             componentPath = path.join(projectPath, `./${options.name}`);
 
             fs.mkdir(componentPath, (error, data) => {

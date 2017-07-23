@@ -10,7 +10,7 @@ class _XXNameXX_ extends React.Component {
         return (
             <div>
                 <h1 className={styles.h1}>
-                    Welcome!
+                    _XXNameXX_ Component
                 </h1>
                 <div className={styles.div}>Project created with react-xtruct</div>
             </div>
