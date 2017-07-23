@@ -43,6 +43,7 @@ To serve your project using a specific port (default port is `8080`)
 ## Comming Soon
 + Lint your project
 + Test your project
++ CSS modules
 + Many more options for the commands above
 + Many more loaders for different resources (Images, CSS Modules, Sass, Less, Files, etc)
 + And much more!

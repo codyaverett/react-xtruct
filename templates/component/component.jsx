@@ -8,7 +8,7 @@ class _XXNameXX_ extends React.Component {
 
     render() {
         return (
-            <h1 class="${styles.h1}">
+            <h1 className={styles.h1}>
                 _XXNameXX_ works!
             </h1>
         )
