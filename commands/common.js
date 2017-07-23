@@ -1,5 +1,20 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
+module.exports.config = () => {
+    let config = {};
+
+    try {
+        config = require(path.resolve(process.cwd(), './react-xtruct.config'));
+    } catch (e) {
+        config = require(path.resolve(__dirname, './../configs/react-xtruct.config'));
+    }
+
+    return config;
+};
+
 module.exports.toTitleCase = (name) => {
     const nameTemp = name.split(' ');
 
@@ -10,4 +25,4 @@ module.exports.toTitleCase = (name) => {
     }
 
     return nameTemp.join(' ');
-}
+};
