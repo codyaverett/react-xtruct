@@ -44,9 +44,20 @@ module.exports = {
                     use: [
                         {
                             loader: 'css-loader',
-                            options: {importLoaders: 1},
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                localIdentName: '[path][name]__[local]--[hash:base64:10]'
+                            }
                         },
-                        'postcss-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                config: {
+                                    path: path.resolve(__dirname, './postcss.config.js')
+                                }
+                            }
+                        }
                     ],
                 }),
             },
@@ -102,8 +113,11 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                loader: 'url-loader?limit=100000'
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000
+                }
             }
         ]
     },
