@@ -11,14 +11,15 @@ program
 program
     .command('new <type> [name]')
     .description('Creates new project or library')
-    .option('-s, --style <style>', 'What cascading style to use in your project')
+    .option('--style <style>', 'What cascading style to use in your project')
+    .option('-sd, --skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
     .action((type, name, options) => {
         commands.new(Object.assign({}, {type, name}, {cmd: options}));
     });
 
 program
     .command('generate <type> <name>')
-    .description('Creates new project or library')
+    .description('Creates new component for project or library')
     .alias('g')
     .action((type, name, options) => {
         commands.generate(Object.assign({}, {type, name}, {cmd: options}), () => {
