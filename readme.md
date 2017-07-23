@@ -1,7 +1,7 @@
-# react-xtruct -BETA-
-> A simple cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, an more.
+# react-xtruct [BETA](#)
+> An intuitive, simple yet advance  cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, an more.
 
-If you like this project, help contribute!
+__If you like this project, help contribute here:  [Github](https://github.com/btinoco/react-xtruct)__
 
 ## Prerequisites
 + Open a `command line` to run the commands below
@@ -45,7 +45,6 @@ To serve your project using a specific port (default port is `8080`)
 ## Comming Soon
 + Lint your project
 + Test your project
-+ CSS modules
++ CSS modules with sass and less
 + Many more options for the commands above
-+ Many more loaders for different resources (Images, CSS Modules, Sass, Less, Files, etc)
 + And much more!
