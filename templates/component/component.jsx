@@ -8,9 +8,12 @@ class _XXNameXX_ extends React.Component {
 
     render() {
         return (
-            <h1 className={styles.h1}>
-                _XXNameXX_ works!
-            </h1>
+            <div>
+                <h1 className={styles.h1}>
+                    Welcome!
+                </h1>
+                <div className={styles.finePrint}>Project created with react-xtruct</div>
+            </div>
         )
     }
 }
