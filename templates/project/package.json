@@ -4,9 +4,10 @@
   "description": "simple react application created with react-xtruct: `npm i -g react-xtruct",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rx build",
-    "start": "rx serve"
+    "start": "rx serve",
+    "lint": "rx lint",
+    "test": "rx test"
   },
   "repository": "xxNamexx",
   "keywords": [

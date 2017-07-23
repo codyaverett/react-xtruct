@@ -26,6 +26,17 @@ program
     });
 
 program
+    .command('build')
+    .description('Builds project or library')
+    .alias('b')
+    .option('-e, --environment <env>', 'Which environment to build')
+    .action((options) => {
+        commands.build(options, () => {
+            console.log(chalk.green('Build project completed!'));
+        });
+    });
+
+program
     .command('serve')
     .description('Serves project or library')
     .option('-p, --port <port>', 'Which port to use to serve')
@@ -38,14 +49,27 @@ program
     });
 
 program
-    .command('build')
-    .description('Builds project or library')
-    .alias('b')
-    .option('-e, --environment <env>', 'Which environment to build')
+    .command('lint')
+    .description('Lints the project or library')
+    .alias('l')
     .action((options) => {
-        commands.build(options, () => {
-            console.log(chalk.green('Build project completed!'));
-        });
+        console.log(chalk.green('Linting command is not yet implemented!'));
+    });
+
+program
+    .command('test')
+    .description('Test the project or library')
+    .alias('t')
+    .action((options) => {
+        console.log(chalk.green('Test command is not yet implemented!'));
+    });
+
+program
+    .command('set [option]')
+    .description('Test the project or library')
+    .option('-g, --global', 'Which port to use to serve')
+    .action((options) => {
+        console.log(chalk.green('Set command is not yet implemented!'));
     });
 
 program
