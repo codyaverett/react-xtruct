@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const entryPath = path.resolve(process.cwd(), './src/index.js');
@@ -56,6 +57,10 @@ module.exports = {
             template: indexPath,
             filename: 'index.html',
             inject: 'body'
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "commons",
+            filename: "commons.js"
         })
     ],
     resolve: {
