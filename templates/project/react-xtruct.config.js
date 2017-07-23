@@ -7,7 +7,8 @@ module.exports = {
             dev: '',
             stage: '',
             prod: ''
-        }
+        },
+        styles: '_XXCSSXX_'
     },
     scripts: [],
     options: {}
