@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
@@ -9,8 +10,16 @@ class Build {
     }
 
     run(options, callback) {
-        const pathToWebpack = path.resolve(__dirname, './../node_modules/.bin/webpack');
+        let pathToWebpack;
         const pathToWebpackConfig = path.resolve(__dirname, './../configs/webpack.config.js');
+
+        try {
+            pathToWebpack = path.resolve(__dirname, './../node_modules/.bin/webpack');
+            fs.statSync(pathToWebpackDevServer);
+        } catch (e) {
+            pathToWebpack = path.resolve(process.cwd(), './node_modules/.bin/webpack');
+        }
+
         const webpack = spawn(
             pathToWebpack,
             ['--config', pathToWebpackConfig],
