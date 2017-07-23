@@ -1,5 +1,7 @@
-# react-xtruct [BETA]
+# react-xtruct -BETA-
 > A simple cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, an more.
+
+If you like this project, help contribute!
 
 ## Prerequisites
 + Open a `command line` to run the commands below
