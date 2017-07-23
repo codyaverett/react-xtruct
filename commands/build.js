@@ -12,6 +12,9 @@ class Build {
     run(options, callback) {
         let pathToWebpack;
         const pathToWebpackConfig = path.resolve(__dirname, './../configs/webpack.config.js');
+        const env = options.cmd.options.env || 'dev';
+
+        process.env.NODE_ENV = env;
 
         try {
             pathToWebpack = path.resolve(__dirname, './../node_modules/.bin/webpack');

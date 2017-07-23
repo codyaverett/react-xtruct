@@ -11,8 +11,9 @@ program
 program
     .command('new <type> [name]')
     .description('Creates new project or library')
+    .option('-s, --style <style>', 'What cascading style to use in your project')
     .action((type, name, options) => {
-        commands.new({type, name});
+        commands.new(Object.assign({}, {type, name}, {cmd: options}));
     });
 
 program
@@ -20,7 +21,7 @@ program
     .description('Creates new project or library')
     .alias('g')
     .action((type, name, options) => {
-        commands.generate({type, name}, () => {
+        commands.generate(Object.assign({}, {type, name}, {cmd: options}), () => {
             console.log(chalk.green(`Generated ${type} "${name}" successful!`));
         });
     });
@@ -31,7 +32,7 @@ program
     .alias('b')
     .option('-e, --environment <env>', 'Which environment to build')
     .action((options) => {
-        commands.build(options, () => {
+        commands.build(Object.assign({}, {cmd: options}), () => {
             console.log(chalk.green('Build project completed!'));
         });
     });
@@ -43,7 +44,7 @@ program
     .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
     .action((options) => {
-        commands.serve(options, () => {
+        commands.serve(Object.assign({}, {cmd: options}), () => {
             console.log(chalk.green('Serve in progress...'));
         });
     });

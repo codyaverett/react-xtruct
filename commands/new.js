@@ -15,6 +15,7 @@ class Structure {
     project(options) {
         let projectPath;
         let projectSourcePath;
+        const style = options.cmd.options.env || 'css';
 
         if (options.name) {
             projectPath = path.join(process.cwd(), `./${options.name}`);
@@ -84,7 +85,14 @@ class Structure {
         });
 
         fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
-            fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
+            if (style === 'css')
+                fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
+            else if (style === 'sass')
+                fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(data.toString());
+            else if (style === 'scss')
+                fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
+            else if (style === 'less')
+                fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
         });
     }
 

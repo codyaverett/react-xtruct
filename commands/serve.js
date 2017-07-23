@@ -12,7 +12,10 @@ class Serve {
     serve(options, callback) {
         let pathToWebpackDevServer;
         const pathToWebpackDevServerConfig = path.resolve(__dirname, './../configs/webpack.config.js');
-        const portNumber = options.port || 8080;
+        const env = options.cmd.options.env || 'dev';
+        const portNumber = options.cmd.options.port || 8080;
+
+        process.env.NODE_ENV = env;
 
         try {
             pathToWebpackDevServer = path.resolve(__dirname, './../node_modules/.bin/webpack-dev-server');
