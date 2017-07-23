@@ -19,6 +19,12 @@ To create a new project in an already existent directory:
 To create a new project with a root directory:
 + `rx new project NAME`
 
+To create a new project using sass (by default the project uses `css`):
++ `rx new project NAME --style scss`
+
+To create a new project without installing the project's dependencies:
++ `rx new project NAME -sd` or `rx new project NAME --skip-dependencies`
+
 ## Generate Component
 To generate a new component in your project (this will create a component, spec and styles):
 + `rx generate component NAME` or `rx g component NAME`
