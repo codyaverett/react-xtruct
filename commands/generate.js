@@ -13,6 +13,7 @@ class Generate {
         let projectPath;
         let componentPath;
         const pathToComponentTemplates = path.resolve(__dirname, './../templates/component');
+        const style = options.style || common.config().project.styles;
 
         if (options.type.toLowerCase() === 'component') {
             projectPath = path.join(process.cwd(), `./src`);

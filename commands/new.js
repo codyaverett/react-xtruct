@@ -10,12 +10,13 @@ const common = require('./common');
 
 class Structure {
     constructor() {
+        this.style = '';
     }
 
     project(options) {
         let projectPath;
         let projectSourcePath;
-        const style = options.cmd.options.env || 'css';
+        this.style = options.cmd.style || 'css';
 
         if (options.name) {
             projectPath = path.join(process.cwd(), `./${options.name}`);
@@ -27,7 +28,14 @@ class Structure {
 
                 this.createProjectDirectoryFiles(options, projectPath);
 
-                this.createSourceDirectory(projectSourcePath);
+                this.createSourceDirectoryAndFiles(projectSourcePath);
+
+                generate({type: 'component', name: 'home', style: this.style}, (error, data) => {
+                    if (error)
+                        return console.log(chalk.error(error));
+
+                    this.initGitAndInstallDependencies(options);
+                });
             });
         } else {
             projectPath = process.cwd();
@@ -36,7 +44,14 @@ class Structure {
 
             this.createProjectDirectoryFiles(options, projectPath);
 
-            this.createSourceDirectory(projectSourcePath);
+            this.createSourceDirectoryAndFiles(projectSourcePath);
+
+            generate({type: 'component', name: 'home', style: this.style}, (error, data) => {
+                if (error)
+                    return console.log(chalk.error(error));
+
+                this.initGitAndInstallDependencies(options);
+            });
         }
     }
 
@@ -61,11 +76,13 @@ class Structure {
             fs.createWriteStream(path.join(projectPath, './package.json')).write(dataReplaced);
         });
 
-        fs.createReadStream(path.resolve(templatePath, './react-xtruct.js')).on('data', (data) => {
+        fs.createReadStream(path.resolve(templatePath, './react-xtruct.config.js')).on('data', (data) => {
             const data2String = data.toString();
             let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
 
-            fs.createWriteStream(path.join(projectPath, './react-xtruct.js')).write(dataReplaced);
+            dataReplaced = dataReplaced.replace(/_XXCSSXX_/g, this.style);
+
+            fs.createWriteStream(path.join(projectPath, './react-xtruct.config.js')).write(dataReplaced);
         });
 
         fs.createReadStream(path.resolve(templatePath, './editorconfig')).on('data', (data) => {
@@ -73,51 +90,47 @@ class Structure {
         });
     }
 
-    createSourceDirectoryFiles(sourcePath) {
+    createSourceDirectoryAndFiles(sourcePath) {
         const templatePath = path.resolve(__dirname, './../templates/source');
 
-        fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {
-            fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
-        });
-
-        fs.createReadStream(path.resolve(templatePath, './app.jsx')).on('data', (data) => {
-            fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(data.toString());
-        });
-
-        fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
-            if (style === 'css')
-                fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
-            else if (style === 'sass')
-                fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(data.toString());
-            else if (style === 'scss')
-                fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
-            else if (style === 'less')
-                fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
-        });
-    }
-
-    createSourceDirectory(sourcePath) {
         fs.mkdir(sourcePath, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
 
-            this.createSourceDirectoryFiles(sourcePath);
+            fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {
+                fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
+            });
 
-            this.createHomeComponent({type: 'component', name: 'home'});
+            fs.createReadStream(path.resolve(templatePath, './app.jsx')).on('data', (data) => {
+                fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(data.toString());
+            });
+
+            fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
+                if (this.style === 'css')
+                    fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
+                else if (this.style === 'sass')
+                    fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(data.toString());
+                else if (this.style === 'scss')
+                    fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
+                else if (this.style === 'less')
+                    fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
+            });
         });
     }
 
-    createHomeComponent(options) {
-        generate(options, (error, data) => {
-            git.init(() => {
-                git.add(() => {
-                    git.commit(() => {
+    initGitAndInstallDependencies(options) {
+        git.init(() => {
+            git.add(() => {
+                git.commit(() => {
+                    if (!options.cmd.skipDependencies) {
                         npm.install(() => {
                             console.log(chalk.green('New project created successful!'));
                         });
-                    });
-                })
-            });
+                    } else {
+                        console.log(chalk.green('New project created successful!'));
+                    }
+                });
+            })
         });
     }
 }
