@@ -40,17 +40,15 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
-                        loader: 'style-loader'
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true
-                        }
-                    }
-                ]
+                use: ExtractTextPlugin.extract({
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {importLoaders: 1},
+                        },
+                        'postcss-loader',
+                    ],
+                }),
             },
             {
                 test: /\.scss$/,
@@ -65,10 +63,7 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'sass-loader',
-                        options: {
-                            modules: true
-                        }
+                        loader: 'sass-loader'
                     }
                 ]
             },
@@ -85,10 +80,7 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'sass-loader',
-                        options: {
-                            modules: true
-                        }
+                        loader: 'sass-loader'
                     }
                 ]
             },
@@ -105,10 +97,7 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'less-loader',
-                        options: {
-                            modules: true
-                        }
+                        loader: 'less-loader'
                     }
                 ]
             },
@@ -119,6 +108,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new ExtractTextPlugin('styles.css'),
         new HtmlWebpackPlugin({
             template: indexPath,
             filename: 'index.html',
