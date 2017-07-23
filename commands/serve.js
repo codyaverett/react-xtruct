@@ -9,9 +9,17 @@ class Serve {
     }
 
     serve(options, callback) {
-        const pathToWebpackDevServer = path.resolve(__dirname, './../node_modules/.bin/webpack-dev-server');
+        let pathToWebpackDevServer;
         const pathToWebpackDevServerConfig = path.resolve(__dirname, './../configs/webpack.config.js');
         const portNumber = options.port || 8080;
+
+        try {
+            pathToWebpackDevServer = path.resolve(__dirname, './../node_modules/.bin/webpack-dev-server');
+            fs.statSync(pathToWebpackDevServer);
+        } catch (e) {
+            pathToWebpackDevServer = path.resolve(process.cwd(), './node_modules/.bin/webpack-dev-server');
+        }
+
         const webpackDevServer = spawn(
             pathToWebpackDevServer,
             ['--config', pathToWebpackDevServerConfig, '--port', portNumber],
