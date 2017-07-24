@@ -1,5 +1,6 @@
 # react-xtruct BETA
-> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, an more.
+> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  
+The cli is based on proven technologies like webpack, babel, eslint, postcss and react.
 
 __If you like this project, help contribute here:  [Github](https://github.com/btinoco/react-xtruct)__.  This project is in __beta__.
 
@@ -21,7 +22,7 @@ To create a new project in an already existent directory:
 To create a new project with a root directory:
 + `rx new project NAME`
 
-To create a new project using sass (by default the project uses `css`):
+To create a new project using sass (by default the project uses `css` modules):
 + `rx new project NAME --style scss`
 
 To create a new project without installing the project's dependencies:
@@ -50,5 +51,5 @@ To serve your project using a specific port (default port is `8080`)
 + Test your project
 + CSS modules with sass and less
 + Many more options for the commands above
-+ Project with react-router and react-redux
++ Create projects with react-router and react-redux
 + And much more!
