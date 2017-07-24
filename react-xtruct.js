@@ -6,7 +6,7 @@ const program = require('commander');
 const commands = require('./commands');
 
 program
-    .version(chalk.green('0.0.12'));
+    .version(chalk.green('0.0.13'));
 
 program
     .command('new <type> [name]')
@@ -55,7 +55,9 @@ program
     .description('Lints the project or library')
     .alias('l')
     .action((options) => {
-        console.log(chalk.green('Linting command is not yet implemented!'));
+        commands.lint(options, () => {
+            console.log(chalk.green('Linting project completed!'));
+        });
     });
 
 program
