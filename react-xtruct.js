@@ -15,7 +15,7 @@ program
     .option('-sd, --skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
     .action((type, name, options) => {
         if (type.toLowerCase() === 'project') {
-            console.log(chalk.green(`Creating new ${type} "${name}"...`));
+            console.log(chalk.green(`Creating new ${type} "${name || ''}"...`));
 
             commands.new.project(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
                 if (error)

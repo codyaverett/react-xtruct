@@ -125,14 +125,14 @@ class New {
             });
 
             fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
-                if (options.cmd.style === 'css')
-                    fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
-                else if (options.cmd.style === 'sass')
+                if (options.cmd.style === 'sass')
                     fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(data.toString());
                 else if (options.cmd.style === 'scss')
                     fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
                 else if (options.cmd.style === 'less')
                     fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
+                else
+                    fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
             });
         });
     }
@@ -149,7 +149,7 @@ class New {
                 repository.commit((error, data) => {
                     if (error)
                         callback(error, null);
-                    
+
                     if (!options.cmd.skipDependencies) {
                         install.run(options, (error, data) => {
                             if (error)

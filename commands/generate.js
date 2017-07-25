@@ -43,14 +43,15 @@ class Generate {
 
                 dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
-                if (style === 'css')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
-                else if (style === 'sass')
+                if (style === 'sass')
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.sass`)).write(dataReplaced);
                 else if (style === 'scss')
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(dataReplaced);
                 else if (style === 'less')
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(dataReplaced);
+                else
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
+
             });
 
             callback(null, `Generated ${options.type} "${options.name}" successful!`);
