@@ -9,40 +9,30 @@ class Build {
     constructor() {
     }
 
-    run(options, callback) {
-        let pathToWebpack;
-        const pathToWebpackConfig = path.resolve(__dirname, './../configs/webpack.config.js');
-        const env = options.cmd.options.env || 'dev';
+    static run(options, callback) {
+        let webpack = '';
 
-        process.env.NODE_ENV = env;
+        const webpackConfig = path.resolve(__dirname, './../configs/webpack.config.js');
+
+        process.env.NODE_ENV = options.cmd.options.env || 'dev';
 
         try {
-            pathToWebpack = path.resolve(__dirname, './../node_modules/.bin/webpack');
-            fs.statSync(pathToWebpackDevServer);
+            webpack = path.resolve(__dirname, './../node_modules/.bin/webpack');
+            fs.statSync(webpack);
         } catch (e) {
-            pathToWebpack = path.resolve(process.cwd(), './node_modules/.bin/webpack');
+            webpack = path.resolve(process.cwd(), './node_modules/.bin/webpack');
         }
 
-        const webpack = spawn(
-            pathToWebpack,
-            ['--config', pathToWebpackConfig],
-            {stdio: 'inherit'}
-        );
+        const cmd = spawn(webpack, ['--config', webpackConfig], {stdio: 'inherit'});
 
-        webpack.on('close', (code) => {
-            callback(code)
+        cmd.on('error', (data) => {
+            callback(data, null);
+        });
+
+        cmd.on('close', (code) => {
+            callback(null, code)
         });
     }
 }
 
-function build(options, callback) {
-    const build = new Build();
-
-    if (options.env === 'prod') {
-        build.run(options, callback);
-    } else {
-        build.run(options, callback);
-    }
-}
-
-module.exports = build;
+module.exports = Build;

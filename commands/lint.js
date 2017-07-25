@@ -9,37 +9,27 @@ class Lint {
     constructor() {
     }
 
-    run(options, callback) {
-        let pathToLint = '';
+    static run(options, callback) {
+        let lint = '';
         const lintConfig = path.resolve(__dirname, './../configs/.eslintrc.js');
 
         try {
-            pathToLint = path.resolve(__dirname, './../node_modules/.bin/eslint');
-            fs.statSync(pathToWebpackDevServer);
+            lint = path.resolve(__dirname, './../node_modules/.bin/eslint');
+            fs.statSync(lint);
         } catch (e) {
-            pathToLint = path.resolve(process.cwd(), './node_modules/.bin/eslint');
+            lint = path.resolve(process.cwd(), './node_modules/.bin/eslint');
         }
 
-        const webpack = spawn(
-            pathToLint,
-            ['--config', lintConfig, path.resolve(process.cwd(), './src')],
-            {stdio: 'inherit'}
-        );
+        const cmd = spawn(lint, ['--config', lintConfig, path.resolve(process.cwd(), './src')], {stdio: 'inherit'});
 
-        webpack.on('close', (code) => {
-            callback(code)
+        cmd.on('error', (data) => {
+            callback(data, null);
+        });
+
+        cmd.on('close', (code) => {
+            callback(null, code)
         });
     }
 }
 
-function lint(options, callback) {
-    const linter = new Lint();
-
-    if (options.env === 'prod') {
-        linter.run(options, callback);
-    } else {
-        linter.run(options, callback);
-    }
-}
-
-module.exports = lint;
+module.exports = Lint;

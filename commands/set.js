@@ -5,7 +5,7 @@ const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
 
-class Test {
+class Set {
     constructor() {
     }
 
@@ -14,4 +14,4 @@ class Test {
     }
 }
 
-module.exports = Test;
+module.exports = Set;

@@ -4,28 +4,21 @@ const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
 
-class NPM {
+class Install {
     constructor() {
     }
 
-    install(options, callback) {
-        const npm = spawn(
-            'npm',
-            ['i'],
-            {
-                cwd: options.path || './',
-                stdio: 'inherit'
-            }
-        );
+    static run(options, callback) {
+        const npm = spawn('npm', ['i'], {cwd: options.path || './', stdio: 'inherit'});
 
         npm.on('error', (data) => {
-            console.log(chalk.red(data));
+            callback(data, null);
         });
 
         npm.on('close', (code) => {
-            callback(code);
+            callback(null, code);
         });
     }
 }
 
-module.exports = new NPM();
+module.exports = Install;

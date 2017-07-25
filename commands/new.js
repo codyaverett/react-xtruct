@@ -3,20 +3,18 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const git = require('./git');
+const repository = require('./repository');
 const generate = require('./generate');
-const npm = require('./install');
+const install = require('./install');
 const common = require('./common');
 
-class Structure {
+class New {
     constructor() {
-        this.style = '';
     }
 
-    project(options) {
-        let projectPath;
-        let projectSourcePath;
-        this.style = options.cmd.style || 'css';
+    static project(options, callback) {
+        let projectPath = '';
+        let projectSourcePath = '';
 
         if (options.name) {
             projectPath = path.join(process.cwd(), `./${options.name}`);
@@ -24,24 +22,29 @@ class Structure {
 
             fs.mkdir(projectPath, (error, data) => {
                 if (error)
-                    return console.warn(chalk.red(error));
+                    return callback(error, null);
 
                 this.createProjectDirectoryFiles(options, projectPath);
 
-                this.createSourceDirectoryAndFiles(projectSourcePath);
+                this.createSourceDirectoryAndFiles(options, projectSourcePath);
 
-                generate({
+                generate.component({
                     type: 'component',
                     name: 'home',
-                    style: this.style,
+                    style: options.cmd.style,
                     projectPath: projectPath
                 }, (error, data) => {
                     if (error)
-                        return console.log(chalk.error(error));
+                        return callback(error, null);
 
                     options.path = projectPath;
 
-                    this.initGitAndInstallDependencies(options);
+                    this.initGitAndInstallDependencies(options, (error, data) => {
+                        if (error)
+                            return callback(error, null);
+
+                        callback(null, 'New project created successful!');
+                    });
                 });
             });
         } else {
@@ -51,23 +54,27 @@ class Structure {
 
             this.createProjectDirectoryFiles(options, projectPath);
 
-            this.createSourceDirectoryAndFiles(projectSourcePath);
+            this.createSourceDirectoryAndFiles(options, projectSourcePath);
 
-            generate({
+            generate.component({
                 type: 'component',
                 name: 'home',
-                style:
-                this.style
+                style: options.cmd.style
             }, (error, data) => {
                 if (error)
-                    return console.log(chalk.error(error));
+                    return callback(error, null);
 
-                this.initGitAndInstallDependencies(options);
+                this.initGitAndInstallDependencies(options, (error, data) => {
+                    if (error)
+                        return callback(error, null);
+
+                    callback(null, 'New project created successful!');
+                });
             });
         }
     }
 
-    createProjectDirectoryFiles(options, projectPath) {
+    static createProjectDirectoryFiles(options, projectPath) {
         const templatePath = path.resolve(__dirname, './../templates/project');
 
         fs.createReadStream(path.resolve(templatePath, './index.html')).on('data', (data) => {
@@ -102,7 +109,7 @@ class Structure {
         });
     }
 
-    createSourceDirectoryAndFiles(sourcePath) {
+    static createSourceDirectoryAndFiles(options, sourcePath) {
         const templatePath = path.resolve(__dirname, './../templates/source');
 
         fs.mkdir(sourcePath, (error, data) => {
@@ -118,28 +125,40 @@ class Structure {
             });
 
             fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
-                if (this.style === 'css')
+                if (options.cmd.style === 'css')
                     fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
-                else if (this.style === 'sass')
+                else if (options.cmd.style === 'sass')
                     fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(data.toString());
-                else if (this.style === 'scss')
+                else if (options.cmd.style === 'scss')
                     fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
-                else if (this.style === 'less')
+                else if (options.cmd.style === 'less')
                     fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
             });
         });
     }
 
-    initGitAndInstallDependencies(options) {
-        git.init(() => {
-            git.add(() => {
-                git.commit(() => {
+    static initGitAndInstallDependencies(options, callback) {
+        repository.init((error, data) => {
+            if (error)
+                callback(error, null);
+
+            repository.add((error, data) => {
+                if (error)
+                    callback(error, null);
+
+                repository.commit((error, data) => {
+                    if (error)
+                        callback(error, null);
+                    
                     if (!options.cmd.skipDependencies) {
-                        npm.install(options, () => {
-                            console.log(chalk.green('New project created successful!'));
+                        install.run(options, (error, data) => {
+                            if (error)
+                                return callback(error, null);
+
+                            callback(null, data);
                         });
                     } else {
-                        console.log(chalk.green('New project created successful!'));
+                        callback(null, data);
                     }
                 });
             })
@@ -147,16 +166,4 @@ class Structure {
     }
 }
 
-function createNewStructure(options) {
-    const structure = new Structure();
-
-    console.log(chalk.green(`New ${options.type}'s structure creation in progress...`));
-
-    if (options.type === 'library') {
-        structure.library(options)
-    } else {
-        structure.project(options)
-    }
-}
-
-module.exports = createNewStructure;
+module.exports = New;

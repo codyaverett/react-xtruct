@@ -9,66 +9,53 @@ class Generate {
     constructor() {
     }
 
-    component(options, callback) {
-        let projectPath;
-        let componentPath;
+    static component(options, callback) {
         const pathToComponentTemplates = path.resolve(__dirname, './../templates/component');
+        const projectPath = options.projectPath ? path.join(options.projectPath, './src') : path.join(process.cwd(), './src');
+        const componentPath = path.join(projectPath, `./${options.name}`);
         const style = options.style || common.config().project.styles;
 
-        if (options.type.toLowerCase() === 'component') {
-            projectPath = options.projectPath ? path.join(options.projectPath, './src') : path.join(process.cwd(), './src');
-            componentPath = path.join(projectPath, `./${options.name}`);
+        fs.mkdir(componentPath, (error, data) => {
+            if (error)
+                return callback(error, null);
 
-            fs.mkdir(componentPath, (error, data) => {
-                if (error)
-                    return console.warn(chalk.red(error));
+            fs.createReadStream(path.resolve(pathToComponentTemplates, './component.jsx')).on('data', (data) => {
+                const data2String = data.toString();
+                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
 
-                fs.createReadStream(path.resolve(pathToComponentTemplates, './component.jsx')).on('data', (data) => {
-                    const data2String = data.toString();
-                    let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
 
-                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
-                });
-
-                fs.createReadStream(path.resolve(pathToComponentTemplates, './spec.jsx')).on('data', (data) => {
-                    const data2String = data.toString();
-                    let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
-
-                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
-                });
-
-                fs.createReadStream(path.resolve(pathToComponentTemplates, './styles.css')).on('data', (data) => {
-                    const data2String = data.toString();
-                    let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
-
-                    dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                    if (style === 'css')
-                        fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
-                    else if (style === 'sass')
-                        fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.sass`)).write(dataReplaced);
-                    else if (style === 'scss')
-                        fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(dataReplaced);
-                    else if (style === 'less')
-                        fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(dataReplaced);
-                });
-
-                callback(null, 'done');
+                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
             });
-        }
+
+            fs.createReadStream(path.resolve(pathToComponentTemplates, './spec.jsx')).on('data', (data) => {
+                const data2String = data.toString();
+                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+
+                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
+
+                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
+            });
+
+            fs.createReadStream(path.resolve(pathToComponentTemplates, './styles.css')).on('data', (data) => {
+                const data2String = data.toString();
+                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+
+                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
+
+                if (style === 'css')
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
+                else if (style === 'sass')
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.sass`)).write(dataReplaced);
+                else if (style === 'scss')
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(dataReplaced);
+                else if (style === 'less')
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(dataReplaced);
+            });
+
+            callback(null, `Generated ${options.type} "${options.name}" successful!`);
+        });
     }
 }
 
-function generate(options, callback) {
-    const gen = new Generate();
-
-    if (options.type.toLowerCase() === 'component') {
-        gen.component(options, callback);
-    }
-}
-
-module.exports = generate;
+module.exports = Generate;

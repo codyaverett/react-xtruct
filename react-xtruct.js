@@ -14,7 +14,16 @@ program
     .option('--style <style>', 'What cascading style to use in your project')
     .option('-sd, --skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
     .action((type, name, options) => {
-        commands.new(Object.assign({}, {type, name}, {cmd: options}));
+        if (type.toLowerCase() === 'project') {
+            console.log(chalk.green(`Creating new ${type} "${name}"...`));
+
+            commands.new.project(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
+                if (error)
+                    return console.log(`new ${chalk.red(error)}`);
+
+                console.log(`new ${chalk.green(data)}`);
+            });
+        }
     });
 
 program
@@ -22,9 +31,14 @@ program
     .description('Creates new component for project or library')
     .alias('g')
     .action((type, name, options) => {
-        commands.generate(Object.assign({}, {type, name}, {cmd: options}), () => {
-            console.log(chalk.green(`Generated ${type} "${name}" successful!`));
-        });
+        if (type.toLowerCase() === 'component') {
+            commands.generate.component(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
+                if (error)
+                    return console.log(`generate ${chalk.red(error)}`);
+
+                console.log(`generate ${chalk.green(data)}`);
+            });
+        }
     });
 
 program
@@ -33,8 +47,11 @@ program
     .alias('b')
     .option('-e, --environment <env>', 'Which environment to build')
     .action((options) => {
-        commands.build(Object.assign({}, {cmd: options}), () => {
-            console.log(chalk.green('Build project completed!'));
+        commands.build.run(Object.assign({}, {cmd: options}), (error, data) => {
+            if (error)
+                return console.log(`build ${chalk.red(error)}`);
+
+            console.log(`build ${chalk.green(data)}`);
         });
     });
 
@@ -45,8 +62,11 @@ program
     .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
     .action((options) => {
-        commands.serve(Object.assign({}, {cmd: options}), () => {
-            console.log(chalk.green('Serve in progress...'));
+        commands.serve.run(Object.assign({}, {cmd: options}), (error, data) => {
+            if (error)
+                return console.log(`serve ${chalk.red(error)}`);
+
+            console.log(`serve ${chalk.green(data)}`);
         });
     });
 
@@ -55,8 +75,11 @@ program
     .description('Lints the project or library')
     .alias('l')
     .action((options) => {
-        commands.lint(options, () => {
-            console.log(chalk.green('Linting project completed!'));
+        commands.lint.run(options, (error, data) => {
+            if (error)
+                return console.log(`lint ${chalk.red(error)}`);
+
+            console.log(`lint ${chalk.green(data)}`);
         });
     });
 
@@ -65,7 +88,12 @@ program
     .description('Test the project or library')
     .alias('t')
     .action((options) => {
-        console.log(chalk.green('Test command is not yet implemented!'));
+        commands.test.run(options, (error, data) => {
+            if (error)
+                return console.log(`test ${chalk.red(error)}`);
+
+            console.log(`test ${chalk.green(data)}`);
+        });
     });
 
 program
@@ -73,7 +101,12 @@ program
     .description('Test the project or library')
     .option('-g, --global', 'Which port to use to serve')
     .action((options) => {
-        console.log(chalk.green('Set command is not yet implemented!'));
+        commands.set.run(options, (error, data) => {
+            if (error)
+                return console.log(`set ${chalk.red(error)}`);
+
+            console.log(`set ${chalk.green(data)}`);
+        });
     });
 
 program
