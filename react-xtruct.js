@@ -51,7 +51,7 @@ program
             if (error)
                 return console.log(`build ${chalk.red(error)}`);
 
-            console.log(`${chalk.green(data)}`);
+            console.log(`${chalk.green('Build done successful!')}`);
         });
     });
 
@@ -79,7 +79,7 @@ program
             if (error)
                 return console.log(`lint ${chalk.red(error)}`);
 
-            console.log(`${chalk.green(data)}`);
+            console.log(`${chalk.green('Lint done successful!')}`);
         });
     });
 
@@ -92,7 +92,7 @@ program
             if (error)
                 return console.log(`test ${chalk.red(error)}`);
 
-            console.log(`${chalk.green(data)}`);
+            console.log(`${chalk.green('Test done successful!')}`);
         });
     });
 
