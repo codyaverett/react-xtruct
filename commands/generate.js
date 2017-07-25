@@ -15,6 +15,9 @@ class Generate {
         const componentPath = path.join(projectPath, `./${options.name}`);
         const style = options.cmd.style || common.config().project.styles;
 
+        if (!common.config().fromProcessDir)
+            return callback(`Directory is not a react-xtruct project.\nRun ${chalk.green('rx new project')} or ${chalk.green('rx new project NAME')} to create an react-xtruct project.`, null);
+
         fs.mkdir(componentPath, (error, data) => {
             if (error)
                 return callback(error, null);

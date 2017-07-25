@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 
 class Common {
@@ -12,8 +11,10 @@ class Common {
 
         try {
             config = require(path.resolve(process.cwd(), './react-xtruct.config'));
+            config.fromProcessDir = true;
         } catch (e) {
             config = require(path.resolve(__dirname, './../configs/react-xtruct.config'));
+            config.fromProcessDir = false;
         }
 
         return config;

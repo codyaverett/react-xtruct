@@ -19,7 +19,7 @@ program
 
             commands.new.project(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
                 if (error)
-                    return console.log(`new ${chalk.red(error)}`);
+                    return console.log(`${chalk.red(error)}`);
 
                 console.log(`${chalk.green(data)}`);
             });
@@ -34,7 +34,7 @@ program
         if (type.toLowerCase() === 'component') {
             commands.generate.component(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
                 if (error)
-                    return console.log(`generate ${chalk.red(error)}`);
+                    return console.log(`${chalk.red(error)}`);
 
                 console.log(`${chalk.green(data)}`);
             });
@@ -49,7 +49,7 @@ program
     .action((options) => {
         commands.build.run(Object.assign({}, {cmd: options}), (error, data) => {
             if (error)
-                return console.log(`build ${chalk.red(error)}`);
+                return console.log(`${chalk.red(error)}`);
 
             console.log(`${chalk.green('Build done successful!')}`);
         });
@@ -64,7 +64,7 @@ program
     .action((options) => {
         commands.serve.run(Object.assign({}, {cmd: options}), (error, data) => {
             if (error)
-                return console.log(`serve ${chalk.red(error)}`);
+                return console.log(`${chalk.red(error)}`);
 
             console.log(`${chalk.green(data)}`);
         });
@@ -77,7 +77,7 @@ program
     .action((options) => {
         commands.lint.run(options, (error, data) => {
             if (error)
-                return console.log(`lint ${chalk.red(error)}`);
+                return console.log(`${chalk.red(error)}`);
 
             console.log(`${chalk.green('Lint done successful!')}`);
         });
@@ -90,7 +90,7 @@ program
     .action((options) => {
         commands.test.run(options, (error, data) => {
             if (error)
-                return console.log(`test ${chalk.red(error)}`);
+                return console.log(`${chalk.red(error)}`);
 
             console.log(`${chalk.green('Test done successful!')}`);
         });
@@ -103,7 +103,7 @@ program
     .action((options) => {
         commands.set.run(options, (error, data) => {
             if (error)
-                return console.log(`set ${chalk.red(error)}`);
+                return console.log(`${chalk.red(error)}`);
 
             console.log(`${chalk.green(data)}`);
         });
