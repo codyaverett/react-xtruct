@@ -32,7 +32,7 @@ To create a new project with router (Includes only the `react-router` lib, the p
 + `rx new project NAME --router` or `rx new project --router`
 
 To create a new project with redux (Includes only the `redux`, `react-redux` and `react-redux-router` libs, the project needs to be manually set-up. __Automatic set-up coming soon__):
-+ `rx new project NAME --redux` or `rx new project --router`
++ `rx new project NAME --redux` or `rx new project --redux`
 
 To create a new project with router (Includes only the `material-ui` lib, the project needs to be manually set-up. __Automatic set-up coming soon__):
 + `rx new project NAME --material` or `rx new project --material`
