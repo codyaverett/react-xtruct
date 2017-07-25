@@ -15,13 +15,13 @@ program
     .option('-sd, --skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
     .action((type, name, options) => {
         if (type.toLowerCase() === 'project') {
-            console.log(chalk.green(`Creating new ${type} "${name || ''}"...`));
+            console.log(chalk.green(`Creating new ${type} "${name || path.basename(process.cwd())}"...`));
 
             commands.new.project(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
                 if (error)
                     return console.log(`new ${chalk.red(error)}`);
 
-                console.log(`new ${chalk.green(data)}`);
+                console.log(`${chalk.green(data)}`);
             });
         }
     });
@@ -36,7 +36,7 @@ program
                 if (error)
                     return console.log(`generate ${chalk.red(error)}`);
 
-                console.log(`generate ${chalk.green(data)}`);
+                console.log(`${chalk.green(data)}`);
             });
         }
     });
@@ -51,7 +51,7 @@ program
             if (error)
                 return console.log(`build ${chalk.red(error)}`);
 
-            console.log(`build ${chalk.green(data)}`);
+            console.log(`${chalk.green(data)}`);
         });
     });
 
@@ -66,7 +66,7 @@ program
             if (error)
                 return console.log(`serve ${chalk.red(error)}`);
 
-            console.log(`serve ${chalk.green(data)}`);
+            console.log(`${chalk.green(data)}`);
         });
     });
 
@@ -79,7 +79,7 @@ program
             if (error)
                 return console.log(`lint ${chalk.red(error)}`);
 
-            console.log(`lint ${chalk.green(data)}`);
+            console.log(`${chalk.green(data)}`);
         });
     });
 
@@ -92,7 +92,7 @@ program
             if (error)
                 return console.log(`test ${chalk.red(error)}`);
 
-            console.log(`test ${chalk.green(data)}`);
+            console.log(`${chalk.green(data)}`);
         });
     });
 
@@ -105,7 +105,7 @@ program
             if (error)
                 return console.log(`set ${chalk.red(error)}`);
 
-            console.log(`set ${chalk.green(data)}`);
+            console.log(`${chalk.green(data)}`);
         });
     });
 

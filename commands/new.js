@@ -16,6 +16,8 @@ class New {
         let projectPath = '';
         let projectSourcePath = '';
 
+        options.cmd.style = options.cmd.style || 'css';
+
         if (options.name) {
             projectPath = path.join(process.cwd(), `./${options.name}`);
             projectSourcePath = path.join(projectPath, './src');
@@ -31,7 +33,7 @@ class New {
                 generate.component({
                     type: 'component',
                     name: 'home',
-                    style: options.cmd.style,
+                    cmd: options.cmd,
                     projectPath: projectPath
                 }, (error, data) => {
                     if (error)
@@ -59,7 +61,7 @@ class New {
             generate.component({
                 type: 'component',
                 name: 'home',
-                style: options.cmd.style
+                cmd: options.cmd
             }, (error, data) => {
                 if (error)
                     return callback(error, null);
@@ -99,7 +101,7 @@ class New {
             const data2String = data.toString();
             let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
 
-            dataReplaced = dataReplaced.replace(/_XXCSSXX_/g, this.style);
+            dataReplaced = dataReplaced.replace(/_XXCSSXX_/g, options.cmd.style);
 
             fs.createWriteStream(path.join(projectPath, './react-xtruct.config.js')).write(dataReplaced);
         });
