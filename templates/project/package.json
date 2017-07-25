@@ -1,7 +1,7 @@
 {
   "name": "xxNamexx",
   "version": "0.0.1",
-  "description": "simple react application created with react-xtruct: `npm i -g react-xtruct",
+  "description": "simple react application created with react-xtruct: npm i -g react-xtruct",
   "main": "index.js",
   "scripts": {
     "build": "rx build",
@@ -13,15 +13,13 @@
   "keywords": [
     "react",
     "cli",
-    "react-xtruct"
+    "react-xtruct",
+    "front",
+    "end",
+    "front-end"
   ],
   "author": "author",
   "license": "MIT",
   "dependencies": {
-    "react": "^15.6.1",
-    "react-xtruct": "^0.0.15",
-    "react-dom": "^15.6.1",
-    "react-redux": "^5.0.5",
-    "redux": "^3.7.2"
   }
 }

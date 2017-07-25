@@ -91,10 +91,19 @@ class New {
         });
 
         fs.createReadStream(path.resolve(templatePath, './package.json')).on('data', (data) => {
-            const data2String = data.toString();
-            let dataReplaced = data2String.replace(/xxNamexx/g, options.name);
+            const packageContent = JSON.parse(data.toString());
 
-            fs.createWriteStream(path.join(projectPath, './package.json')).write(dataReplaced);
+            packageContent.name = options.name;
+            packageContent.repository = options.name;
+            packageContent.dependencies = {
+                "react": "^15.6.1",
+                "react-xtruct": "^0.0.15",
+                "react-dom": "^15.6.1",
+                "react-redux": "^5.0.5",
+                "redux": "^3.7.2"
+            };
+
+            fs.createWriteStream(path.join(projectPath, './package.json')).write(JSON.stringify(packageContent, null, 4));
         });
 
         fs.createReadStream(path.resolve(templatePath, './react-xtruct.config.js')).on('data', (data) => {

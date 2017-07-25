@@ -4,6 +4,7 @@ const path = require('path');
 const chalk = require('chalk');
 const program = require('commander');
 const commands = require('./commands');
+const common = require('./commands/common');
 
 program
     .version(chalk.green('0.0.15'));
@@ -31,6 +32,12 @@ program
     .description('Creates new component for project or library')
     .alias('g')
     .action((type, name, options) => {
+        if (!common.config().fromProcessDir)
+            return console.log(chalk.red('Directory is not a react-xtruct project.') +
+                chalk.red('\nRun') + chalk.green('rx new project') + chalk.red(' or ') +
+                chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.')
+                , null);
+
         if (type.toLowerCase() === 'component') {
             commands.generate.component(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
                 if (error)
@@ -47,6 +54,12 @@ program
     .alias('b')
     .option('-e, --environment <env>', 'Which environment to build')
     .action((options) => {
+        if (!common.config().fromProcessDir)
+            return console.log(chalk.red('Directory is not a react-xtruct project.') +
+                chalk.red('\nRun') + chalk.green('rx new project') + chalk.red(' or ') +
+                chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.')
+                , null);
+
         commands.build.run(Object.assign({}, {cmd: options}), (error, data) => {
             if (error)
                 return console.log(`${chalk.red(error)}`);
@@ -62,6 +75,12 @@ program
     .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
     .action((options) => {
+        if (!common.config().fromProcessDir)
+            return console.log(chalk.red('Directory is not a react-xtruct project.') +
+                chalk.red('\nRun') + chalk.green('rx new project') + chalk.red(' or ') +
+                chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.')
+                , null);
+
         commands.serve.run(Object.assign({}, {cmd: options}), (error, data) => {
             if (error)
                 return console.log(`${chalk.red(error)}`);
@@ -75,6 +94,12 @@ program
     .description('Lints the project or library')
     .alias('l')
     .action((options) => {
+        if (!common.config().fromProcessDir)
+            return console.log(chalk.red('Directory is not a react-xtruct project.') +
+                chalk.red('\nRun') + chalk.green('rx new project') + chalk.red(' or ') +
+                chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.')
+                , null);
+
         commands.lint.run(options, (error, data) => {
             if (error)
                 return console.log(`${chalk.red(error)}`);
@@ -88,6 +113,12 @@ program
     .description('Test the project or library')
     .alias('t')
     .action((options) => {
+        if (!common.config().fromProcessDir)
+            return console.log(chalk.red('Directory is not a react-xtruct project.') +
+                chalk.red('\nRun') + chalk.green('rx new project') + chalk.red(' or ') +
+                chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.')
+                , null);
+
         commands.test.run(options, (error, data) => {
             if (error)
                 return console.log(`${chalk.red(error)}`);

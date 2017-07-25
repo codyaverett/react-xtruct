@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
-const common = require('./common');
 
 class Lint {
     constructor() {
@@ -14,8 +13,6 @@ class Lint {
         let lint = '';
         const lintConfig = path.resolve(__dirname, './../configs/.eslintrc.js');
 
-        if (!common.config().fromProcessDir)
-            return callback(`Directory is not a react-xtruct project.\nRun ${chalk.green('rx new project')} or ${chalk.green('rx new project NAME')} to create an react-xtruct project.`, null);
         try {
             lint = path.resolve(__dirname, './../node_modules/.bin/eslint');
             fs.statSync(lint);
