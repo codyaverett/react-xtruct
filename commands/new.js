@@ -98,7 +98,7 @@ class New {
 
             packageContent.dependencies = {
                 "react": "^15.6.1",
-                "react-xtruct": "^0.0.15",
+                "react-xtruct": "^0.0.16",
                 "react-dom": "^15.6.1"
             };
 
