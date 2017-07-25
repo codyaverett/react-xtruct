@@ -28,6 +28,15 @@ To create a new project using sass (by default the project uses `css` modules):
 To create a new project without installing the project's dependencies:
 + `rx new project NAME -sd` or `rx new project NAME --skip-dependencies`
 
+To create a new project with router (Includes only the `react-router` lib, the project needs to be manually set-up. __Automatic set-up coming soon__):
++ `rx new project NAME --router` or `rx new project --router`
+
+To create a new project with redux (Includes only the `redux`, `react-redux` and `react-redux-router` libs, the project needs to be manually set-up. __Automatic set-up coming soon__):
++ `rx new project NAME --redux` or `rx new project --router`
+
+To create a new project with router (Includes only the `material-ui` lib, the project needs to be manually set-up. __Automatic set-up coming soon__):
++ `rx new project NAME --material` or `rx new project --material`
+
 ## Generate Component
 To generate a new component in your project (this will create a component, spec and styles):
 + `rx generate component NAME` or `rx g component NAME`
