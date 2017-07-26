@@ -97,41 +97,41 @@ class New {
             packageContent.repository = options.name;
 
             packageContent.dependencies = {
-                "react": "^15.6.1",
-                "react-xtruct": "^0.0.16",
-                "react-dom": "^15.6.1"
+                'react': '^15.6.1',
+                'react-dom': '^15.6.1',
+                'react-xtruct': '^0.0.16',
             };
 
             if (options.cmd.router) {
                 packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    "react-router": "^4.1.2"
+                    'react-router': '^4.1.2'
                 });
             }
 
             if (options.cmd.redux) {
                 packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    "react-redux": "^5.0.5",
-                    "react-redux-router": "0.0.9",
-                    "redux": "^3.7.2"
+                    'react-redux': '^5.0.5',
+                    'react-redux-router': '0.0.9',
+                    'redux': '^3.7.2'
                 });
             }
 
             if (options.cmd.material) {
                 packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    "material-ui": "^0.18.7"
+                    'material-ui': '^0.18.7'
                 });
             }
 
             fs.createWriteStream(path.join(projectPath, './package.json')).write(JSON.stringify(packageContent, null, 4));
         });
 
-        fs.createReadStream(path.resolve(templatePath, './react-xtruct.config.js')).on('data', (data) => {
-            const data2String = data.toString();
-            let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
+        fs.createReadStream(path.resolve(templatePath, './react-xtruct.json')).on('data', (data) => {
+            const reactXtructConfig = JSON.parse(data.toString());
 
-            dataReplaced = dataReplaced.replace(/_XXCSSXX_/g, options.cmd.style);
+            reactXtructConfig.project.name = options.name;
+            reactXtructConfig.project.style = options.cmd.style;
 
-            fs.createWriteStream(path.join(projectPath, './react-xtruct.config.js')).write(dataReplaced);
+            fs.createWriteStream(path.join(projectPath, './react-xtruct.json')).write(JSON.stringify(reactXtructConfig, null, 4));
         });
 
         fs.createReadStream(path.resolve(templatePath, './editorconfig')).on('data', (data) => {
