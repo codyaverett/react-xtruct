@@ -116,11 +116,11 @@ program
     });
 
 program
-    .command('set [option]')
-    .description('Test the project or library')
-    .option('-g, --global', 'Which port to use to serve')
-    .action((options) => {
-        commands.set.run(options, (error, data) => {
+    .command('set <keyValue>')
+    .description('Sets config key-values for the project or library')
+    .option('-g, --global', 'To make the key-value global')
+    .action((keyValue, options) => {
+        commands.set.run(Object.assign({}, {keyValue}, {cmd: options}), (error, data) => {
             if (error)
                 return console.log(`${chalk.red(error)}`);
 
