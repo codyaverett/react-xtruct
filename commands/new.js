@@ -181,11 +181,16 @@ class New {
                         callback(error, null);
 
                     if (!options.cmd.skipDependencies) {
-                        install.run(options, (error, data) => {
-                            if (error)
-                                return callback(error, null);
+                        const localConfig = common.readLocalConfig();
+                        const globalConfig = common.readGlobalConfig();
+                        const dependencyManagerLocal = localConfig.options && localConfig.options.dependencyManager ?
+                            local.options.dependencyManager : null;
+                        const dependencyManagerGlobal = globalConfig.options && globalConfig.options.dependencyManager ?
+                            globalConfig.options.dependencyManager : null;
+                        const dependencyManager = dependencyManagerLocal || dependencyManagerGlobal || 'npm';
 
-                            callback(null, data);
+                        this.runDependencyManager(dependencyManager, options, (error, data) => {
+                            callback(error, data);
                         });
                     } else {
                         callback(null, data);
@@ -193,6 +198,24 @@ class New {
                 });
             })
         });
+    }
+
+    static runDependencyManager(dependencyManagerName, options, callback) {
+        if (dependencyManagerName.toLowerCase() === 'yarn') {
+            install.yarn(options, (error, data) => {
+                if (error)
+                    return callback(error, null);
+
+                callback(null, data);
+            });
+        } else {
+            install.npm(options, (error, data) => {
+                if (error)
+                    return callback(error, null);
+
+                callback(null, data);
+            });
+        }
     }
 }
 

@@ -1,20 +1,40 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 
 class Common {
     constructor() {
     }
 
-    static config() {
+    static readLocalConfig() {
         let config = {};
 
         try {
-            config = require(path.resolve(process.cwd(), './react-xtruct.config'));
+            const configPath = path.resolve(process.cwd(), './react-xtruct.json');
+
+            config = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+
             config.fromProcessDir = true;
         } catch (e) {
-            config = require(path.resolve(__dirname, './../configs/react-xtruct.config'));
+            const configPath = path.resolve(__dirname, './../configs/react-xtruct.json');
+
+            config = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+
             config.fromProcessDir = false;
+        }
+
+        return config;
+    }
+
+    static readGlobalConfig() {
+        let config = {};
+
+        try {
+            const configPath = path.resolve(process.cwd(), `${this.getUserHomeDirectory()}/.react-xtruct.json`);
+
+            config = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+        } catch (e) {
         }
 
         return config;

@@ -35,7 +35,7 @@ program
     .description('Creates new component for project or library')
     .alias('g')
     .action((type, name, options) => {
-        if (!common.config().fromProcessDir)
+        if (!common.readLocalConfig().fromProcessDir)
             return preventCommandFromRunningIfNotProcessorDir();
 
         if (type.toLowerCase() === 'component') {
@@ -54,7 +54,7 @@ program
     .alias('b')
     .option('-e, --environment <env>', 'Which environment to build')
     .action((options) => {
-        if (!common.config().fromProcessDir)
+        if (!common.readLocalConfig().fromProcessDir)
             return preventCommandFromRunningIfNotProcessorDir();
 
         commands.build.run(Object.assign({}, {cmd: options}), (error, data) => {
@@ -72,7 +72,7 @@ program
     .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
     .action((options) => {
-        if (!common.config().fromProcessDir)
+        if (!common.readLocalConfig().fromProcessDir)
             return preventCommandFromRunningIfNotProcessorDir();
 
         commands.serve.run(Object.assign({}, {cmd: options}), (error, data) => {
@@ -88,7 +88,7 @@ program
     .description('Lints the project or library')
     .alias('l')
     .action((options) => {
-        if (!common.config().fromProcessDir)
+        if (!common.readLocalConfig().fromProcessDir)
             return preventCommandFromRunningIfNotProcessorDir();
 
         commands.lint.run(options, (error, data) => {
@@ -104,7 +104,7 @@ program
     .description('Test the project or library')
     .alias('t')
     .action((options) => {
-        if (!common.config().fromProcessDir)
+        if (!common.readLocalConfig().fromProcessDir)
             return preventCommandFromRunningIfNotProcessorDir();
 
         commands.test.run(options, (error, data) => {
