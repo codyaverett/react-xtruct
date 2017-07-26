@@ -1,8 +1,8 @@
 {
   "project": {
     "name": "unknown",
-    "root": "./src",
-    "index": "./index.html",
+    "root": "src",
+    "index": "index.html",
     "environments": {
       "dev": "",
       "stage": "",
