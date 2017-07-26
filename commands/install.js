@@ -8,8 +8,20 @@ class Install {
     constructor() {
     }
 
-    static run(options, callback) {
+    static npm(options, callback) {
         const npm = spawn('npm', ['i'], {cwd: options.path || './', stdio: 'inherit'});
+
+        npm.on('error', (data) => {
+            callback(data, null);
+        });
+
+        npm.on('close', (code) => {
+            callback(null, code);
+        });
+    }
+
+    static yarn(options, callback) {
+        const npm = spawn('yarn', ['install'], {cwd: options.path || './', stdio: 'inherit'});
 
         npm.on('error', (data) => {
             callback(data, null);
