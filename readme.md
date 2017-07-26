@@ -56,6 +56,19 @@ To serve your project:
 To serve your project using a specific port (default port is `8080`)
 + `rx s --port 8700` or `rx s -p 8700`
 
+## Set Config
+To set config local:
++ `rx set key=value` or `rx set key=value`
+
+To set config global:
++ `rx set key=value --global` or `rx set key=value -g`
+
+To set your project's dependency manager locally (default `npm`)
++ `rx set dependencyMananger=yarn` or `rx set dependencyMananger=npm`
+
+To set your project's dependency manager globally (default `npm`)
++ `rx set dependencyMananger=yarn -g` or`rx set dependencyMananger=npm -g`
+
 ## Comming Soon
 + Test your project
 + CSS modules with sass and less
