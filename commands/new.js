@@ -96,12 +96,6 @@ class New {
             packageContent.name = options.name;
             packageContent.repository = options.name;
 
-            packageContent.dependencies = {
-                'react': '^15.6.1',
-                'react-dom': '^15.6.1',
-                'react-xtruct': '^0.0.16',
-            };
-
             if (options.cmd.router) {
                 packageContent.dependencies = Object.assign(packageContent.dependencies, {
                     'react-router': '^4.1.2'
