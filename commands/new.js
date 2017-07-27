@@ -34,14 +34,15 @@ class New {
                     type: 'component',
                     name: 'home',
                     cmd: options.cmd,
-                    projectPath: projectPath
+                    path: projectPath
                 }, (error, data) => {
                     if (error)
                         return callback(error, null);
 
-                    options.path = projectPath;
-
-                    this.initGitAndInstallDependencies(options, (error, data) => {
+                    this.initGitAndInstallDependencies({
+                        path: projectPath,
+                        cmd: options.cmd
+                    }, (error, data) => {
                         if (error)
                             return callback(error, null);
 
@@ -66,7 +67,10 @@ class New {
                 if (error)
                     return callback(error, null);
 
-                this.initGitAndInstallDependencies(options, (error, data) => {
+                this.initGitAndInstallDependencies({
+                    path: projectPath,
+                    cmd: options.cmd
+                }, (error, data) => {
                     if (error)
                         return callback(error, null);
 
@@ -162,15 +166,15 @@ class New {
     }
 
     static initGitAndInstallDependencies(options, callback) {
-        repository.init((error, data) => {
+        repository.init(options, (error, data) => {
             if (error)
                 callback(error, null);
 
-            repository.add((error, data) => {
+            repository.add(options, (error, data) => {
                 if (error)
                     callback(error, null);
 
-                repository.commit((error, data) => {
+                repository.commit(options, (error, data) => {
                     if (error)
                         callback(error, null);
 

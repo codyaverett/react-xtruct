@@ -11,7 +11,7 @@ class Generate {
 
     static component(options, callback) {
         const pathToComponentTemplates = path.resolve(__dirname, './../templates/component');
-        const projectPath = options.projectPath ? path.join(options.projectPath, './src') : path.join(process.cwd(), './src');
+        const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
         const componentPath = path.join(projectPath, `./${options.name}`);
         const style = options.cmd.style || common.readLocalConfig().project.style;
 
