@@ -3,16 +3,16 @@
 const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
-const processCwd = process.cwd();
 
 class Git {
     constructor() {
     }
 
-    static init(callback) {
-        let projectPath = path.join(processCwd, './');
-
-        const cmd = spawn('git', ['init', projectPath], {stdio: 'ignore'});
+    static init(options, callback) {
+        const cmd = spawn('git', ['init'], {
+            cwd: options.path,
+            stdio: 'ignore'
+        });
 
         cmd.on('error', (data) => {
             callback(data, null);
@@ -23,10 +23,11 @@ class Git {
         });
     }
 
-    static add(callback) {
-        let projectPath = path.join(processCwd, './*.*');
-
-        const cmd = spawn('git', ['add', projectPath], {stdio: 'ignore'});
+    static add(options, callback) {
+        const cmd = spawn('git', ['add', '.'], {
+            cwd: options.path,
+            stdio: 'ignore'
+        });
 
         cmd.on('error', (data) => {
             callback(data, null);
@@ -37,10 +38,11 @@ class Git {
         });
     }
 
-    static commit(callback) {
-        let projectPath = path.join(processCwd, './');
-
-        const cmd = spawn('git', ['commit', '-m', 'Initial Commit', projectPath], {stdio: 'ignore'});
+    static commit(options, callback) {
+        const cmd = spawn('git', ['commit', '-m', 'Initial Commit'], {
+            cwd: options.path,
+            stdio: 'ignore'
+        });
 
         cmd.on('error', (data) => {
             callback(data, null);
