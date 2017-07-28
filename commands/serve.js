@@ -11,10 +11,17 @@ class Serve {
 
     static run(options, callback) {
         let webpackDevServer;
-        const webpackDevServerConfig = path.resolve(__dirname, './../configs/webpack.config.js');
         const portNumber = options.cmd.options.port || 8080;
+        let webpackConfig = path.resolve(__dirname, './../configs/webpack.dev.config.js');
 
-        process.env.NODE_ENV = options.cmd.options.env || 'dev';
+        if (options.cmd &&
+            options.cmd.environment &&
+            (options.cmd.environment.toLowerCase() === 'prod' ||
+                options.cmd.environment.toLowerCase() === 'production')) {
+            webpackConfig = path.resolve(__dirname, './../configs/webpack.prod.config.js');
+        }
+
+        process.env.NODE_ENV = options.cmd.environment || 'dev';
 
         try {
             webpackDevServer = path.resolve(__dirname, './../node_modules/.bin/webpack-dev-server');
@@ -23,7 +30,7 @@ class Serve {
             webpackDevServer = path.resolve(process.cwd(), './node_modules/.bin/webpack-dev-server');
         }
 
-        const cmd = spawn(webpackDevServer, ['--config', webpackDevServerConfig, '--port', portNumber], {stdio: 'inherit'});
+        const cmd = spawn(webpackDevServer, ['--config', webpackConfig, '--port', portNumber], {stdio: 'inherit'});
 
         cmd.on('error', (data) => {
             callback(data, null);
