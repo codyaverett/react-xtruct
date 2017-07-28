@@ -22,7 +22,7 @@ To create a new project in an already existent directory:
 To create a new project with a root directory:
 + `rx new project NAME`
 
-To create a new project using sass (by default the project uses `css` modules):
+To create a new project using sass (by default the project uses `css` modules, supports: `sass`, `scss`, `less` and `stylus`):
 + `rx new project NAME --style scss`
 
 To create a new project without installing the project's dependencies:

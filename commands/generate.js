@@ -49,6 +49,8 @@ class Generate {
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(dataReplaced);
                 else if (style === 'less')
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(dataReplaced);
+                // else if (style === 'styl')
+                //     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.styl`)).write(dataReplaced);
                 else
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
 
