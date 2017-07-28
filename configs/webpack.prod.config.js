@@ -149,30 +149,6 @@ module.exports = {
                 })
             },
             {
-                test: /\.styl$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                            }
-                        },
-                        {
-                            loader: 'stylus-loader',
-                            options: {
-                                use: [jeet(), nib()]
-                            }
-                        },
-                    ],
-                })
-            },
-            {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
                 loader: 'url-loader',
                 options: {

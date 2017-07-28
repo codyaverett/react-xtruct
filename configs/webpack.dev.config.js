@@ -42,135 +42,100 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                config: {
-                                    path: path.resolve(__dirname, './postcss.config.js')
-                                }
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.resolve(__dirname, './postcss.config.js')
                             }
                         }
-                    ],
-                }),
+                    }
+                ],
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                config: {
-                                    path: path.resolve(__dirname, './postcss.config.js')
-                                }
-                            }
-                        },
-                        {
-                            loader: 'sass-loader'
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
                         }
-                    ]
-
-                })
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.resolve(__dirname, './postcss.config.js')
+                            }
+                        }
+                    },
+                    {
+                        loader: 'sass-loader'
+                    }
+                ]
             },
             {
                 test: /\.sass$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                config: {
-                                    path: path.resolve(__dirname, './postcss.config.js')
-                                }
-                            }
-                        },
-                        {
-                            loader: 'sass-loader'
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
                         }
-                    ]
-                })
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.resolve(__dirname, './postcss.config.js')
+                            }
+                        }
+                    },
+                    {
+                        loader: 'sass-loader'
+                    }
+                ]
             },
             {
                 test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                config: {
-                                    path: path.resolve(__dirname, './postcss.config.js')
-                                }
-                            }
-                        },
-                        {
-                            loader: 'less-loader'
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
                         }
-                    ]
-                })
-            },
-            {
-                test: /\.styl$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.resolve(__dirname, './postcss.config.js')
                             }
-                        },
-                        {
-                            loader: 'stylus-loader',
-                            options: {
-                                use: [jeet(), nib()]
-                            }
-                        },
-                    ],
-                })
+                        }
+                    },
+                    {
+                        loader: 'less-loader'
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -182,7 +147,6 @@ module.exports = {
         ],
     },
     plugins: [
-        new ExtractTextPlugin('styles.css'),
         new HtmlWebpackPlugin({
             template: indexPath,
             filename: 'index.html',
