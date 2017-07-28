@@ -156,6 +156,9 @@ module.exports = {
         ],
     },
     devtool: 'source-map',
+    devServer: {
+        contentBase: outputPath
+    },
     plugins: [
         new ExtractTextPlugin('styles.css'),
         new HtmlWebpackPlugin({

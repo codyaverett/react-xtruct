@@ -146,6 +146,9 @@ module.exports = {
             }
         ],
     },
+    devServer: {
+        contentBase: outputPath
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: indexPath,
