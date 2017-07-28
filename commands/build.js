@@ -11,10 +11,16 @@ class Build {
 
     static run(options, callback) {
         let webpack = '';
+        let webpackConfig = path.resolve(__dirname, './../configs/webpack.dev.config.js');
 
-        const webpackConfig = path.resolve(__dirname, './../configs/webpack.config.js');
+        if (options.cmd &&
+            options.cmd.environment &&
+            (options.cmd.environment.toLowerCase() === 'prod' ||
+                options.cmd.environment.toLowerCase() === 'production')) {
+            webpackConfig = path.resolve(__dirname, './../configs/webpack.prod.config.js');
+        }
 
-        process.env.NODE_ENV = options.cmd.options.env || 'dev';
+        process.env.NODE_ENV = options.cmd.environment || 'dev';
 
         try {
             webpack = path.resolve(__dirname, './../node_modules/.bin/webpack');
