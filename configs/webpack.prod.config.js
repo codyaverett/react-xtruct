@@ -95,9 +95,6 @@ module.exports = {
                 use: ExtractTextPlugin.extract({
                     use: [
                         {
-                            loader: 'style-loader'
-                        },
-                        {
                             loader: 'css-loader',
                             options: {
                                 importLoaders: 1,
@@ -123,9 +120,6 @@ module.exports = {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     use: [
-                        {
-                            loader: 'style-loader'
-                        },
                         {
                             loader: 'css-loader',
                             options: {
@@ -167,7 +161,15 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'commons',
             filename: 'commons.js'
-        })
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.AggressiveMergingPlugin()
     ],
     resolve: {
         extensions: ['.js', '.jsx', '.css', '.sass', '.less', '.scss', '.styl']
