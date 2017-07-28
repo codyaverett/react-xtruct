@@ -43,6 +43,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -66,6 +67,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -93,6 +95,7 @@ module.exports = {
             {
                 test: /\.sass$/,
                 use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -119,6 +122,7 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -151,6 +155,7 @@ module.exports = {
             }
         ],
     },
+    devtool: 'source-map',
     plugins: [
         new ExtractTextPlugin('styles.css'),
         new HtmlWebpackPlugin({
@@ -167,8 +172,12 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+                warnings: false
+            }
+        }),
         new webpack.optimize.AggressiveMergingPlugin()
     ],
     resolve: {
