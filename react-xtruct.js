@@ -71,6 +71,7 @@ program
     .option('-p, --port <port>', 'Which port to use to serve')
     .option('-e, --environment <env>', 'Which environment to serve')
     .alias('s')
+    .alias('server')
     .action((options) => {
         if (!common.readLocalConfig().fromProcessDir)
             return preventCommandFromRunningIfNotProcessorDir();

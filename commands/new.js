@@ -102,7 +102,7 @@ class New {
 
             if (options.cmd.router) {
                 packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    'react-router': '^4.1.2'
+                    'react-router-dom': '^4.1.2'
                 });
             }
 
