@@ -50,7 +50,7 @@ module.exports = {
                             options: {
                                 importLoaders: 1,
                                 modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                                localIdentName: '[hash:base64:12]_[name]'
                             }
                         },
                         {
@@ -74,7 +74,7 @@ module.exports = {
                             options: {
                                 importLoaders: 1,
                                 modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                                localIdentName: '[hash:base64:12]_[name]'
                             }
                         },
                         {
@@ -102,7 +102,7 @@ module.exports = {
                             options: {
                                 importLoaders: 1,
                                 modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                                localIdentName: '[hash:base64:12]_[name]'
                             }
                         },
                         {
@@ -129,7 +129,7 @@ module.exports = {
                             options: {
                                 importLoaders: 1,
                                 modules: true,
-                                localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                                localIdentName: '[hash:base64:12]_[name]'
                             }
                         },
                         {
@@ -147,10 +147,16 @@ module.exports = {
                 })
             },
             {
+                test: /\.html$/,
+                use: ['html-loader']
+            },
+            {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000
+                    name: '[hash:12].[ext]',
+                    outputPath: 'assets/',
+                    publicPath: 'assets/'
                 }
             }
         ],

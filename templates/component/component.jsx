@@ -8,7 +8,8 @@ class _XXNameXX_ extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{textAlign: 'center'}}>
+                <img src={require('./../assets/react-xtruct-logo.png')} style={{width: '150px', height: '150px'}}/>
                 <h1 className={styles.h1}>
                     _XXNameXX_ Component
                 </h1>

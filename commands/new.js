@@ -139,10 +139,23 @@ class New {
 
     static createSourceDirectoryAndFiles(options, sourcePath) {
         const templatePath = path.resolve(__dirname, './../templates/source');
+        const assetsPath = path.resolve(__dirname, './../templates/assets');
 
         fs.mkdir(sourcePath, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
+
+            const sourceAssetsPath = path.join(sourcePath, 'assets');
+
+            fs.mkdir(sourceAssetsPath, (error, data) => {
+                if (error)
+                    return console.warn(chalk.red(error));
+
+                fs.createReadStream(path.resolve(assetsPath, './react-xtruct-logo.png')).on('data', (data) => {
+                    fs.createWriteStream(path.join(sourceAssetsPath, './react-xtruct-logo.png')).write(data);
+                });
+
+            });
 
             fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {
                 fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
