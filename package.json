@@ -1,6 +1,6 @@
 {
   "name": "react-xtruct",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "a simple cli for react projects",
   "main": "index.js",
   "bin": {
