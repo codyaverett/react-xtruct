@@ -7,7 +7,7 @@ const commands = require('./commands');
 const common = require('./commands/common');
 
 program
-    .version(chalk.green('0.0.18'));
+    .version(chalk.green('0.0.19'));
 
 program
     .command('new <type> [name]')
