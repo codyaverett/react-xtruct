@@ -147,6 +147,34 @@ module.exports = {
                 })
             },
             {
+                test: /\.styl$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                localIdentName: '[hash:base64:12]_[name]'
+                            }
+                        },
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                sourceMap: true,
+                                config: {
+                                    path: path.resolve(__dirname, './postcss.config.js')
+                                }
+                            }
+                        },
+                        {
+                            loader: 'stylus-loader'
+                        }
+                    ]
+                })
+            },
+            {
                 test: /\.html$/,
                 use: ['html-loader']
             },

@@ -138,6 +138,31 @@ module.exports = {
                 ]
             },
             {
+                test: /\.styl$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName: '[hash:base64:12]_[name]'
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.resolve(__dirname, './postcss.config.js')
+                            }
+                        }
+                    },
+                    {
+                        loader: 'stylus-loader'
+                    }
+                ]
+            },
+            {
                 test: /\.html$/,
                 use: ['html-loader']
             },

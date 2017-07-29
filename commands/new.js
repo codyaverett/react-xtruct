@@ -172,8 +172,8 @@ class New {
                     fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
                 else if (options.cmd.style === 'less')
                     fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
-                // else if (options.cmd.style === 'styl')
-                //     fs.createWriteStream(path.join(sourcePath, './styles.styl')).write(data.toString());
+                else if (options.cmd.style === 'styl')
+                    fs.createWriteStream(path.join(sourcePath, './styles.styl')).write(data.toString());
                 else
                     fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
             });
