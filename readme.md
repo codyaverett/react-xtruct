@@ -46,12 +46,18 @@ To lint your project:
 + `rx lint` or `rx l`
 
 ## Build Project
-To build your project:
+To build your project (Dev default):
 + `rx build` or `rx b`
 
+To build your project (Prod):
++ `rx build -e prod` or `rx b -e prod`
+
 ## Serve Project
-To serve your project:
+To serve your project(Dev default):
 + `rx serve` or `rx s`
+
+To build your project (Prod):
++ `rx serve -e prod` or `rx s -e prod`
 
 To serve your project using a specific port (default port is `8080`)
 + `rx s --port 8700` or `rx s -p 8700`
