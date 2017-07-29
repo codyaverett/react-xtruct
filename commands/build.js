@@ -29,7 +29,7 @@ class Build {
             webpack = path.resolve(process.cwd(), './node_modules/.bin/webpack');
         }
 
-        const cmd = spawn(webpack, ['--config', webpackConfig, '--progress'], {stdio: 'inherit'});
+        const cmd = spawn(webpack, ['--config', webpackConfig], {stdio: 'inherit'});
 
         cmd.on('error', (data) => {
             callback(data, null);
