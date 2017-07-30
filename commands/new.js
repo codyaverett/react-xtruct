@@ -132,6 +132,15 @@ class New {
             fs.createWriteStream(path.join(projectPath, './react-xtruct.json')).write(JSON.stringify(reactXtructConfig, null, 4));
         });
 
+        fs.createReadStream(path.resolve(templatePath, './readme.md')).on('data', (data) => {
+            const data2String = data.toString();
+            let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
+            
+            dataReplaced = dataReplaced.replace(/_XXVersionXX_/g, options.version);
+
+            fs.createWriteStream(path.join(projectPath, './readme.md')).write(dataReplaced);
+        });
+
         fs.createReadStream(path.resolve(templatePath, './editorconfig')).on('data', (data) => {
             fs.createWriteStream(path.join(projectPath, './.editorconfig')).write(data.toString());
         });
@@ -154,7 +163,6 @@ class New {
                 fs.createReadStream(path.resolve(assetsPath, './react-xtruct-logo.png')).on('data', (data) => {
                     fs.createWriteStream(path.join(sourceAssetsPath, './react-xtruct-logo.png')).write(data);
                 });
-
             });
 
             fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {

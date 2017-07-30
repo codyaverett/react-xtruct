@@ -6,8 +6,10 @@ const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
 
+const version = '0.0.19';
+
 program
-    .version(chalk.green('0.0.19'));
+    .version(chalk.green(version));
 
 program
     .command('new <type> [name]')
@@ -21,7 +23,7 @@ program
         if (type.toLowerCase() === 'project') {
             console.log(chalk.green(`Creating new ${type} "${name || path.basename(process.cwd())}"...`));
 
-            commands.new.project(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
+            commands.new.project(Object.assign({}, {type, name, version}, {cmd: options}), (error, data) => {
                 if (error)
                     return console.log(`${chalk.red(error)}`);
 
