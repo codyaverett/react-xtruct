@@ -8,6 +8,8 @@ The cli is based on proven technologies like webpack, babel, eslint, postcss and
 
 ##### See the latest [Release Notes](https://github.com/btinoco/react-xtruct/releases)
 
+##### See [react-xtruct Wiki](https://github.com/btinoco/react-xtruct/wiki)
+
 ## Prerequisites
 + Open a `command line` to run the commands below
 
