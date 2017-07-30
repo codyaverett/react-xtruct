@@ -30,7 +30,7 @@ class Serve {
             webpackDevServer = path.resolve(process.cwd(), './node_modules/.bin/webpack-dev-server');
         }
 
-        const cmd = spawn(webpackDevServer, ['--config', webpackConfig, '--port', portNumber, '--open'], {stdio: 'inherit'});
+        const cmd = spawn(webpackDevServer, ['--config', webpackConfig, '--port', portNumber], {stdio: 'inherit'});
 
         cmd.on('error', (data) => {
             callback(data, null);
