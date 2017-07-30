@@ -2,7 +2,11 @@
 > An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  
 The cli is based on proven technologies like webpack, babel, eslint, postcss and react.
 
-__If you like this project, help contribute here:  [Github](https://github.com/btinoco/react-xtruct)__.  This project is in __beta__.
+##### This project is in __beta__.
+
+##### __If you like this project, help contribute here:  [Github](https://github.com/btinoco/react-xtruct)__.
+
+##### See the latest [Release Notes](https://github.com/btinoco/react-xtruct/releases)
 
 ## Prerequisites
 + Open a `command line` to run the commands below
