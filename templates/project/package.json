@@ -1,28 +1,28 @@
 {
-  "name": "unknown",
-  "version": "0.0.1",
-  "description": "simple react application created with react-xtruct: npm i -g react-xtruct",
-  "main": "index.js",
-  "scripts": {
-    "build": "rx build",
-    "start": "rx serve",
-    "lint": "rx lint",
-    "test": "rx test"
-  },
-  "repository": "unknown",
-  "keywords": [
-    "react",
-    "cli",
-    "react-xtruct",
-    "front",
-    "end",
-    "front-end"
-  ],
-  "author": "author",
-  "license": "MIT",
-  "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-xtruct": "^0.0.20"
-  }
+    "name": "unknown",
+    "version": "0.0.1",
+    "description": "simple react application created with react-xtruct: npm i -g react-xtruct",
+    "main": "index.js",
+    "scripts": {
+        "build": "rx build",
+        "start": "rx serve",
+        "lint": "rx lint",
+        "test": "rx test"
+    },
+    "repository": "unknown",
+    "keywords": [
+        "react",
+        "cli",
+        "react-xtruct",
+        "front",
+        "end",
+        "front-end"
+    ],
+    "author": "author",
+    "license": "MIT",
+    "dependencies": {
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "react-xtruct": "^0.0.21"
+    }
 }
