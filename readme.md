@@ -21,7 +21,9 @@ Using npm you can install react-xtruct
 To learn more about the cli, type:
 + `rx --help`
 
-## Create New Project (creates structure, sets git repo and installs dependencies for the project)
+## Create New Project
+(creates structure, sets git repo and installs dependencies for the project)
+
 To create a new project in an already existent directory:
 + `rx new project`
 
