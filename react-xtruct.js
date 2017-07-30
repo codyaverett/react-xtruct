@@ -98,7 +98,8 @@ program
             if (error)
                 return console.log(`${chalk.red(error)}`);
 
-            console.log(`${chalk.green('Lint done successful!')}`);
+            if (data === 0)
+                console.log(`${chalk.green('Lint done successful!')}`);
         });
     });
 

@@ -135,7 +135,7 @@ class New {
         fs.createReadStream(path.resolve(templatePath, './readme.md')).on('data', (data) => {
             const data2String = data.toString();
             let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
-            
+
             dataReplaced = dataReplaced.replace(/_XXVersionXX_/g, options.version);
 
             fs.createWriteStream(path.join(projectPath, './readme.md')).write(dataReplaced);
@@ -143,6 +143,10 @@ class New {
 
         fs.createReadStream(path.resolve(templatePath, './editorconfig')).on('data', (data) => {
             fs.createWriteStream(path.join(projectPath, './.editorconfig')).write(data.toString());
+        });
+
+        fs.createReadStream(path.resolve(templatePath, './eslintrc.js')).on('data', (data) => {
+            fs.createWriteStream(path.join(projectPath, './.eslintrc.js')).write(data.toString());
         });
     }
 

@@ -11,7 +11,7 @@ class Lint {
 
     static run(options, callback) {
         let lint = '';
-        const lintConfig = path.resolve(__dirname, './../configs/.eslintrc.js');
+        let config = '';
 
         try {
             lint = path.resolve(__dirname, './../node_modules/.bin/eslint');
@@ -20,7 +20,17 @@ class Lint {
             lint = path.resolve(process.cwd(), './node_modules/.bin/eslint');
         }
 
-        const cmd = spawn(lint, ['--config', lintConfig, path.resolve(process.cwd(), './src')], {stdio: 'inherit'});
+        try {
+            config = path.resolve(process.cwd(), './.eslintrc.js');
+            fs.statSync(config);
+        } catch (e) {
+            if (e.code === 'ENOENT')
+                return callback(`Lint configuration file not found in ${e.path} `, null);
+            else
+                return callback(e, null);
+        }
+
+        const cmd = spawn(lint, ['--config', config, path.resolve(process.cwd(), './src')], {stdio: 'inherit'});
 
         cmd.on('error', (data) => {
             callback(data, null);
