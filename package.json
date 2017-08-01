@@ -46,6 +46,7 @@
     "loglevel": "^1.4.1",
     "nib": "^1.1.2",
     "node-sass": "^4.5.3",
+    "opn": "^5.1.0",
     "postcss-cssnext": "^3.0.2",
     "postcss-import": "^10.0.0",
     "postcss-loader": "^2.0.6",

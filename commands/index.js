@@ -9,5 +9,6 @@ module.exports = {
     test: require('./test'),
     build: require('./build'),
     serve: require('./serve'),
-    set: require('./set')
+    set: require('./set'),
+    docs: require('./docs')
 };

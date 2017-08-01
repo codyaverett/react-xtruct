@@ -12,6 +12,13 @@ program
     .version(chalk.green(version));
 
 program
+    .command('docs')
+    .description('Redirects you to react-xtruct\'s documentation')
+    .action(() => {
+        commands.docs.run({url: 'https://github.com/btinoco/react-xtruct/wiki'});
+    });
+
+program
     .command('new <type> [name]')
     .description('Creates new project or library')
     .option('--style <style>', 'What cascading style to use in your project')
