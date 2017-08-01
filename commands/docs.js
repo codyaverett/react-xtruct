@@ -8,7 +8,12 @@ class Docs {
     }
 
     static run(options) {
-        opn(options.url);
+        opn(options.url).then((error, data) => {
+            if (error)
+                return console.error(chalk.red(error));
+        });
+
+        process.exit();
     }
 }
 
