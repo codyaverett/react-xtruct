@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const repository = require('./repository');
 const generate = require('./generate');
 const install = require('./install');
-const common = require('./common');
+const common = require('../libs/common');
 
 class New {
     constructor() {

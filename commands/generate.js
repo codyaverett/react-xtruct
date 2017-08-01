@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const common = require('./common');
+const common = require('../libs/common');
 
 class Generate {
     constructor() {

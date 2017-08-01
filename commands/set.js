@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
-const common = require('./common');
+const common = require('../libs/common');
 
 class Set {
     constructor() {
