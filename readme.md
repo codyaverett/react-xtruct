@@ -10,6 +10,8 @@
 ##### See [react-xtruct Wiki](https://github.com/btinoco/react-xtruct/wiki)
 
 ## Prerequisites
++ Git
++ Npm or Yarn
 + Open a `command line` to run the commands below
 
 ## Installing
@@ -19,6 +21,10 @@ Using npm you can install react-xtruct
 ## Help
 To learn more about the cli, type:
 + `rx --help`
+
+## Docs
+To see the cli docs, type:
++ `rx docs`
 
 ## Create New Project
 (creates structure, sets git repo and installs dependencies for the project)
