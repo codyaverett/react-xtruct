@@ -20,7 +20,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
     if (error)
         return console.error(chalk.red(error));
 
-    if (data.toString() === version) {
+    if (data !== version) {
         console.log(`
         ${chalk.blue('New react-xtruct version!')} 
         ${chalk.green('Please install the new version via npm or yarn.')}
