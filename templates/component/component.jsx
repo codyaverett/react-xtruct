@@ -13,7 +13,6 @@ class _XXNameXX_ extends React.Component {
                 <h1 className={styles.h1}>
                     _XXNameXX_ Component
                 </h1>
-                <div className={styles.div}>Project created with react-xtruct</div>
             </div>
         )
     }

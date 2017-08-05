@@ -169,7 +169,7 @@ class New {
                 });
             });
 
-            fs.createReadStream(path.resolve(templatePath, './bootstrap.js')).on('data', (data) => {
+            fs.createReadStream(path.resolve(templatePath, './index.js')).on('data', (data) => {
                 fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
             });
 
