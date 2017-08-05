@@ -21,13 +21,13 @@ class Install {
     }
 
     static yarn(options, callback) {
-        const npm = spawn('yarn', ['install'], {cwd: options.path || './', stdio: 'inherit'});
+        const yarn = spawn('yarn', ['install'], {cwd: options.path || './', stdio: 'inherit'});
 
-        npm.on('error', (data) => {
+        yarn.on('error', (data) => {
             callback(data, null);
         });
 
-        npm.on('close', (code) => {
+        yarn.on('close', (code) => {
             callback(null, code);
         });
     }

@@ -209,7 +209,7 @@ class New {
                         const localConfig = common.readLocalConfig();
                         const globalConfig = common.readGlobalConfig();
                         const dependencyManagerLocal = localConfig.options && localConfig.options.dependencyManager ?
-                            local.options.dependencyManager : null;
+                            localConfig.options.dependencyManager : null;
                         const dependencyManagerGlobal = globalConfig.options && globalConfig.options.dependencyManager ?
                             globalConfig.options.dependencyManager : null;
                         const dependencyManager = dependencyManagerLocal || dependencyManagerGlobal || 'npm';
