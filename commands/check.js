@@ -42,7 +42,7 @@ class Check {
         });
 
         npm.on('close', (code) => {
-            callback(null, code);
+            // callback(null, code);
         });
     }
 
@@ -62,7 +62,7 @@ class Check {
         });
 
         yarn.on('close', (code) => {
-            callback(null, code);
+            // callback(null, code);
         });
     }
 }

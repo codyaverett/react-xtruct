@@ -166,5 +166,4 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
             chalk.red('\nRun') + chalk.green(' rx new project') + chalk.red(' or ') +
             chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.'));
     }
-
 });
