@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const ejs = require('ejs');
 const common = require('../libs/common');
 
 class Generate {
@@ -19,40 +20,46 @@ class Generate {
             if (error)
                 return callback(error, null);
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './component.jsx')).on('data', (data) => {
-                const data2String = data.toString();
-                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+            fs.createReadStream(path.resolve(pathToComponentTemplates, './component_')).on('data', (data) => {
+                const templateOptions = {
+                    componentNameLower: options.name.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(options.name),
+                    stylesFileName: 'styles',
+                    stylesExtension: style.toLowerCase()
+                };
+                const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
-                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
+                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`))
+                    .write(compiledTemplate);
             });
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './spec.jsx')).on('data', (data) => {
-                const data2String = data.toString();
-                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
+            fs.createReadStream(path.resolve(pathToComponentTemplates, './spec_')).on('data', (data) => {
+                const templateOptions = {
+                    componentNameLower: options.name.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(options.name)
+                };
+                const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
-                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
+                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`))
+                    .write(compiledTemplate);
             });
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './styles.css')).on('data', (data) => {
-                const data2String = data.toString();
-                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
-
-                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
+            fs.createReadStream(path.resolve(pathToComponentTemplates, './styles_')).on('data', (data) => {
+                const templateOptions = {
+                    stylesExtension: style
+                };
+                const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
                 if (style === 'sass')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.sass`)).write(dataReplaced);
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.sass`)).write(compiledTemplate);
                 else if (style === 'scss')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(dataReplaced);
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(compiledTemplate);
                 else if (style === 'less')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(dataReplaced);
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(compiledTemplate);
                 else if (style === 'styl')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.styl`)).write(dataReplaced);
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.styl`)).write(compiledTemplate);
                 else
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(compiledTemplate);
 
             });
 

@@ -6,9 +6,9 @@ const jeet = require('jeet');
 const nib = require('nib');
 // var ReactToHtmlPlugin = require('react-to-html-webpack-plugin');
 
-const entryPath = path.resolve(process.cwd(), './src/index.js');
+const entryPath = path.resolve(process.cwd(), './src/index_');
 const outputPath = path.resolve(process.cwd(), './dist');
-const indexPath = path.resolve(process.cwd(), './index.html');
+const indexPath = path.resolve(process.cwd(), './index_');
 
 module.exports = {
     entry: entryPath,
