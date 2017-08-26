@@ -1,6 +1,5 @@
 # react-xtruct BETA
-> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, eslint, postcss, react and more.
-
+> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, eslint, postcss, react and more. Uses LIFT for project structure.
 ##### This project is in __beta__.
 
 ##### __If you like this project, help contribute here:  [Github](https://github.com/btinoco/react-xtruct)__.

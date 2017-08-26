@@ -44,7 +44,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .option('--router', 'Includes react-router library in your project')
         .option('--redux', 'Includes redux, react-redux and react-redux-router libraries in your project')
         .option('--material', 'Includes material-ui library in your project')
-        .option('-sd, --skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
+        .option('--skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
         .action((type, name, options) => {
             if (type.toLowerCase() === 'project') {
                 console.log(chalk.green(`Creating new ${type} "${name || path.basename(process.cwd())}"...`));

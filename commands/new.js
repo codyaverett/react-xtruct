@@ -113,7 +113,8 @@ class New {
         fs.createReadStream(path.resolve(templatePath, './react-xtruct_')).on('data', (data) => {
             const templateOptions = {
                 appName: options.name,
-                appStyles: options.cmd.style
+                appStyles: options.cmd.style,
+                redux: options.cmd.redux
             };
             const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
@@ -160,6 +161,7 @@ class New {
 
             fs.createReadStream(path.resolve(templatePath, './index_')).on('data', (data) => {
                 const templateOptions = {
+                    redux: options.cmd.redux,
                     stylesExtension: options.cmd.style
                 };
                 const compiledTemplate = ejs.render(data.toString(), templateOptions);
@@ -188,6 +190,30 @@ class New {
                 else
                     fs.createWriteStream(path.join(sourcePath, './styles.css')).write(compiledTemplate);
             });
+
+            if (options.cmd.redux) {
+                fs.createReadStream(path.resolve(templatePath, './actions_')).on('data', (data) => {
+                    const templateOptions = {
+                        componentNameLower: options.name.toLowerCase(),
+                        componentNameTitle: common.toTitleCase(options.name)
+                    };
+                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
+
+                    fs.createWriteStream(path.join(sourcePath, `./app.actions.js`))
+                        .write(compiledTemplate);
+                });
+
+                fs.createReadStream(path.resolve(templatePath, './reducer_')).on('data', (data) => {
+                    const templateOptions = {
+                        componentNameLower: options.name.toLowerCase(),
+                        componentNameTitle: common.toTitleCase(options.name)
+                    };
+                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
+
+                    fs.createWriteStream(path.join(sourcePath, `./app.reducer.js`))
+                        .write(compiledTemplate);
+                });
+            }
         });
     }
 

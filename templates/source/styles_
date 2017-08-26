@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-<%if(stylesExtension === 'styl') {%>body
+<%_if(stylesExtension === 'styl') {-%>
+body
     font-family: 'Roboto', sans-serif
     margin: 0px
-<%}%>
-<%if(stylesExtension !== 'styl') {%>body {
+<%_}-%>
+<%_if(stylesExtension !== 'styl') {-%>
+body {
     font-family: 'Roboto', sans-serif;
     margin: 0px;
 }
-<%}%>
+<%_}-%>

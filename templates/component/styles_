@@ -1,23 +1,26 @@
-<% if(stylesExtension === 'styl') { %>.h1
+<%_if(stylesExtension === 'styl'){-%>
+.h1
     text-align: center
     font-size: 24px
 
 .logo
-    width: '150px'
-    height: '150px'
+    width: 150px
+    height: 150px
 
 .alignCenter
-    textAlign: 'center'
-<% } %><% if(stylesExtension !== 'styl') { %>.h1 {
+    text-align: center
+<%_}-%>
+<%_if(stylesExtension !== 'styl'){-%>
+.h1 {
     text-align: center;
     font-size: 24px;
 }
 .logo {
-    width: '150px';
-    height: '150px';
+    width: 150px;
+    height: 150px;
 }
 
 .alignCenter{
-    textAlign: 'center';
+    text-align: center;
 }
-<% } %>
+<%_}-%>

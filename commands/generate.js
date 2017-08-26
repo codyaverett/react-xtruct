@@ -15,6 +15,7 @@ class Generate {
         const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
         const componentPath = path.join(projectPath, `./${options.name}`);
         const style = options.cmd.style || common.readLocalConfig().project.style;
+        const redux = options.cmd.redux || common.readLocalConfig().project.redux;
 
         fs.mkdir(componentPath, (error, data) => {
             if (error)
@@ -22,6 +23,7 @@ class Generate {
 
             fs.createReadStream(path.resolve(pathToComponentTemplates, './component_')).on('data', (data) => {
                 const templateOptions = {
+                    redux,
                     componentNameLower: options.name.toLowerCase(),
                     componentNameTitle: common.toTitleCase(options.name),
                     stylesFileName: 'styles',
@@ -62,6 +64,30 @@ class Generate {
                     fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(compiledTemplate);
 
             });
+
+            if (redux) {
+                fs.createReadStream(path.resolve(pathToComponentTemplates, './actions_')).on('data', (data) => {
+                    const templateOptions = {
+                        componentNameLower: options.name.toLowerCase(),
+                        componentNameTitle: common.toTitleCase(options.name)
+                    };
+                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
+
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.actions.js`))
+                        .write(compiledTemplate);
+                });
+
+                fs.createReadStream(path.resolve(pathToComponentTemplates, './reducer_')).on('data', (data) => {
+                    const templateOptions = {
+                        componentNameLower: options.name.toLowerCase(),
+                        componentNameTitle: common.toTitleCase(options.name)
+                    };
+                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
+
+                    fs.createWriteStream(path.join(componentPath, `./${options.name}.reducer.js`))
+                        .write(compiledTemplate);
+                });
+            }
 
             callback(null, `Generated ${options.type} "${options.name}" successful!`);
         });

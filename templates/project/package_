@@ -25,14 +25,15 @@
         "react-dom": "^15.6.1",
         <%_if(router) {-%>
         "react-router-dom": "^4.1.2",
-        <%}-%>
+        <%_}-%>
         <%_if(redux) {-%>
         "react-redux": "^5.0.5",
         "react-redux-router": "0.0.9",
         "redux": "^3.7.2",
-        <%}-%>
-        <%_if(material) {-%>
+        <%_}-%>
+        <%_if(material){-%>
         "material-ui": "^0.18.7",
-        <%}-%>"react-xtruct": "^0.0.22"
+        <%_}-%>
+        "react-xtruct": "^0.0.22"
     }
 }

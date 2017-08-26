@@ -4,11 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const jeet = require('jeet');
 const nib = require('nib');
-// var ReactToHtmlPlugin = require('react-to-html-webpack-plugin');
 
-const entryPath = path.resolve(process.cwd(), './src/index_');
+const entryPath = path.resolve(process.cwd(), './src/index.jsx');
 const outputPath = path.resolve(process.cwd(), './dist');
-const indexPath = path.resolve(process.cwd(), './index_');
+const indexPath = path.resolve(process.cwd(), './index.html');
 
 module.exports = {
     entry: entryPath,

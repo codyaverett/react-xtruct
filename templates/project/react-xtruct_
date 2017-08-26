@@ -8,7 +8,10 @@
             "stage": "",
             "prod": ""
         },
-        "style": "<%=appStyles%>"
+        "style": "<%=appStyles%>",
+        <%_if(redux){-%>
+        "redux": true
+        <%_}-%>
     },
     "scripts": [],
     "options": {}
