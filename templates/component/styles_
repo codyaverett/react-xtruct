@@ -4,8 +4,8 @@
     font-size: 24px
 
 .logo
-    width: 150px
-    height: 150px
+    width: 375px
+    height: 95px
 
 .alignCenter
     text-align: center
