@@ -10,7 +10,7 @@
         },
         "style": "<%=appStyles%>",
         <%_if(redux){-%>
-        "redux": true
+        "redux": true,
         <%_}-%>
         <%_if(router){-%>
         "router": true
