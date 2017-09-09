@@ -7,13 +7,13 @@ import {Provider} from 'react-redux';
 
 <%_}-%>
 <%_if(redux){-%>
-import appReducer from './app.reducer';
+import appReducers from './app.reducers';
 <%_}-%>
 import App from './app.component';
 import './styles.<%=stylesExtension%>';
 
 <%_if(redux){-%>
-const store = createStore(appReducer, {});
+const store = createStore(appReducers, {});
 
 <%_}-%>
 <%_if(redux){-%>
@@ -21,12 +21,12 @@ ReactDOM.render(
     <Provider store={store}>
         <App/>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('app')
 );
 <%_}-%>
 <%_if(!redux){-%>
 ReactDOM.render(
     <App/>,
-    document.getElementById('root')
+    document.getElementById('app')
 );
 <%_}-%>

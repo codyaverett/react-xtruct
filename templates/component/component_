@@ -36,6 +36,7 @@ class <%=componentNameTitle%> extends React.Component {
                     <img src={require('./../assets/react-xtruct-logo.png')}
                          className={Styles.logo}/>
                 </h1>
+                <h2><%=componentNameTitle%></h2>
                 <%_if(redux){-%>
                 <button onClick={this.increaseCounter}>Increase Counter</button>
                 <h1>Counter:{this.props.counter}</h1>

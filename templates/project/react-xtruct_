@@ -12,6 +12,9 @@
         <%_if(redux){-%>
         "redux": true
         <%_}-%>
+        <%_if(router){-%>
+        "router": true
+        <%_}-%>
     },
     "scripts": [],
     "options": {}

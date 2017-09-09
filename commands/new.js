@@ -114,7 +114,8 @@ class New {
             const templateOptions = {
                 appName: options.name,
                 appStyles: options.cmd.style,
-                redux: options.cmd.redux
+                redux: options.cmd.redux,
+                router: options.cmd.router
             };
             const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
@@ -170,7 +171,12 @@ class New {
             });
 
             fs.createReadStream(path.resolve(templatePath, './app_')).on('data', (data) => {
-                fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(data.toString());
+                const templateOptions = {
+                    router: options.cmd.router
+                };
+                const compiledTemplate = ejs.render(data.toString(), templateOptions);
+
+                fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(compiledTemplate);
             });
 
             fs.createReadStream(path.resolve(templatePath, './styles_')).on('data', (data) => {
@@ -203,14 +209,14 @@ class New {
                         .write(compiledTemplate);
                 });
 
-                fs.createReadStream(path.resolve(templatePath, './reducer_')).on('data', (data) => {
+                fs.createReadStream(path.resolve(templatePath, './reducers_')).on('data', (data) => {
                     const templateOptions = {
                         componentNameLower: options.name.toLowerCase(),
                         componentNameTitle: common.toTitleCase(options.name)
                     };
                     const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
-                    fs.createWriteStream(path.join(sourcePath, `./app.reducer.js`))
+                    fs.createWriteStream(path.join(sourcePath, `./app.reducers.js`))
                         .write(compiledTemplate);
                 });
             }

@@ -43,7 +43,6 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .option('--style <style>', 'What cascading style to use in your project')
         .option('--router', 'Includes react-router library in your project')
         .option('--redux', 'Includes redux, react-redux and react-redux-router libraries in your project')
-        .option('--material', 'Includes material-ui library in your project')
         .option('--skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
         .action((type, name, options) => {
             if (type.toLowerCase() === 'project') {

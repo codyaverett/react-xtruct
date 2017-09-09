@@ -55,10 +55,6 @@ module.exports = {
         'react/no-is-mounted': 'error',
         'react/no-danger': 'warn',
         'react/no-multi-comp': ['error', {ignoreStateless: true}],
-        'indent': [
-            'error',
-            4
-        ],
         'linebreak-style': [
             'error',
             'unix'
