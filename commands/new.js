@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const mkdirp = require('mkdirp');
 const path = require('path');
 const chalk = require('chalk');
 const ejs = require('ejs');
@@ -20,10 +21,10 @@ class New {
         options.cmd.style = options.cmd.style || 'css';
 
         if (options.name) {
-            projectPath = path.join(process.cwd(), `./${options.name}`);
+            projectPath = path.join(process.cwd(), options.name);
             projectSourcePath = path.join(projectPath, './src');
 
-            fs.mkdir(projectPath, (error, data) => {
+            mkdirp(projectPath, (error, data) => {
                 if (error)
                     return callback(error, null);
 
@@ -102,8 +103,7 @@ class New {
                 appName: options.name,
                 appRepo: options.name,
                 router: options.cmd.router,
-                redux: options.cmd.redux,
-                material: options.cmd.material
+                redux: options.cmd.redux
             };
             const compiledTemplate = ejs.render(data.toString(), templateOptions);
 
@@ -145,13 +145,13 @@ class New {
         const templatePath = path.resolve(__dirname, './../templates/source');
         const assetsPath = path.resolve(__dirname, './../templates/assets');
 
-        fs.mkdir(sourcePath, (error, data) => {
+        mkdirp(sourcePath, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
 
             const sourceAssetsPath = path.join(sourcePath, 'assets');
 
-            fs.mkdir(sourceAssetsPath, (error, data) => {
+            mkdirp(sourceAssetsPath, (error, data) => {
                 if (error)
                     return console.warn(chalk.red(error));
 

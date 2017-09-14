@@ -55,6 +55,10 @@ class Common {
     static getUserHomeDirectory() {
         return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
     }
+
+    static getFilenameFromPath(path) {
+        return path.replace(/^.*[\\\/]/, '');
+    }
 }
 
 module.exports = Common;

@@ -8,12 +8,21 @@
             "stage": "",
             "prod": ""
         },
+        <%_if(redux && !router){-%>
         "style": "<%=appStyles%>",
-        <%_if(redux){-%>
-        "redux": true,
+        "redux": true
         <%_}-%>
-        <%_if(router){-%>
+        <%_if(router && !redux){-%>
+        "style": "<%=appStyles%>",
         "router": true
+        <%_}-%>
+        <%_if(redux && router){-%>
+         "style": "<%=appStyles%>",
+         "redux": true,
+         "router": true
+        <%_}-%>
+        <%_if(!redux && !router){-%>
+         "style": "<%=appStyles%>"
         <%_}-%>
     },
     "scripts": [],
