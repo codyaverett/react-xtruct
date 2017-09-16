@@ -4,10 +4,10 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const chalk = require('chalk');
-const ejs = require('ejs');
 const repository = require('./repository');
 const generate = require('./generate');
 const install = require('./install');
+const template = require('./template');
 const common = require('../libs/common');
 
 class New {
@@ -15,56 +15,42 @@ class New {
     }
 
     static project(options, callback) {
-        let projectPath = '';
-        let projectSourcePath = '';
-
-        options.cmd.style = options.cmd.style || 'css';
+        let projectPath;
+        let projectName;
+        let projectSourcePath;
+        let projectOptions;
 
         if (options.name) {
             projectPath = path.join(process.cwd(), options.name);
+            projectName = common.getFilenameFromPath(projectPath);
             projectSourcePath = path.join(projectPath, './src');
-
-            mkdirp(projectPath, (error, data) => {
-                if (error)
-                    return callback(error, null);
-
-                this.createProjectDirectoryFiles(options, projectPath);
-
-                this.createSourceDirectoryAndFiles(options, projectSourcePath);
-
-                generate.component({
-                    type: 'component',
-                    name: 'home',
-                    cmd: options.cmd,
-                    path: projectPath
-                }, (error, data) => {
-                    if (error)
-                        return callback(error, null);
-
-                    this.initGitAndInstallDependencies({
-                        path: projectPath,
-                        cmd: options.cmd
-                    }, (error, data) => {
-                        if (error)
-                            return callback(error, null);
-
-                        callback(null, 'New project created successful!');
-                    });
-                });
-            });
         } else {
-            projectPath = process.cwd();
+            projectPath = path.basename(process.cwd());
+            projectName = common.getFilenameFromPath(projectPath);
             projectSourcePath = path.join(projectPath, './src');
-            options.name = path.basename(process.cwd());
+        }
 
-            this.createProjectDirectoryFiles(options, projectPath);
+        options.cmd.style = options.cmd.style || 'css';
 
-            this.createSourceDirectoryAndFiles(options, projectSourcePath);
+        projectOptions = {
+            name: projectName,
+            path: projectPath,
+            source: projectSourcePath,
+            cmd: options.cmd
+        };
+
+        mkdirp(projectOptions.path, (error, data) => {
+            if (error)
+                return callback(error, null);
+
+            this.createProjectDirectoryFiles(projectOptions);
+            this.createSourceDirectoryAndFiles(projectOptions);
 
             generate.component({
                 type: 'component',
                 name: 'home',
-                cmd: options.cmd
+                cmd: options.cmd,
+                path: projectPath
             }, (error, data) => {
                 if (error)
                     return callback(error, null);
@@ -79,147 +65,179 @@ class New {
                     callback(null, 'New project created successful!');
                 });
             });
-        }
+
+        });
     }
 
-    static createProjectDirectoryFiles(options, projectPath) {
+    static createProjectDirectoryFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/project');
 
-        fs.createReadStream(path.resolve(templatePath, './index_')).on('data', (data) => {
-            const templateOptions = {
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'index_',
+            templateOptions: {
                 appTitle: options.name
-            };
-            const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-            fs.createWriteStream(path.join(projectPath, './index.html')).write(compiledTemplate);
+            },
+            outputFilename: 'index.html',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './gitignore_')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './.gitignore')).write(data.toString());
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'gitignore_',
+            outputFilename: '.gitignore',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './package_')).on('data', (data) => {
-            const templateOptions = {
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'package_',
+            templateOptions: {
                 appName: options.name,
                 appRepo: options.name,
                 router: options.cmd.router,
                 redux: options.cmd.redux
-            };
-            const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-            fs.createWriteStream(path.join(projectPath, './package.json')).write(compiledTemplate);
+            },
+            outputFilename: 'package.json',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './react-xtruct_')).on('data', (data) => {
-            const templateOptions = {
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'react-xtruct_',
+            templateOptions: {
                 appName: options.name,
                 appStyles: options.cmd.style,
                 redux: options.cmd.redux,
                 router: options.cmd.router
-            };
-            const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-            fs.createWriteStream(path.join(projectPath, './react-xtruct.json')).write(compiledTemplate);
+            },
+            outputFilename: 'react-xtruct.json',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './readme_')).on('data', (data) => {
-            const templateOptions = {
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'readme_',
+            templateOptions: {
                 appName: options.name,
                 appVersion: options.version
-            };
-            const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-            fs.createWriteStream(path.join(projectPath, './readme.md')).write(compiledTemplate);
+            },
+            outputFilename: 'readme.md',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './editorconfig_')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './.editorconfig')).write(data.toString());
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'editorconfig_',
+            outputFilename: '.editorconfig',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './eslintrc_')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './.eslintrc.js')).write(data.toString());
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'eslintrc_',
+            outputFilename: '.eslintrc.js',
+            outputPath: options.path
         });
     }
 
-    static createSourceDirectoryAndFiles(options, sourcePath) {
+    static createSourceDirectoryAndFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/source');
         const assetsPath = path.resolve(__dirname, './../templates/assets');
 
-        mkdirp(sourcePath, (error, data) => {
+        mkdirp(options.source, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
 
-            const sourceAssetsPath = path.join(sourcePath, 'assets');
+            const sourceAssetsPath = path.join(options.source, 'assets');
 
             mkdirp(sourceAssetsPath, (error, data) => {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                fs.createReadStream(path.resolve(assetsPath, './react-xtruct-logo.png')).on('data', (data) => {
-                    fs.createWriteStream(path.join(sourceAssetsPath, './react-xtruct-logo.png')).write(data);
+                template.compile({
+                    binary: true,
+                    templateDirectory: assetsPath,
+                    templateFilename: 'react-xtruct-logo.png',
+                    outputFilename: 'react-xtruct-logo.png',
+                    outputPath: sourceAssetsPath,
                 });
             });
 
-            fs.createReadStream(path.resolve(templatePath, './index_')).on('data', (data) => {
-                const templateOptions = {
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'index_',
+                templateOptions: {
                     redux: options.cmd.redux,
                     stylesExtension: options.cmd.style
-                };
-                const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                fs.createWriteStream(path.join(sourcePath, './index.jsx')).write(compiledTemplate);
+                },
+                outputFilename: 'index.jsx',
+                outputPath: options.source
             });
 
-            fs.createReadStream(path.resolve(templatePath, './app_')).on('data', (data) => {
-                const templateOptions = {
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'app_',
+                templateOptions: {
                     router: options.cmd.router
-                };
-                const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(compiledTemplate);
+                },
+                outputFilename: 'app.component.jsx',
+                outputPath: options.source
             });
 
-            fs.createReadStream(path.resolve(templatePath, './styles_')).on('data', (data) => {
-                const templateOptions = {
-                    stylesExtension: options.cmd.style
-                };
-                const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                if (options.cmd.style === 'sass')
-                    fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(compiledTemplate);
-                else if (options.cmd.style === 'scss')
-                    fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(compiledTemplate);
-                else if (options.cmd.style === 'less')
-                    fs.createWriteStream(path.join(sourcePath, './styles.less')).write(compiledTemplate);
-                else if (options.cmd.style === 'styl')
-                    fs.createWriteStream(path.join(sourcePath, './styles.styl')).write(compiledTemplate);
-                else
-                    fs.createWriteStream(path.join(sourcePath, './styles.css')).write(compiledTemplate);
+            this.createSourceDirectoryCSS({
+                style: options.cmd.style,
+                templateDirectory: templatePath,
+                templateFilename: 'styles_',
+                outputPath: options.source
             });
 
             if (options.cmd.redux) {
-                fs.createReadStream(path.resolve(templatePath, './actions_')).on('data', (data) => {
-                    const templateOptions = {
+                template.compile({
+                    templateDirectory: templatePath,
+                    templateFilename: 'actions_',
+                    templateOptions: {
                         componentNameLower: options.name.toLowerCase(),
                         componentNameTitle: common.toTitleCase(options.name)
-                    };
-                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                    fs.createWriteStream(path.join(sourcePath, `./app.actions.js`))
-                        .write(compiledTemplate);
+                    },
+                    outputFilename: 'app.actions.js',
+                    outputPath: options.source
                 });
 
-                fs.createReadStream(path.resolve(templatePath, './reducers_')).on('data', (data) => {
-                    const templateOptions = {
+                template.compile({
+                    templateDirectory: templatePath,
+                    templateFilename: 'reducers_',
+                    templateOptions: {
                         componentNameLower: options.name.toLowerCase(),
                         componentNameTitle: common.toTitleCase(options.name)
-                    };
-                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                    fs.createWriteStream(path.join(sourcePath, `./app.reducers.js`))
-                        .write(compiledTemplate);
+                    },
+                    outputFilename: 'app.reducers.js',
+                    outputPath: options.source
                 });
             }
+        });
+    }
+
+    static createSourceDirectoryCSS(options) {
+        let styleFilename = 'style.css';
+
+        if (options.style === 'sass')
+            styleFilename = 'styles.sass';
+        else if (options.style === 'scss')
+            styleFilename = 'styles.scss';
+        else if (options.style === 'less')
+            styleFilename = 'styles.less';
+        else if (options.style === 'styl')
+            styleFilename = 'styles.styl';
+
+        template.compile({
+            templateDirectory: options.templateDirectory,
+            templateFilename: options.templateFilename,
+            templateOptions: {
+                stylesExtension: options.style
+            },
+            outputFilename: styleFilename,
+            outputPath: options.outputPath
         });
     }
 
