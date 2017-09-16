@@ -4,7 +4,7 @@ const path = require('path');
 const chalk = require('chalk');
 const program = require('commander');
 const commands = require('./commands');
-const common = require('./libs/common');
+const common = require('./commands/common');
 
 const version = '0.0.22';
 

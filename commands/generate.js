@@ -4,15 +4,15 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const chalk = require('chalk');
-const ejs = require('ejs');
-const common = require('../libs/common');
+const template = require('./template');
+const common = require('./common');
 
 class Generate {
     constructor() {
     }
 
     static component(options, callback) {
-        const pathToComponentTemplates = path.resolve(__dirname, './../templates/component');
+        const templatePath = path.resolve(__dirname, './../templates/component');
         const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
         const componentPath = path.join(projectPath, options.name);
         const componentName = common.getFilenameFromPath(options.name);
@@ -24,70 +24,58 @@ class Generate {
             if (error)
                 return callback(error, null);
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './component_')).on('data', (data) => {
-                const templateOptions = {
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'component_',
+                templateOptions: {
                     redux,
                     componentNameLower: componentName.toLowerCase(),
                     componentNameTitle: common.toTitleCase(componentName),
                     stylesFileName: 'styles',
                     stylesExtension: style.toLowerCase()
-                };
-                const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                fs.createWriteStream(path.join(componentPath, `${componentName}.component.jsx`))
-                    .write(compiledTemplate);
+                },
+                outputFilename: `${componentName}.component.jsx`,
+                outputPath: componentPath
             });
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './spec_')).on('data', (data) => {
-                const templateOptions = {
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'spec_',
+                templateOptions: {
                     componentNameLower: componentName.toLowerCase(),
                     componentNameTitle: common.toTitleCase(componentName)
-                };
-                const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                fs.createWriteStream(path.join(componentPath, `${componentName}.component.spec.jsx`))
-                    .write(compiledTemplate);
+                },
+                outputFilename: `${componentName}.component.spec.jsx`,
+                outputPath: componentPath
             });
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './styles_')).on('data', (data) => {
-                const templateOptions = {
-                    stylesExtension: style
-                };
-                const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                if (style === 'sass')
-                    fs.createWriteStream(path.join(componentPath, `${componentName}.styles.sass`)).write(compiledTemplate);
-                else if (style === 'scss')
-                    fs.createWriteStream(path.join(componentPath, `${componentName}.styles.scss`)).write(compiledTemplate);
-                else if (style === 'less')
-                    fs.createWriteStream(path.join(componentPath, `${componentName}.styles.less`)).write(compiledTemplate);
-                else if (style === 'styl')
-                    fs.createWriteStream(path.join(componentPath, `${componentName}.styles.styl`)).write(compiledTemplate);
-                else
-                    fs.createWriteStream(path.join(componentPath, `${componentName}.styles.css`)).write(compiledTemplate);
-
+            template.compileCSS({
+                style: options.cmd.style,
+                templateDirectory: templatePath,
+                templateFilename: 'styles_',
+                outputPath: componentPath
             });
 
             if (redux) {
-                fs.createReadStream(path.resolve(pathToComponentTemplates, './actions_')).on('data', (data) => {
-                    const templateOptions = {
+                template.compile({
+                    templateDirectory: templatePath,
+                    templateFilename: 'actions_',
+                    templateOptions: {
                         componentNameLower: componentName.toLowerCase(),
                         componentNameTitle: common.toTitleCase(componentName)
-                    };
-                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                    fs.createWriteStream(path.join(componentPath, `./${componentName}.actions.js`))
-                        .write(compiledTemplate);
+                    },
+                    outputFilename: `${componentName}.actions.js`,
+                    outputPath: componentPath
                 });
 
-                fs.createReadStream(path.resolve(pathToComponentTemplates, './reducers_')).on('data', (data) => {
-                    const templateOptions = {
+                template.compile({
+                    templateDirectory: templatePath,
+                    templateFilename: 'reducers_',
+                    templateOptions: {
                         componentNameLower: componentName.toLowerCase()
-                    };
-                    const compiledTemplate = ejs.render(data.toString(), templateOptions);
-
-                    fs.createWriteStream(path.join(componentPath, `./${componentName}.reducers.js`))
-                        .write(compiledTemplate);
+                    },
+                    outputFilename: `${componentName}.reducers.js`,
+                    outputPath: componentPath
                 });
             }
 

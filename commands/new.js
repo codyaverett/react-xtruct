@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const chalk = require('chalk');
@@ -8,7 +7,7 @@ const repository = require('./repository');
 const generate = require('./generate');
 const install = require('./install');
 const template = require('./template');
-const common = require('../libs/common');
+const common = require('./common');
 
 class New {
     constructor() {
@@ -170,7 +169,7 @@ class New {
                 outputPath: options.source
             });
 
-            this.createSourceDirectoryCSS({
+            template.compileCSS({
                 style: options.cmd.style,
                 templateDirectory: templatePath,
                 templateFilename: 'styles_',
@@ -205,37 +204,13 @@ class New {
                 if (error)
                     return console.warn(chalk.red(error));
 
-                template.compile({
-                    binary: true,
+                template.compileImage({
                     templateDirectory: assetsPath,
                     templateFilename: 'react-xtruct-logo.png',
                     outputFilename: 'react-xtruct-logo.png',
                     outputPath: sourceAssetsPath,
                 });
             });
-        });
-    }
-
-    static createSourceDirectoryCSS(options) {
-        let styleFilename = 'style.css';
-
-        if (options.style === 'sass')
-            styleFilename = 'styles.sass';
-        else if (options.style === 'scss')
-            styleFilename = 'styles.scss';
-        else if (options.style === 'less')
-            styleFilename = 'styles.less';
-        else if (options.style === 'styl')
-            styleFilename = 'styles.styl';
-
-        template.compile({
-            templateDirectory: options.templateDirectory,
-            templateFilename: options.templateFilename,
-            templateOptions: {
-                stylesExtension: options.style
-            },
-            outputFilename: styleFilename,
-            outputPath: options.outputPath
         });
     }
 

@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const ejs = require('ejs');
-const common = require('../libs/common');
 
 class Template {
     constructor() {
@@ -20,15 +19,46 @@ class Template {
                 compiledTemplate = ejs.render(templateFile, options.templateOptions);
             }
 
-            if (options.binary)
-                fs.writeFileSync(path.join(options.outputPath, options.outputFilename), compiledTemplate,
-                    {encoding: 'base64'});
-            else
-                fs.writeFileSync(path.join(options.outputPath, options.outputFilename), compiledTemplate);
+            fs.writeFileSync(path.join(options.outputPath, options.outputFilename), compiledTemplate);
 
-            console.log(chalk.green(`- ${path.join(options.outputPath, options.outputFilename)} created successfully.`));
+            console.log(`- ${chalk.blue(path.join(options.outputPath, options.outputFilename))} ${chalk.green('created successfully')}.`);
         } catch (e) {
-            console.log(chalk.red(`Template compiling of ${options.templateFilename} failed, ${e}`));
+            console.log(chalk.red(`Template compiling file ${options.templateFilename} failed, ${e}`));
+        }
+    }
+
+    static compileCSS(options) {
+        let styleFilename = 'style.css';
+
+        if (options.style === 'sass')
+            styleFilename = 'styles.sass';
+        else if (options.style === 'scss')
+            styleFilename = 'styles.scss';
+        else if (options.style === 'less')
+            styleFilename = 'styles.less';
+        else if (options.style === 'styl')
+            styleFilename = 'styles.styl';
+
+        this.compile({
+            templateDirectory: options.templateDirectory,
+            templateFilename: options.templateFilename,
+            templateOptions: {
+                stylesExtension: options.style
+            },
+            outputFilename: styleFilename,
+            outputPath: options.outputPath
+        });
+    }
+
+    static compileImage(options) {
+        try {
+            const templateFile = fs.readFileSync(path.join(options.templateDirectory, options.templateFilename));
+
+            fs.writeFileSync(path.join(options.outputPath, options.outputFilename), templateFile, {encoding: 'base64'});
+
+            console.log(`- ${chalk.blue(path.join(options.outputPath, options.outputFilename))} ${chalk.green('created successfully')}.`);
+        } catch (e) {
+            console.log(chalk.red(`Template compiling image ${options.templateFilename} failed, ${e}`));
         }
     }
 }
