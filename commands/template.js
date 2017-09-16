@@ -11,12 +11,11 @@ class Template {
 
     static compile(options) {
         try {
-            let compiledTemplate;
-            const templateFile = fs.readFileSync(path.join(options.templateDirectory, options.templateFilename),
+            let compiledTemplate = fs.readFileSync(path.join(options.templateDirectory, options.templateFilename),
                 {encoding: 'utf-8'});
 
             if (options.templateOptions) {
-                compiledTemplate = ejs.render(templateFile, options.templateOptions);
+                compiledTemplate = ejs.render(compiledTemplate, options.templateOptions);
             }
 
             fs.writeFileSync(path.join(options.outputPath, options.outputFilename), compiledTemplate);
