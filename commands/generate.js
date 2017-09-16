@@ -53,6 +53,7 @@ class Generate {
                 style: options.cmd.style,
                 templateDirectory: templatePath,
                 templateFilename: 'styles_',
+                outputFilename: `${componentName}.styles`,
                 outputPath: componentPath
             });
 

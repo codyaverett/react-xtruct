@@ -21,23 +21,23 @@ class Template {
 
             fs.writeFileSync(path.join(options.outputPath, options.outputFilename), compiledTemplate);
 
-            console.log(`- ${chalk.blue(path.join(options.outputPath, options.outputFilename))} ${chalk.green('created successfully')}.`);
+            console.log(`- ${chalk.yellow(path.join(options.outputPath, options.outputFilename))} ${chalk.green('created successfully')}.`);
         } catch (e) {
             console.log(chalk.red(`Template compiling file ${options.templateFilename} failed, ${e}`));
         }
     }
 
     static compileCSS(options) {
-        let styleFilename = 'style.css';
+        let styleExtension = 'css';
 
         if (options.style === 'sass')
-            styleFilename = 'styles.sass';
+            styleExtension = 'sass';
         else if (options.style === 'scss')
-            styleFilename = 'styles.scss';
+            styleExtension = 'scss';
         else if (options.style === 'less')
-            styleFilename = 'styles.less';
+            styleExtension = 'less';
         else if (options.style === 'styl')
-            styleFilename = 'styles.styl';
+            styleExtension = 'styl';
 
         this.compile({
             templateDirectory: options.templateDirectory,
@@ -45,7 +45,7 @@ class Template {
             templateOptions: {
                 stylesExtension: options.style
             },
-            outputFilename: styleFilename,
+            outputFilename: `${options.outputFilename}.${styleExtension}`,
             outputPath: options.outputPath
         });
     }
@@ -56,7 +56,7 @@ class Template {
 
             fs.writeFileSync(path.join(options.outputPath, options.outputFilename), templateFile, {encoding: 'base64'});
 
-            console.log(`- ${chalk.blue(path.join(options.outputPath, options.outputFilename))} ${chalk.green('created successfully')}.`);
+            console.log(`- ${chalk.yellow(path.join(options.outputPath, options.outputFilename))} ${chalk.green('created successfully')}.`);
         } catch (e) {
             console.log(chalk.red(`Template compiling image ${options.templateFilename} failed, ${e}`));
         }

@@ -173,6 +173,7 @@ class New {
                 style: options.cmd.style,
                 templateDirectory: templatePath,
                 templateFilename: 'styles_',
+                outputFilename: 'styles',
                 outputPath: options.source
             });
 
