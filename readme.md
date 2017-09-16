@@ -46,6 +46,9 @@ To create and setup a new project with router:
 To create and setup a new project with redux:
 + `rx new project NAME --redux` or `rx new project --redux`
 
+To create and setup a new project with redux and router:
++ `rx new project NAME --redux --router` or `rx new project --redux --router`
+
 ## Generate Component
 To generate a new component in your project (this will create a component, spec and styles):
 + `rx generate component NAME` or `rx g component NAME`
