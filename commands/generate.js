@@ -12,19 +12,17 @@ class Generate {
     }
 
     static component(options, callback) {
-        const templatePath = path.resolve(__dirname, './../templates/component');
-        const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
-        const componentPath = path.join(projectPath, options.name);
-        const componentName = common.getFilenameFromPath(options.name);
-        const style = options.cmd.style || common.readLocalConfig().project.style;
-        const redux = options.cmd.redux || common.readLocalConfig().project.redux;
-        const router = options.cmd.router || common.readLocalConfig().project.router;
+        try {
+            const templatePath = path.resolve(__dirname, './../templates/component');
+            const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
+            const componentPath = path.join(projectPath, options.name);
+            const componentName = common.getFilenameFromPath(options.name);
+            const style = options.cmd.style || common.readLocalConfig().project.style;
+            const redux = options.cmd.redux || common.readLocalConfig().project.redux;
+            const router = options.cmd.router || common.readLocalConfig().project.router;
+            let successfulMessage = 'Component generated successful!';
 
-        console.log(chalk.green(`Creating ${options.type} "${options.name}"...`));
-
-        mkdirp(componentPath, (error, data) => {
-            if (error)
-                return callback(error, null);
+            mkdirp.sync(componentPath);
 
             template.compile({
                 templateDirectory: templatePath,
@@ -83,15 +81,21 @@ class Generate {
             }
 
             if (redux) {
-                callback(null, `Component generated successful!\nPlease import the component's reducers into ./src/app.reducers and add it to the reducers.`);
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s ' +
+                    'reducers into ./src/app.reducers and add it to the reducers.';
             } else if (router) {
-                callback(null, `Component generated successful!\nPlease import the component's into ./src/app.component and add it to the router.`);
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
+                    ' ./src/app.component and add it to the router.';
             } else if (redux && router) {
-                callback(null, `Component generated successful!\nPlease import the component's reducers into ./src/app.reducers and add it to the reducers also into ./src/app.component and add it to the router.`);
-            } else {
-                callback(null, `Component generated successful!`);
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s reducers into' +
+                    ' ./src/app.reducers and add it to the reducers also into ./src/app.component and add it to the ' +
+                    'router.';
             }
-        });
+
+            callback(null, successfulMessage);
+        } catch (e) {
+            callback(`Component generate error, ${e}`, null);
+        }
     }
 }
 

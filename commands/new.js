@@ -2,7 +2,6 @@
 
 const mkdirp = require('mkdirp');
 const path = require('path');
-const chalk = require('chalk');
 const repository = require('./repository');
 const generate = require('./generate');
 const install = require('./install');
@@ -14,35 +13,32 @@ class New {
     }
 
     static project(options, callback) {
-        let projectPath;
-        let projectName;
-        let projectSourcePath;
-        let projectOptions;
+        try {
+            let projectPath;
+            let projectName;
+            let projectSourcePath;
+            let projectOptions;
 
-        console.log(chalk.green(`Creating new ${options.type} "${options.name || path.basename(process.cwd())}"...`));
+            if (options.name) {
+                projectPath = path.join(process.cwd(), options.name);
+                projectName = common.getFilenameFromPath(projectPath);
+                projectSourcePath = path.join(projectPath, './src');
+            } else {
+                projectPath = process.cwd();
+                projectName = path.basename(process.cwd());
+                projectSourcePath = path.join(projectPath, './src');
+            }
 
-        if (options.name) {
-            projectPath = path.join(process.cwd(), options.name);
-            projectName = common.getFilenameFromPath(projectPath);
-            projectSourcePath = path.join(projectPath, './src');
-        } else {
-            projectPath = process.cwd();
-            projectName = path.basename(process.cwd());
-            projectSourcePath = path.join(projectPath, './src');
-        }
+            options.cmd.style = options.cmd.style || 'css';
 
-        options.cmd.style = options.cmd.style || 'css';
+            projectOptions = {
+                name: projectName,
+                path: projectPath,
+                source: projectSourcePath,
+                cmd: options.cmd
+            };
 
-        projectOptions = {
-            name: projectName,
-            path: projectPath,
-            source: projectSourcePath,
-            cmd: options.cmd
-        };
-
-        mkdirp(projectOptions.path, (error, data) => {
-            if (error)
-                return callback(error, null);
+            mkdirp.sync(projectOptions.path);
 
             this.createProjectDirectoryFiles(projectOptions);
             this.createSourceDirectoryAndFiles(projectOptions);
@@ -65,8 +61,11 @@ class New {
 
                     callback(null, 'New project created successful!');
                 });
+
             });
-        });
+        } catch (e) {
+            callback(`New project creation failed, ${e}`, null);
+        }
     }
 
     static createProjectDirectoryFiles(options) {
@@ -146,75 +145,68 @@ class New {
         const assetsPath = path.resolve(__dirname, './../templates/assets');
         const sourceAssetsPath = path.join(options.source, 'assets');
 
-        mkdirp(options.source, (error, data) => {
-            if (error)
-                return console.warn(chalk.red(error));
+        mkdirp.sync(options.source);
+        mkdirp.sync(sourceAssetsPath);
 
-            template.compile({
-                templateDirectory: templatePath,
-                templateFilename: 'index_',
-                templateOptions: {
-                    redux: options.cmd.redux,
-                    stylesExtension: options.cmd.style
-                },
-                outputFilename: 'index.jsx',
-                outputPath: options.source
-            });
-
-            template.compile({
-                templateDirectory: templatePath,
-                templateFilename: 'app_',
-                templateOptions: {
-                    router: options.cmd.router
-                },
-                outputFilename: 'app.component.jsx',
-                outputPath: options.source
-            });
-
-            template.compileCSS({
-                style: options.cmd.style,
-                templateDirectory: templatePath,
-                templateFilename: 'styles_',
-                outputFilename: 'styles',
-                outputPath: options.source
-            });
-
-            if (options.cmd.redux) {
-                template.compile({
-                    templateDirectory: templatePath,
-                    templateFilename: 'actions_',
-                    templateOptions: {
-                        componentNameLower: options.name.toLowerCase(),
-                        componentNameTitle: common.toTitleCase(options.name)
-                    },
-                    outputFilename: 'app.actions.js',
-                    outputPath: options.source
-                });
-
-                template.compile({
-                    templateDirectory: templatePath,
-                    templateFilename: 'reducers_',
-                    templateOptions: {
-                        componentNameLower: options.name.toLowerCase(),
-                        componentNameTitle: common.toTitleCase(options.name)
-                    },
-                    outputFilename: 'app.reducers.js',
-                    outputPath: options.source
-                });
-            }
-
-            mkdirp(sourceAssetsPath, (error, data) => {
-                if (error)
-                    return console.warn(chalk.red(error));
-
-                template.compileImage({
-                    templateDirectory: assetsPath,
-                    templateFilename: 'react-xtruct-logo.png',
-                    outputFilename: 'react-xtruct-logo.png',
-                    outputPath: sourceAssetsPath,
-                });
-            });
+        template.compileImage({
+            templateDirectory: assetsPath,
+            templateFilename: 'react-xtruct-logo.png',
+            outputFilename: 'react-xtruct-logo.png',
+            outputPath: sourceAssetsPath,
         });
+
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'index_',
+            templateOptions: {
+                redux: options.cmd.redux,
+                stylesExtension: options.cmd.style
+            },
+            outputFilename: 'index.jsx',
+            outputPath: options.source
+        });
+
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'app_',
+            templateOptions: {
+                router: options.cmd.router
+            },
+            outputFilename: 'app.component.jsx',
+            outputPath: options.source
+        });
+
+        template.compileCSS({
+            style: options.cmd.style,
+            templateDirectory: templatePath,
+            templateFilename: 'styles_',
+            outputFilename: 'styles',
+            outputPath: options.source
+        });
+
+        if (options.cmd.redux) {
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'actions_',
+                templateOptions: {
+                    componentNameLower: options.name.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(options.name)
+                },
+                outputFilename: 'app.actions.js',
+                outputPath: options.source
+            });
+
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'reducers_',
+                templateOptions: {
+                    componentNameLower: options.name.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(options.name)
+                },
+                outputFilename: 'app.reducers.js',
+                outputPath: options.source
+            });
+        }
     }
 
     static initGitAndInstallDependencies(options, callback) {
