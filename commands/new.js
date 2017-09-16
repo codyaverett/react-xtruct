@@ -25,8 +25,8 @@ class New {
             projectName = common.getFilenameFromPath(projectPath);
             projectSourcePath = path.join(projectPath, './src');
         } else {
-            projectPath = path.basename(process.cwd());
-            projectName = common.getFilenameFromPath(projectPath);
+            projectPath = process.cwd();
+            projectName = path.basename(process.cwd());
             projectSourcePath = path.join(projectPath, './src');
         }
 
@@ -65,7 +65,6 @@ class New {
                     callback(null, 'New project created successful!');
                 });
             });
-
         });
     }
 
@@ -144,25 +143,11 @@ class New {
     static createSourceDirectoryAndFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/source');
         const assetsPath = path.resolve(__dirname, './../templates/assets');
+        const sourceAssetsPath = path.join(options.source, 'assets');
 
         mkdirp(options.source, (error, data) => {
             if (error)
                 return console.warn(chalk.red(error));
-
-            const sourceAssetsPath = path.join(options.source, 'assets');
-
-            mkdirp(sourceAssetsPath, (error, data) => {
-                if (error)
-                    return console.warn(chalk.red(error));
-
-                template.compile({
-                    binary: true,
-                    templateDirectory: assetsPath,
-                    templateFilename: 'react-xtruct-logo.png',
-                    outputFilename: 'react-xtruct-logo.png',
-                    outputPath: sourceAssetsPath,
-                });
-            });
 
             template.compile({
                 templateDirectory: templatePath,
@@ -215,6 +200,19 @@ class New {
                     outputPath: options.source
                 });
             }
+
+            mkdirp(sourceAssetsPath, (error, data) => {
+                if (error)
+                    return console.warn(chalk.red(error));
+
+                template.compile({
+                    binary: true,
+                    templateDirectory: assetsPath,
+                    templateFilename: 'react-xtruct-logo.png',
+                    outputFilename: 'react-xtruct-logo.png',
+                    outputPath: sourceAssetsPath,
+                });
+            });
         });
     }
 
