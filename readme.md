@@ -72,7 +72,8 @@ To serve your project using a specific port (default port is `8080`)
 + `rx s --port 8700` or `rx s -p 8700`
 
 ## Test Project
-Coming Soon!
+To test your project:
++ COMING SOON!
 
 ## Set Config
 To set config local:
