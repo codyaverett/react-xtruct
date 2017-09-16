@@ -46,8 +46,6 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .option('--skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
         .action((type, name, options) => {
             if (type.toLowerCase() === 'project') {
-                console.log(chalk.green(`Creating new ${type} "${name || path.basename(process.cwd())}"...`));
-
                 commands.new.project(Object.assign({}, {type, name, version}, {cmd: options}), (error, data) => {
                     if (error)
                         return console.log(`${chalk.red(error)}`);

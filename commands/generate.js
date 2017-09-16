@@ -20,6 +20,8 @@ class Generate {
         const redux = options.cmd.redux || common.readLocalConfig().project.redux;
         const router = options.cmd.router || common.readLocalConfig().project.router;
 
+        console.log(chalk.green(`Creating ${options.type} "${options.name}"...`));
+
         mkdirp(componentPath, (error, data) => {
             if (error)
                 return callback(error, null);
@@ -81,13 +83,13 @@ class Generate {
             }
 
             if (redux) {
-                callback(null, `Generated ${options.type} "${options.name}" successful!\nPlease import the component's reducers into ./src/app.reducers and add it to the reducers.`);
+                callback(null, `Component generated successful!\nPlease import the component's reducers into ./src/app.reducers and add it to the reducers.`);
             } else if (router) {
-                callback(null, `Generated ${options.type} "${options.name}" successful!\nPlease import the component's into ./src/app.component and add it to the router.`);
+                callback(null, `Component generated successful!\nPlease import the component's into ./src/app.component and add it to the router.`);
             } else if (redux && router) {
-                callback(null, `Generated ${options.type} "${options.name}" successful!\nPlease import the component's reducers into ./src/app.reducers and add it to the reducers also into ./src/app.component and add it to the router.`);
+                callback(null, `Component generated successful!\nPlease import the component's reducers into ./src/app.reducers and add it to the reducers also into ./src/app.component and add it to the router.`);
             } else {
-                callback(null, `Generated ${options.type} "${options.name}" successful!`);
+                callback(null, `Component generated successful!`);
             }
         });
     }

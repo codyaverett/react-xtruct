@@ -19,6 +19,8 @@ class New {
         let projectSourcePath;
         let projectOptions;
 
+        console.log(chalk.green(`Creating new ${options.type} "${options.name || path.basename(process.cwd())}"...`));
+
         if (options.name) {
             projectPath = path.join(process.cwd(), options.name);
             projectName = common.getFilenameFromPath(projectPath);
