@@ -1,5 +1,6 @@
 ![react-xtruct](https://github.com/btinoco/react-xtruct/blob/master/images/react-xtruct-logo-small.png)
-> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, eslint, postcss, react and more. Uses LIFT for project structure.
+> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, eslint, postcss, react and more.
+It uses a flat folder structure to find your code faster, make you more productive and avoid repetition.
 
 ## This project is in __beta__.
 

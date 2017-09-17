@@ -6,7 +6,7 @@ const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
 
-const version = '0.0.22';
+const version = '0.1.1';
 
 const localConfig = common.readLocalConfig();
 const globalConfig = common.readGlobalConfig();
