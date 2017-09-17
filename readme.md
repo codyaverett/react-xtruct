@@ -94,7 +94,5 @@ To set your project's dependency manager globally (default `npm`)
 
 ## Coming Soon
 + Test your project
-+ CSS modules with sass and less
 + Many more options for the commands above
-+ Create projects with react-router and react-redux and auto configuration
 + And much more!
