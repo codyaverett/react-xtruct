@@ -19,6 +19,8 @@ class Template {
             }
 
             fs.writeFileSync(path.resolve(options.outputPath, options.outputFilename), compiledTemplate);
+
+            this.compiledTemplateMessage(options);
         } catch (e) {
             console.log(chalk.red(`Template compiling file ${options.templateFilename} failed, ${e}`));
         }
@@ -52,9 +54,21 @@ class Template {
             const templateFile = fs.readFileSync(path.resolve(options.templateDirectory, options.templateFilename));
 
             fs.writeFileSync(path.resolve(options.outputPath, options.outputFilename), templateFile, {encoding: 'base64'});
+
+            this.compiledTemplateMessage(options);
         } catch (e) {
             console.log(chalk.red(`Template compiling image ${options.templateFilename} failed, ${e}`));
         }
+    }
+
+    static compiledTemplateMessage(options) {
+        ///const regEx = /src\/.+/;
+        //const startingPath = regEx.exec(options.outputPath);
+
+        //if (startingPath && startingPath.length > 0)
+        //console.log(`- ${chalk.yellow(`./${startingPath[0]}/${options.outputFilename}`)} ${chalk.green('created successfully')}.`);
+        //else
+        console.log(`- ${chalk.yellow(`${options.outputPath}/${options.outputFilename}`)} ${chalk.green('created successfully')}.`);
     }
 }
 
