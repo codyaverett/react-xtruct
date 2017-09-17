@@ -20,13 +20,13 @@ class New {
             let projectOptions;
 
             if (options.name) {
-                projectPath = path.join(process.cwd(), options.name);
+                projectPath = path.resolve(process.cwd(), options.name);
                 projectName = common.getFilenameFromPath(projectPath);
                 projectSourcePath = path.join(projectPath, './src');
             } else {
                 projectPath = process.cwd();
                 projectName = path.basename(process.cwd());
-                projectSourcePath = path.join(projectPath, './src');
+                projectSourcePath = path.resolve(projectPath, './src');
             }
 
             options.cmd.style = options.cmd.style || 'css';
@@ -143,7 +143,7 @@ class New {
     static createSourceDirectoryAndFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/source');
         const assetsPath = path.resolve(__dirname, './../templates/assets');
-        const sourceAssetsPath = path.join(options.source, 'assets');
+        const sourceAssetsPath = path.resolve(options.source, 'assets');
 
         mkdirp.sync(options.source);
         mkdirp.sync(sourceAssetsPath);

@@ -5,6 +5,7 @@ module.exports = {
     install: require('./install'),
     repository: require('./repository'),
     generate: require('./generate'),
+    template: require('./template'),
     lint: require('./lint'),
     test: require('./test'),
     build: require('./build'),
