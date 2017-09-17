@@ -80,10 +80,10 @@ class Generate {
                 });
             }
 
-            if (redux) {
+            if (redux && !router) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s ' +
                     'reducers into ./src/app.reducers and add it to the reducers.';
-            } else if (router) {
+            } else if (router && !redux) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
                     ' ./src/app.component and add it to the router.';
             } else if (redux && router) {
