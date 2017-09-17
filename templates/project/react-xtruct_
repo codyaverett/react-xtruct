@@ -1,0 +1,30 @@
+{
+    "project": {
+        "name": "<%=appName%>",
+        "root": "src",
+        "index": "index.html",
+        "environments": {
+            "dev": "",
+            "stage": "",
+            "prod": ""
+        },
+        <%_if(redux && !router){-%>
+        "style": "<%=appStyles%>",
+        "redux": true
+        <%_}-%>
+        <%_if(router && !redux){-%>
+        "style": "<%=appStyles%>",
+        "router": true
+        <%_}-%>
+        <%_if(redux && router){-%>
+         "style": "<%=appStyles%>",
+         "redux": true,
+         "router": true
+        <%_}-%>
+        <%_if(!redux && !router){-%>
+         "style": "<%=appStyles%>"
+        <%_}-%>
+    },
+    "scripts": [],
+    "options": {}
+}

@@ -1,68 +1,53 @@
 'use strict';
 
-const fs = require('fs');
+const mkdirp = require('mkdirp');
 const path = require('path');
-const chalk = require('chalk');
 const repository = require('./repository');
 const generate = require('./generate');
 const install = require('./install');
-const common = require('../libs/common');
+const template = require('./template');
+const common = require('./common');
 
 class New {
     constructor() {
     }
 
     static project(options, callback) {
-        let projectPath = '';
-        let projectSourcePath = '';
+        try {
+            let projectPath;
+            let projectName;
+            let projectSourcePath;
+            let projectOptions;
 
-        options.cmd.style = options.cmd.style || 'css';
+            if (options.name) {
+                projectPath = path.resolve(process.cwd(), options.name);
+                projectName = common.getFilenameFromPath(projectPath);
+                projectSourcePath = path.join(projectPath, './src');
+            } else {
+                projectPath = process.cwd();
+                projectName = path.basename(process.cwd());
+                projectSourcePath = path.resolve(projectPath, './src');
+            }
 
-        if (options.name) {
-            projectPath = path.join(process.cwd(), `./${options.name}`);
-            projectSourcePath = path.join(projectPath, './src');
+            options.cmd.style = options.cmd.style || 'css';
 
-            fs.mkdir(projectPath, (error, data) => {
-                if (error)
-                    return callback(error, null);
+            projectOptions = {
+                name: projectName,
+                path: projectPath,
+                source: projectSourcePath,
+                cmd: options.cmd
+            };
 
-                this.createProjectDirectoryFiles(options, projectPath);
+            mkdirp.sync(projectOptions.path);
 
-                this.createSourceDirectoryAndFiles(options, projectSourcePath);
-
-                generate.component({
-                    type: 'component',
-                    name: 'home',
-                    cmd: options.cmd,
-                    path: projectPath
-                }, (error, data) => {
-                    if (error)
-                        return callback(error, null);
-
-                    this.initGitAndInstallDependencies({
-                        path: projectPath,
-                        cmd: options.cmd
-                    }, (error, data) => {
-                        if (error)
-                            return callback(error, null);
-
-                        callback(null, 'New project created successful!');
-                    });
-                });
-            });
-        } else {
-            projectPath = process.cwd();
-            projectSourcePath = path.join(projectPath, './src');
-            options.name = path.basename(process.cwd());
-
-            this.createProjectDirectoryFiles(options, projectPath);
-
-            this.createSourceDirectoryAndFiles(options, projectSourcePath);
+            this.createProjectDirectoryFiles(projectOptions);
+            this.createSourceDirectoryAndFiles(projectOptions);
 
             generate.component({
                 type: 'component',
                 name: 'home',
-                cmd: options.cmd
+                cmd: options.cmd,
+                path: projectPath
             }, (error, data) => {
                 if (error)
                     return callback(error, null);
@@ -76,120 +61,152 @@ class New {
 
                     callback(null, 'New project created successful!');
                 });
+
             });
+        } catch (e) {
+            callback(`New project creation failed, ${e}`, null);
         }
     }
 
-    static createProjectDirectoryFiles(options, projectPath) {
+    static createProjectDirectoryFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/project');
 
-        fs.createReadStream(path.resolve(templatePath, './index.html')).on('data', (data) => {
-            const data2String = data.toString();
-            let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
-
-            fs.createWriteStream(path.join(projectPath, './index.html')).write(dataReplaced);
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'index_',
+            templateOptions: {
+                appTitle: options.name
+            },
+            outputFilename: 'index.html',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './gitignore')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './.gitignore')).write(data.toString());
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'gitignore_',
+            outputFilename: '.gitignore',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './package.json')).on('data', (data) => {
-            const packageContent = JSON.parse(data.toString());
-
-            packageContent.name = options.name;
-            packageContent.repository = options.name;
-
-            if (options.cmd.router) {
-                packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    'react-router-dom': '^4.1.2'
-                });
-            }
-
-            if (options.cmd.redux) {
-                packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    'react-redux': '^5.0.5',
-                    'react-redux-router': '0.0.9',
-                    'redux': '^3.7.2'
-                });
-            }
-
-            if (options.cmd.material) {
-                packageContent.dependencies = Object.assign(packageContent.dependencies, {
-                    'material-ui': '^0.18.7'
-                });
-            }
-
-            fs.createWriteStream(path.join(projectPath, './package.json')).write(JSON.stringify(packageContent, null, 4));
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'package_',
+            templateOptions: {
+                appName: options.name,
+                appRepo: options.name,
+                router: options.cmd.router,
+                redux: options.cmd.redux
+            },
+            outputFilename: 'package.json',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './react-xtruct.json')).on('data', (data) => {
-            const reactXtructConfig = JSON.parse(data.toString());
-
-            reactXtructConfig.project.name = options.name;
-            reactXtructConfig.project.style = options.cmd.style;
-
-            fs.createWriteStream(path.join(projectPath, './react-xtruct.json')).write(JSON.stringify(reactXtructConfig, null, 4));
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'react-xtruct_',
+            templateOptions: {
+                appName: options.name,
+                appStyles: options.cmd.style,
+                redux: options.cmd.redux,
+                router: options.cmd.router
+            },
+            outputFilename: 'react-xtruct.json',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './readme.md')).on('data', (data) => {
-            const data2String = data.toString();
-            let dataReplaced = data2String.replace(/_XXNameXX_/g, options.name);
-
-            dataReplaced = dataReplaced.replace(/_XXVersionXX_/g, options.version);
-
-            fs.createWriteStream(path.join(projectPath, './readme.md')).write(dataReplaced);
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'readme_',
+            templateOptions: {
+                appName: options.name,
+                appVersion: options.version
+            },
+            outputFilename: 'readme.md',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './editorconfig')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './.editorconfig')).write(data.toString());
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'editorconfig_',
+            outputFilename: '.editorconfig',
+            outputPath: options.path
         });
 
-        fs.createReadStream(path.resolve(templatePath, './eslintrc.js')).on('data', (data) => {
-            fs.createWriteStream(path.join(projectPath, './.eslintrc.js')).write(data.toString());
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'eslintrc_',
+            outputFilename: '.eslintrc.js',
+            outputPath: options.path
         });
     }
 
-    static createSourceDirectoryAndFiles(options, sourcePath) {
+    static createSourceDirectoryAndFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/source');
         const assetsPath = path.resolve(__dirname, './../templates/assets');
+        const sourceAssetsPath = path.resolve(options.source, 'assets');
 
-        fs.mkdir(sourcePath, (error, data) => {
-            if (error)
-                return console.warn(chalk.red(error));
+        mkdirp.sync(options.source);
+        mkdirp.sync(sourceAssetsPath);
 
-            const sourceAssetsPath = path.join(sourcePath, 'assets');
-
-            fs.mkdir(sourceAssetsPath, (error, data) => {
-                if (error)
-                    return console.warn(chalk.red(error));
-
-                fs.createReadStream(path.resolve(assetsPath, './react-xtruct-logo.png')).on('data', (data) => {
-                    fs.createWriteStream(path.join(sourceAssetsPath, './react-xtruct-logo.png')).write(data);
-                });
-            });
-
-            fs.createReadStream(path.resolve(templatePath, './index.js')).on('data', (data) => {
-                fs.createWriteStream(path.join(sourcePath, './index.js')).write(data.toString());
-            });
-
-            fs.createReadStream(path.resolve(templatePath, './app.jsx')).on('data', (data) => {
-                fs.createWriteStream(path.join(sourcePath, './app.component.jsx')).write(data.toString());
-            });
-
-            fs.createReadStream(path.resolve(templatePath, './styles.css')).on('data', (data) => {
-                if (options.cmd.style === 'sass')
-                    fs.createWriteStream(path.join(sourcePath, './styles.sass')).write(data.toString());
-                else if (options.cmd.style === 'scss')
-                    fs.createWriteStream(path.join(sourcePath, './styles.scss')).write(data.toString());
-                else if (options.cmd.style === 'less')
-                    fs.createWriteStream(path.join(sourcePath, './styles.less')).write(data.toString());
-                else if (options.cmd.style === 'styl')
-                    fs.createWriteStream(path.join(sourcePath, './styles.styl')).write(data.toString());
-                else
-                    fs.createWriteStream(path.join(sourcePath, './styles.css')).write(data.toString());
-            });
+        template.compileImage({
+            templateDirectory: assetsPath,
+            templateFilename: 'react-xtruct-logo.png',
+            outputFilename: 'react-xtruct-logo.png',
+            outputPath: sourceAssetsPath,
         });
+
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'index_',
+            templateOptions: {
+                redux: options.cmd.redux,
+                stylesExtension: options.cmd.style
+            },
+            outputFilename: 'index.jsx',
+            outputPath: options.source
+        });
+
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'app_',
+            templateOptions: {
+                router: options.cmd.router
+            },
+            outputFilename: 'app.component.jsx',
+            outputPath: options.source
+        });
+
+        template.compileCSS({
+            style: options.cmd.style,
+            templateDirectory: templatePath,
+            templateFilename: 'styles_',
+            outputFilename: 'styles',
+            outputPath: options.source
+        });
+
+        if (options.cmd.redux) {
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'actions_',
+                templateOptions: {
+                    componentNameLower: options.name.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(options.name)
+                },
+                outputFilename: 'app.actions.js',
+                outputPath: options.source
+            });
+
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'reducers_',
+                templateOptions: {
+                    componentNameLower: options.name.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(options.name)
+                },
+                outputFilename: 'app.reducers.js',
+                outputPath: options.source
+            });
+        }
     }
 
     static initGitAndInstallDependencies(options, callback) {

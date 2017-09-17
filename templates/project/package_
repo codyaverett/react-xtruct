@@ -1,5 +1,5 @@
 {
-    "name": "unknown",
+    "name": "<%=appName%>",
     "version": "0.0.1",
     "description": "simple react application created with react-xtruct: npm i -g react-xtruct",
     "main": "index.js",
@@ -9,7 +9,7 @@
         "lint": "rx lint",
         "test": "rx test"
     },
-    "repository": "unknown",
+    "repository": "<%=appRepo%>",
     "keywords": [
         "react",
         "cli",
@@ -23,6 +23,13 @@
     "dependencies": {
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
-        "react-xtruct": "^0.0.22"
+        <%_if(router) {-%>
+        "react-router": "3.0.5",
+        <%_}-%>
+        <%_if(redux) {-%>
+        "react-redux": "^5.0.5",
+        "redux": "^3.7.2",
+        <%_}-%>
+        "react-xtruct": "^0.1.0"
     }
 }

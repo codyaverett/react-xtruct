@@ -28,37 +28,33 @@ module.exports = {
                 'shouldComponentUpdate',
                 'componentWillUpdate',
                 'componentDidUpdate',
-                'componentWillUnmount',
-            ],
+                'componentWillUnmount'
+            ]
         }],
         'react/display-name': ['off', {ignoreTranspilerName: false}],
         'react/forbid-prop-types': ['error', {forbid: ['any', 'array', 'object']}],
         'react/jsx-indent-props': ['error', 2],
         'react/jsx-handler-names': ['off', {
             eventHandlerPrefix: 'handle',
-            eventHandlerPropPrefix: 'on',
+            eventHandlerPropPrefix: 'on'
         }],
         'react/jsx-no-bind': ['error', {
             ignoreRefs: true,
             allowArrowFunctions: true,
-            allowBind: false,
+            allowBind: false
         }],
         'react/jsx-no-literals': 'off',
         'react/jsx-no-undef': 'error',
         'react/sort-prop-types': ['off', {
             ignoreCase: true,
             callbacksLast: false,
-            requiredFirst: false,
+            requiredFirst: false
         }],
         'react/no-did-update-set-state': 'error',
         'react/no-unknown-property': 'error',
         'react/no-is-mounted': 'error',
         'react/no-danger': 'warn',
         'react/no-multi-comp': ['error', {ignoreStateless: true}],
-        'indent': [
-            'error',
-            4
-        ],
         'linebreak-style': [
             'error',
             'unix'
@@ -81,6 +77,6 @@ module.exports = {
         'react': {
             'pragma': 'React',
             'version': '15.0'
-        },
+        }
     }
 };

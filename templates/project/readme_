@@ -1,6 +1,6 @@
-# _XXNameXX_
+# <%=appName%>
 
-Project was generated with __react-xtruct__ v_XXVersionXX_.
+Project was generated with __react-xtruct__ v<%=appVersion%>.
 
 ## Development Server
 
@@ -12,7 +12,7 @@ Run `rx generate component COMPONENT_NAME` to generate a new component with spec
 
 ## Production Build
 
-Run `rx build -e prod` to build the project for production. Build output is `dist/` directory in root directory. 
+Run `rx build -e prod` to build the project for production. Build output is `dist/` directory in root directory.
 
 ## Gotchas
 

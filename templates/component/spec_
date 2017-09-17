@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import _XXNameXX_ from './xxNamexx.component';
 
-describe('_XXNameXX_', () => {
+import <%=componentNameTitle%> from './<%=componentNameLower%>.component';
+
+describe('<%=componentNameTitle%>', () => {
     let component;
     let container;
 
@@ -16,7 +17,7 @@ describe('_XXNameXX_', () => {
 
     it('has expected', () => {
         component = ReactDOM.render(
-            <_XXNameXX_/>,
+            <%=componentNameTitle%>,
             container
         );
 

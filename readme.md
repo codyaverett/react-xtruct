@@ -1,6 +1,5 @@
 # react-xtruct BETA
-> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, eslint, postcss, react and more.
-
+> An intuitive, simplified cli to create a react project, generate components, run test, build and serve.  The cli is based on proven technologies like webpack, babel, eslint, postcss, react and more. Uses LIFT for project structure.
 ##### This project is in __beta__.
 
 ##### __If you like this project, help contribute here:  [Github](https://github.com/btinoco/react-xtruct)__.
@@ -41,14 +40,14 @@ To create a new project using sass (by default the project uses `css` modules, s
 To create a new project without installing the project's dependencies:
 + `rx new project NAME -sd` or `rx new project NAME --skip-dependencies`
 
-To create a new project with router (Includes only the `react-router-dom v4` lib, the project needs to be manually set-up. __Automatic set-up coming soon__):
+To create and setup a new project with router:
 + `rx new project NAME --router` or `rx new project --router`
 
-To create a new project with redux (Includes only the `redux`, `react-redux` and `react-redux-router` libs, the project needs to be manually set-up. __Automatic set-up coming soon__):
+To create and setup a new project with redux:
 + `rx new project NAME --redux` or `rx new project --redux`
 
-To create a new project with material (Includes only the `material-ui` lib, the project needs to be manually set-up. __Automatic set-up coming soon__):
-+ `rx new project NAME --material` or `rx new project --material`
+To create and setup a new project with redux and router:
++ `rx new project NAME --redux --router` or `rx new project --redux --router`
 
 ## Generate Component
 To generate a new component in your project (this will create a component, spec and styles):
@@ -75,6 +74,10 @@ To build your project (Prod):
 To serve your project using a specific port (default port is `8080`)
 + `rx s --port 8700` or `rx s -p 8700`
 
+## Test Project
+To test your project:
++ COMING SOON!
+
 ## Set Config
 To set config local:
 + `rx set key=value` or `rx set key=value`
@@ -88,7 +91,7 @@ To set your project's dependency manager locally (default `npm`)
 To set your project's dependency manager globally (default `npm`)
 + `rx set dependencyMananger=yarn -g` or`rx set dependencyMananger=npm -g`
 
-## Comming Soon
+## Coming Soon
 + Test your project
 + CSS modules with sass and less
 + Many more options for the commands above

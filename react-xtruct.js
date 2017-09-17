@@ -4,7 +4,7 @@ const path = require('path');
 const chalk = require('chalk');
 const program = require('commander');
 const commands = require('./commands');
-const common = require('./libs/common');
+const common = require('./commands/common');
 
 const version = '0.0.22';
 
@@ -43,17 +43,16 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .option('--style <style>', 'What cascading style to use in your project')
         .option('--router', 'Includes react-router library in your project')
         .option('--redux', 'Includes redux, react-redux and react-redux-router libraries in your project')
-        .option('--material', 'Includes material-ui library in your project')
-        .option('-sd, --skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
+        .option('--skip-dependencies', 'Skips the installation of the project\'s yarn or npm dependencies')
         .action((type, name, options) => {
             if (type.toLowerCase() === 'project') {
                 console.log(chalk.green(`Creating new ${type} "${name || path.basename(process.cwd())}"...`));
 
                 commands.new.project(Object.assign({}, {type, name, version}, {cmd: options}), (error, data) => {
                     if (error)
-                        return console.log(`${chalk.red(error)}`);
+                        return console.log(chalk.red(`${error}`));
 
-                    console.log(`${chalk.green(data)}`);
+                    console.log(chalk.green(`${data}`));
                 });
             }
         });
@@ -67,11 +66,13 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
                 return preventCommandFromRunningIfNotProcessorDir();
 
             if (type.toLowerCase() === 'component') {
+                console.log(chalk.green(`Generating component "${name}"...`));
+
                 commands.generate.component(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
                     if (error)
-                        return console.log(`${chalk.red(error)}`);
+                        return console.log(chalk.red(`${error}`));
 
-                    console.log(`${chalk.green(data)}`);
+                    console.log(chalk.green(`${data}`));
                 });
             }
         });
@@ -87,9 +88,9 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
 
             commands.build.run(Object.assign({}, {cmd: options}), (error, data) => {
                 if (error)
-                    return console.log(`${chalk.red(error)}`);
+                    return console.log(chalk.red(`${error}`));
 
-                console.log(`${chalk.green('Build done successful!')}`);
+                console.log(chalk.green(`Build done successful!`));
             });
         });
 
@@ -106,9 +107,9 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
 
             commands.serve.run(Object.assign({}, {cmd: options}), (error, data) => {
                 if (error)
-                    return console.log(`${chalk.red(error)}`);
+                    return console.log(chalk.red(`${error}`));
 
-                console.log(`${chalk.green(data)}`);
+                console.log(chalk.green(`${data}`));
             });
         });
 
@@ -122,10 +123,10 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
 
             commands.lint.run(options, (error, data) => {
                 if (error)
-                    return console.log(`${chalk.red(error)}`);
+                    return console.log(chalk.red(`${error}`));
 
                 if (data === 0)
-                    console.log(`${chalk.green('Lint done successful!')}`);
+                    console.log(chalk.green(`Lint done successful!`));
             });
         });
 
@@ -139,9 +140,9 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
 
             commands.test.run(options, (error, data) => {
                 if (error)
-                    return console.log(`${chalk.red(error)}`);
+                    return console.log(chalk.red(`${error}`));
 
-                console.log(`${chalk.green('Test done successful!')}`);
+                console.log(chalk.green(`Test done successful!`));
             });
         });
 
@@ -152,9 +153,9 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .action((keyValue, options) => {
             commands.set.run(Object.assign({}, {keyValue}, {cmd: options}), (error, data) => {
                 if (error)
-                    return console.log(`${chalk.red(error)}`);
+                    return console.log(chalk.red(`${error}`));
 
-                console.log(`${chalk.green(data)}`);
+                console.log(chalk.green(`${data}`));
             });
         });
 
@@ -166,4 +167,9 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
             chalk.red('\nRun') + chalk.green(' rx new project') + chalk.red(' or ') +
             chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.'));
     }
+
+    if (!process.argv.slice(2).length) {
+        program.outputHelp();
+    }
+
 });

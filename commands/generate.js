@@ -1,63 +1,101 @@
 'use strict';
 
 const fs = require('fs');
+const mkdirp = require('mkdirp');
 const path = require('path');
 const chalk = require('chalk');
-const common = require('../libs/common');
+const template = require('./template');
+const common = require('./common');
 
 class Generate {
     constructor() {
     }
 
     static component(options, callback) {
-        const pathToComponentTemplates = path.resolve(__dirname, './../templates/component');
-        const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
-        const componentPath = path.join(projectPath, `./${options.name}`);
-        const style = options.cmd.style || common.readLocalConfig().project.style;
+        try {
+            const templatePath = path.resolve(__dirname, './../templates/component');
+            const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
+            const componentPath = path.join(projectPath, options.name);
+            const componentName = common.getFilenameFromPath(options.name);
+            const style = options.cmd.style || common.readLocalConfig().project.style;
+            const redux = options.cmd.redux || common.readLocalConfig().project.redux;
+            const router = options.cmd.router || common.readLocalConfig().project.router;
+            let successfulMessage = 'Component generated successful!';
 
-        fs.mkdir(componentPath, (error, data) => {
-            if (error)
-                return callback(error, null);
+            mkdirp.sync(componentPath);
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './component.jsx')).on('data', (data) => {
-                const data2String = data.toString();
-                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
-
-                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.jsx`)).write(dataReplaced);
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'component_',
+                templateOptions: {
+                    redux,
+                    componentNameLower: componentName.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(componentName),
+                    stylesFileName: 'styles',
+                    stylesExtension: style.toLowerCase()
+                },
+                outputFilename: `${componentName}.component.jsx`,
+                outputPath: componentPath
             });
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './spec.jsx')).on('data', (data) => {
-                const data2String = data.toString();
-                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
-
-                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                fs.createWriteStream(path.join(componentPath, `./${options.name}.component.spec.jsx`)).write(dataReplaced);
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'spec_',
+                templateOptions: {
+                    componentNameLower: componentName.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(componentName)
+                },
+                outputFilename: `${componentName}.component.spec.jsx`,
+                outputPath: componentPath
             });
 
-            fs.createReadStream(path.resolve(pathToComponentTemplates, './styles.css')).on('data', (data) => {
-                const data2String = data.toString();
-                let dataReplaced = data2String.replace(/xxNamexx/g, options.name.toLowerCase());
-
-                dataReplaced = dataReplaced.replace(/_XXNameXX_/g, common.toTitleCase(options.name));
-
-                if (style === 'sass')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.sass`)).write(dataReplaced);
-                else if (style === 'scss')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.scss`)).write(dataReplaced);
-                else if (style === 'less')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.less`)).write(dataReplaced);
-                else if (style === 'styl')
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.styl`)).write(dataReplaced);
-                else
-                    fs.createWriteStream(path.join(componentPath, `./${options.name}.styles.css`)).write(dataReplaced);
-
+            template.compileCSS({
+                style: options.cmd.style,
+                templateDirectory: templatePath,
+                templateFilename: 'styles_',
+                outputFilename: `${componentName}.styles`,
+                outputPath: componentPath
             });
 
-            callback(null, `Generated ${options.type} "${options.name}" successful!`);
-        });
+            if (redux) {
+                template.compile({
+                    templateDirectory: templatePath,
+                    templateFilename: 'actions_',
+                    templateOptions: {
+                        componentNameLower: componentName.toLowerCase(),
+                        componentNameTitle: common.toTitleCase(componentName)
+                    },
+                    outputFilename: `${componentName}.actions.js`,
+                    outputPath: componentPath
+                });
+
+                template.compile({
+                    templateDirectory: templatePath,
+                    templateFilename: 'reducers_',
+                    templateOptions: {
+                        componentNameLower: componentName.toLowerCase()
+                    },
+                    outputFilename: `${componentName}.reducers.js`,
+                    outputPath: componentPath
+                });
+            }
+
+            if (redux && !router) {
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s ' +
+                    'reducers into ./src/app.reducers and add it to the reducers.';
+            } else if (router && !redux) {
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
+                    ' ./src/app.component and add it to the router.';
+            } else if (redux && router) {
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s reducers into' +
+                    ' ./src/app.reducers and add it to the reducers also into ./src/app.component and add it to the ' +
+                    'router.';
+            }
+
+            callback(null, successfulMessage);
+        } catch (e) {
+            callback(`Component generate error, ${e}`, null);
+        }
     }
 }
 

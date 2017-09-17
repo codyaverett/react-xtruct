@@ -1,0 +1,29 @@
+import React from 'react';
+<%_if(router){-%>
+import {Router, Route, hashHistory} from 'react-router';
+
+<%_}-%>
+import Home from './home/home.component';
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+        <%_if(router){-%>
+            <Router history={hashHistory}>
+                <Route path="/" component={Home}/>
+            </Router>
+        <%_}-%>
+        <%_if(!router){-%>
+            <div>
+                <Home/>
+            </div>
+         <%_}-%>
+        );
+    }
+}
+
+export default App;

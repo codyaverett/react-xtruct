@@ -11,8 +11,8 @@ class Build {
 
     static run(options, callback) {
         let webpack = '';
-        let webpackConfig = path.resolve(__dirname, './../configs/webpack.dev.config.js');
         let cmd = '';
+        let webpackConfig = path.resolve(__dirname, './../configs/webpack.dev.config.js');
 
         try {
             webpack = path.resolve(__dirname, './../node_modules/.bin/webpack');

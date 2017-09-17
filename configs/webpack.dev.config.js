@@ -1,12 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const jeet = require('jeet');
-const nib = require('nib');
-// var ReactToHtmlPlugin = require('react-to-html-webpack-plugin');
 
-const entryPath = path.resolve(process.cwd(), './src/index.js');
+const entryPath = path.resolve(process.cwd(), './src/index.jsx');
 const outputPath = path.resolve(process.cwd(), './dist');
 const indexPath = path.resolve(process.cwd(), './index.html');
 
@@ -25,26 +21,17 @@ module.exports = {
                 loader: 'eslint-loader',
             },
             {
-                test: /\.js$/,
-                loader: 'babel-loader',
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                query: {
-                    presets: [
-                        'es2015',
-                        'react'
-                    ]
-                }
-            },
-            {
-                test: /\.jsx$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                query: {
-                    presets: [
-                        'es2015',
-                        'react'
-                    ]
-                }
+                use: [{
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            'es2015',
+                            'react'
+                        ]
+                    }
+                }]
             },
             {
                 test: /\.css$/,

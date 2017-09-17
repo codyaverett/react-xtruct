@@ -10,9 +10,9 @@ class Serve {
     }
 
     static run(options, callback) {
-        let webpackDevServer;
         const portNumber = options.cmd.options.port || 8080;
         let webpackConfig = path.resolve(__dirname, './../configs/webpack.dev.config.js');
+        let webpackDevServer;
 
         if (options.cmd &&
             options.cmd.environment &&

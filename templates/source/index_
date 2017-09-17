@@ -1,0 +1,32 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+<%_if(redux){-%>
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+
+<%_}-%>
+<%_if(redux){-%>
+import appReducers from './app.reducers';
+<%_}-%>
+import App from './app.component';
+import './styles.<%=stylesExtension%>';
+
+<%_if(redux){-%>
+const store = createStore(appReducers, {});
+
+<%_}-%>
+<%_if(redux){-%>
+ReactDOM.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    document.getElementById('app')
+);
+<%_}-%>
+<%_if(!redux){-%>
+ReactDOM.render(
+    <App/>,
+    document.getElementById('app')
+);
+<%_}-%>
