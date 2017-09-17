@@ -21,6 +21,7 @@ class Generate {
             const redux = options.cmd.redux || common.readLocalConfig().project.redux;
             const router = options.cmd.router || common.readLocalConfig().project.router;
             let successfulMessage = 'Component generated successful!';
+            let startingPath = `./src/${options.name.replace(/\.\//, '')}`;
 
             mkdirp.sync(componentPath);
 
@@ -38,6 +39,8 @@ class Generate {
                 outputPath: componentPath
             });
 
+            console.log(`- ${chalk.yellow(`${startingPath}/${componentName}.component.jsx`)} ${chalk.green('created successfully')}.`);
+
             template.compile({
                 templateDirectory: templatePath,
                 templateFilename: 'spec_',
@@ -49,6 +52,8 @@ class Generate {
                 outputPath: componentPath
             });
 
+            console.log(`- ${chalk.yellow(`${startingPath}/${componentName}.component.spec.jsx`)} ${chalk.green('created successfully')}.`);
+
             template.compileCSS({
                 style: options.cmd.style,
                 templateDirectory: templatePath,
@@ -56,6 +61,8 @@ class Generate {
                 outputFilename: `${componentName}.styles`,
                 outputPath: componentPath
             });
+
+            console.log(`- ${chalk.yellow(`${startingPath}/${componentName}.styles.${style}`)} ${chalk.green('created successfully')}.`);
 
             if (redux) {
                 template.compile({
@@ -69,6 +76,8 @@ class Generate {
                     outputPath: componentPath
                 });
 
+                console.log(`- ${chalk.yellow(`${startingPath}/${componentName}.actions.js`)} ${chalk.green('created successfully')}.`);
+
                 template.compile({
                     templateDirectory: templatePath,
                     templateFilename: 'reducers_',
@@ -78,6 +87,8 @@ class Generate {
                     outputFilename: `${componentName}.reducers.js`,
                     outputPath: componentPath
                 });
+
+                console.log(`- ${chalk.yellow(`${startingPath}/${componentName}.reducers.js`)} ${chalk.green('created successfully')}.`);
             }
 
             if (redux && !router) {
