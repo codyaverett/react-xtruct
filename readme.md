@@ -51,9 +51,14 @@ To create and setup a new project with redux:
 To create and setup a new project with redux and router:
 + `rx new project NAME --redux --router` or `rx new project --redux --router`
 
-## Generate Component
-To generate a new component in your project (this will create a component, spec and styles):
+## Generate Components
+To generate a new (presentation) component in your project (component, spec and styles):
 + `rx generate component NAME` or `rx g component NAME`
+
+To generate a new container (component) in your project (component, spec, styles and if using redux actions and reducers)
++ `rx generate container NAME` or `rx g container NAME`
+
+To learn more about the difference between __presentation__ component vs __container__ component visit: [Presentation vs Container](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)
 
 ## Lint Project
 To lint your project:

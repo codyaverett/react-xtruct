@@ -1,76 +1,22 @@
 import React from 'react';
 
-<%_if(redux){-%>
-import {connect} from 'react-redux';
-
-<%_}-%>
-<%_if(redux){-%>
-import {decreaseCounter, increaseCounter} from './<%=componentNameLower%>.actions';
-<%_}-%>
 import Styles from './<%=componentNameLower%>.<%=stylesFileName%>.<%=stylesExtension%>';
 
-class <%=componentNameTitle%> extends React.Component {
-    constructor(props) {
-        super(props);
+const <%=componentNameTitle%> = (props) => {
+    const handleClick = () => {
+        window.alert('Hello World from <%=componentNameTitle%> Presentation Component');
+    };
 
-        <%_if(redux){-%>
-        this.increaseCounter = this.increaseCounter.bind(this);
-        this.decreaseCounter = this.decreaseCounter.bind(this);
-        <%_}-%>
-    }
-
-    <%_if(redux){-%>
-    increaseCounter() {
-        this.props.onIncreaseCounter(1);
-    }
-
-    decreaseCounter() {
-        this.props.onDecreaseCounter(1);
-    }
-
-    <%_}-%>
-    render() {
-        return (
-            <div className={Styles.alignCenter}>
-                <h1>
-                    <img src={require('./../assets/react-xtruct-logo.png')}
-                         className={Styles.logo}/>
-                </h1>
-                <h2><%=componentNameTitle%></h2>
-                <%_if(redux){-%>
-                <button onClick={this.increaseCounter}>Increase Counter</button>
-                <h1>Counter:{this.props.counter}</h1>
-                <button onClick={this.decreaseCounter}>Decrease Counter</button>
-                <%_}-%>
-            </div>
-        );
-    }
-}
-
-<%_if(redux){-%>
-const mapStateToProps = (state, ownProps) => {
-    return {
-        counter: state.<%=componentNameLower%>.counter
-    }
+    return (
+        <div className={Styles.alignCenter}>
+            <h1 className={Styles.h1}>
+                <img src={require('./../assets/react-xtruct-logo.png')}
+                     className={Styles.logo}/>
+            </h1>
+            <h2><%=componentNameTitle%> Presentation Component</h2>
+            <button onClick={handleClick}>Say Hello</button>
+        </div>
+    );
 };
 
-<%_}-%>
-<%_if(redux){-%>
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onIncreaseCounter: (count) => {
-            dispatch(increaseCounter(count))
-        },
-        onDecreaseCounter: (count) => {
-            dispatch(decreaseCounter(count))
-        },
-    }
-};
-
-<%_}-%>
-<%_if(redux){-%>
-export default connect(mapStateToProps, mapDispatchToProps)(<%=componentNameTitle%>);
-<%_}-%>
-<%_if(!redux){-%>
 export default <%=componentNameTitle%>;
-<%_}-%>

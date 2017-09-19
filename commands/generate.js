@@ -13,8 +13,65 @@ class Generate {
 
     static component(options, callback) {
         try {
+            const rootDirectory = common.readLocalConfig().project.root;
             const templatePath = path.resolve(__dirname, './../templates/component');
-            const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
+            const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
+            const componentPath = path.join(projectPath, options.name);
+            const componentName = common.getFilenameFromPath(options.name);
+            const style = options.cmd.style || common.readLocalConfig().project.style;
+            const router = options.cmd.router || common.readLocalConfig().project.router;
+            let successfulMessage = 'Component generated successful!';
+
+            mkdirp.sync(componentPath);
+
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'component_',
+                templateOptions: {
+                    componentNameLower: componentName.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(componentName),
+                    stylesFileName: 'styles',
+                    stylesExtension: style.toLowerCase()
+                },
+                outputFilename: `${componentName}.component.jsx`,
+                outputPath: componentPath
+            });
+
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'spec_',
+                templateOptions: {
+                    componentNameLower: componentName.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(componentName)
+                },
+                outputFilename: `${componentName}.component.spec.jsx`,
+                outputPath: componentPath
+            });
+
+            template.compileCSS({
+                style: options.cmd.style,
+                templateDirectory: templatePath,
+                templateFilename: 'styles_',
+                outputFilename: `${componentName}.styles`,
+                outputPath: componentPath
+            });
+
+            if (router) {
+                successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
+                    ' ./' + rootDirectory + '/app.component and add it to the router.';
+            }
+
+            callback(null, successfulMessage);
+        } catch (e) {
+            callback(`Component generate error, ${e}`, null);
+        }
+    }
+
+    static container(options, callback) {
+        try {
+            const rootDirectory = common.readLocalConfig().project.root;
+            const templatePath = path.resolve(__dirname, './../templates/component');
+            const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
             const componentPath = path.join(projectPath, options.name);
             const componentName = common.getFilenameFromPath(options.name);
             const style = options.cmd.style || common.readLocalConfig().project.style;
@@ -26,7 +83,7 @@ class Generate {
 
             template.compile({
                 templateDirectory: templatePath,
-                templateFilename: 'component_',
+                templateFilename: 'container_',
                 templateOptions: {
                     redux,
                     componentNameLower: componentName.toLowerCase(),
@@ -82,19 +139,19 @@ class Generate {
 
             if (redux && !router) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s ' +
-                    'reducers into ./src/app.reducers and add it to the reducers.';
+                    'reducers into ./' + rootDirectory + '/app.reducers and add it to the reducers.';
             } else if (router && !redux) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
-                    ' ./src/app.component and add it to the router.';
+                    ' ./' + rootDirectory + '/app.component and add it to the router.';
             } else if (redux && router) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s reducers into' +
-                    ' ./src/app.reducers and add it to the reducers also into ./src/app.component and add it to the ' +
+                    ' ./' + rootDirectory + '/app.reducers and add it to the reducers also into ./src/app.component and add it to the ' +
                     'router.';
             }
 
             callback(null, successfulMessage);
         } catch (e) {
-            callback(`Component generate error, ${e}`, null);
+            callback(`Container generate error, ${e}`, null);
         }
     }
 }

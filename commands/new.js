@@ -22,11 +22,9 @@ class New {
             if (options.name) {
                 projectPath = path.resolve(process.cwd(), options.name);
                 projectName = common.getFilenameFromPath(projectPath);
-                projectSourcePath = path.join(projectPath, './src');
             } else {
                 projectPath = process.cwd();
                 projectName = path.basename(process.cwd());
-                projectSourcePath = path.resolve(projectPath, './src');
             }
 
             options.cmd.style = options.cmd.style || 'css';
@@ -34,35 +32,62 @@ class New {
             projectOptions = {
                 name: projectName,
                 path: projectPath,
-                source: projectSourcePath,
                 cmd: options.cmd
             };
 
             mkdirp.sync(projectOptions.path);
 
             this.createProjectDirectoryFiles(projectOptions);
+
+            const rootDirectory = common.readLocalConfig().project.root;
+
+            projectSourcePath = path.join(projectPath, rootDirectory);
+
+            projectOptions.source = projectSourcePath;
+
             this.createSourceDirectoryAndFiles(projectOptions);
 
-            generate.component({
-                type: 'component',
-                name: 'home',
-                cmd: options.cmd,
-                path: projectPath
-            }, (error, data) => {
-                if (error)
-                    return callback(error, null);
-
-                this.initGitAndInstallDependencies({
-                    path: projectPath,
-                    cmd: options.cmd
+            if (options.cmd.redux) {
+                generate.container({
+                    type: 'component',
+                    name: 'home',
+                    cmd: options.cmd,
+                    path: projectPath
                 }, (error, data) => {
                     if (error)
                         return callback(error, null);
 
-                    callback(null, 'New project created successful!');
-                });
+                    this.initGitAndInstallDependencies({
+                        path: projectPath,
+                        cmd: options.cmd
+                    }, (error, data) => {
+                        if (error)
+                            return callback(error, null);
 
-            });
+                        callback(null, 'New project created successful!');
+                    });
+                });
+            } else {
+                generate.component({
+                    type: 'component',
+                    name: 'home',
+                    cmd: options.cmd,
+                    path: projectPath
+                }, (error, data) => {
+                    if (error)
+                        return callback(error, null);
+
+                    this.initGitAndInstallDependencies({
+                        path: projectPath,
+                        cmd: options.cmd
+                    }, (error, data) => {
+                        if (error)
+                            return callback(error, null);
+
+                        callback(null, 'New project created successful!');
+                    });
+                });
+            }
         } catch (e) {
             callback(`New project creation failed, ${e}`, null);
         }
@@ -70,6 +95,19 @@ class New {
 
     static createProjectDirectoryFiles(options) {
         const templatePath = path.resolve(__dirname, './../templates/project');
+
+        template.compile({
+            templateDirectory: templatePath,
+            templateFilename: 'react-xtruct_',
+            templateOptions: {
+                appName: options.name,
+                appStyles: options.cmd.style,
+                redux: options.cmd.redux,
+                router: options.cmd.router
+            },
+            outputFilename: 'react-xtruct.json',
+            outputPath: options.path
+        });
 
         template.compile({
             templateDirectory: templatePath,
@@ -98,19 +136,6 @@ class New {
                 redux: options.cmd.redux
             },
             outputFilename: 'package.json',
-            outputPath: options.path
-        });
-
-        template.compile({
-            templateDirectory: templatePath,
-            templateFilename: 'react-xtruct_',
-            templateOptions: {
-                appName: options.name,
-                appStyles: options.cmd.style,
-                redux: options.cmd.redux,
-                router: options.cmd.router
-            },
-            outputFilename: 'react-xtruct.json',
             outputPath: options.path
         });
 
