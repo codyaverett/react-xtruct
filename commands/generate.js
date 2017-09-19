@@ -18,6 +18,55 @@ class Generate {
             const componentPath = path.join(projectPath, options.name);
             const componentName = common.getFilenameFromPath(options.name);
             const style = options.cmd.style || common.readLocalConfig().project.style;
+            let successfulMessage = 'Component generated successful!';
+
+            mkdirp.sync(componentPath);
+
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'component_',
+                templateOptions: {
+                    componentNameLower: componentName.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(componentName),
+                    stylesFileName: 'styles',
+                    stylesExtension: style.toLowerCase()
+                },
+                outputFilename: `${componentName}.component.jsx`,
+                outputPath: componentPath
+            });
+
+            template.compile({
+                templateDirectory: templatePath,
+                templateFilename: 'spec_',
+                templateOptions: {
+                    componentNameLower: componentName.toLowerCase(),
+                    componentNameTitle: common.toTitleCase(componentName)
+                },
+                outputFilename: `${componentName}.component.spec.jsx`,
+                outputPath: componentPath
+            });
+
+            template.compileCSS({
+                style: options.cmd.style,
+                templateDirectory: templatePath,
+                templateFilename: 'styles_',
+                outputFilename: `${componentName}.styles`,
+                outputPath: componentPath
+            });
+
+            callback(null, successfulMessage);
+        } catch (e) {
+            callback(`Component generate error, ${e}`, null);
+        }
+    }
+
+    static container(options, callback) {
+        try {
+            const templatePath = path.resolve(__dirname, './../templates/component');
+            const projectPath = options.path ? path.join(options.path, './src') : path.join(process.cwd(), './src');
+            const componentPath = path.join(projectPath, options.name);
+            const componentName = common.getFilenameFromPath(options.name);
+            const style = options.cmd.style || common.readLocalConfig().project.style;
             const redux = options.cmd.redux || common.readLocalConfig().project.redux;
             const router = options.cmd.router || common.readLocalConfig().project.router;
             let successfulMessage = 'Component generated successful!';
@@ -26,7 +75,7 @@ class Generate {
 
             template.compile({
                 templateDirectory: templatePath,
-                templateFilename: 'component_',
+                templateFilename: 'container_',
                 templateOptions: {
                     redux,
                     componentNameLower: componentName.toLowerCase(),
@@ -94,7 +143,7 @@ class Generate {
 
             callback(null, successfulMessage);
         } catch (e) {
-            callback(`Component generate error, ${e}`, null);
+            callback(`Container generate error, ${e}`, null);
         }
     }
 }

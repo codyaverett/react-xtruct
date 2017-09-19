@@ -65,7 +65,16 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
             if (!common.readLocalConfig().fromProcessDir)
                 return preventCommandFromRunningIfNotProcessorDir();
 
-            if (type.toLowerCase() === 'component') {
+            if (type.toLowerCase() === 'container') {
+                console.log(chalk.green(`Generating container component "${name}"...`));
+
+                commands.generate.container(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
+                    if (error)
+                        return console.log(chalk.red(`${error}`));
+
+                    console.log(chalk.green(`${data}`));
+                });
+            } else {
                 console.log(chalk.green(`Generating component "${name}"...`));
 
                 commands.generate.component(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
