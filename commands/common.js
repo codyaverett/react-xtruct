@@ -33,6 +33,17 @@ class Common {
         return config;
     }
 
+    static getDependencyManager(path) {
+        const localConfig = this.readLocalConfig(path);
+        const globalConfig = this.readGlobalConfig();
+        const dependencyManagerLocal = localConfig && localConfig.options && localConfig.options.dependencyManager ?
+            localConfig.options.dependencyManager : null;
+        const dependencyManagerGlobal = globalConfig && globalConfig.options && globalConfig.options.dependencyManager ?
+            globalConfig.options.dependencyManager : null;
+
+        return dependencyManagerLocal || dependencyManagerGlobal || 'npm';
+    }
+
     static toTitleCase(name) {
         const nameTemp = name.split(' ');
 

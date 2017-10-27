@@ -2,6 +2,7 @@
 
 module.exports = {
     new: require('./new'),
+    eject: require('./eject'),
     install: require('./install'),
     repository: require('./repository'),
     generate: require('./generate'),

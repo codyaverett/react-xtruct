@@ -5,26 +5,16 @@ const chalk = require('chalk');
 const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
-
+const dependencyManager = common.getDependencyManager(process.cwd());
 const version = '0.2.5';
-
-const localConfig = common.readLocalConfig();
-const globalConfig = common.readGlobalConfig();
-const dependencyManagerLocal = localConfig && localConfig.options && localConfig.options.dependencyManager ?
-    localConfig.options.dependencyManager : null;
-const dependencyManagerGlobal = globalConfig && globalConfig.options && globalConfig.options.dependencyManager ?
-    globalConfig.options.dependencyManager : null;
-const dependencyManager = dependencyManagerLocal || dependencyManagerGlobal || 'npm';
 
 commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, data) => {
     if (error)
         return console.error(chalk.red(error));
 
     if (data !== version) {
-        console.log(`
-        ${chalk.blue('New react-xtruct version!')} 
-        ${chalk.green('Please install the new version via npm or yarn.')}
-        `);
+        console.log(`${chalk.yellow('New react-xtruct version!')} 
+        ${chalk.green('Please install the new version via npm or yarn.')}`);
     }
 
     program
@@ -48,7 +38,8 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
             if (type.toLowerCase() === 'project') {
                 console.log(chalk.green(`Creating new ${type} "${name || path.basename(process.cwd())}"...`));
 
-                commands.new.project(Object.assign({}, {type, name, version}, {cmd: options}), (error, data) => {
+                commands.new.project(Object.assign({},
+                    {type, name, version}, {cmd: options}), (error, data) => {
                     if (error)
                         return console.log(chalk.red(`${error}`));
 
@@ -162,6 +153,18 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         });
 
     program
+        .command('eject')
+        .description('Ejects the project from within the react-xtruct cli, this action is irreversible!')
+        .action((keyValue, options) => {
+            commands.eject.run(options, (error, data) => {
+                if (error)
+                    return console.log(chalk.red(`${error}`));
+
+                console.log(chalk.green(`Test done successful!`));
+            });
+        });
+
+    program
         .command('set <keyValue>')
         .description('Sets config key-values for the project or library')
         .option('-g, --global', 'To make the key-value global')
@@ -180,7 +183,8 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
     function preventCommandFromRunningIfNotProcessorDir() {
         console.log(chalk.red('Directory is not a react-xtruct project.') +
             chalk.red('\nRun') + chalk.green(' rx new project') + chalk.red(' or ') +
-            chalk.green('rx new project NAME') + chalk.red(' to create an react-xtruct project.'));
+            chalk.green('rx new project NAME') +
+            chalk.red(' to create an react-xtruct project or cd to a react-xtruct project'));
     }
 
     if (!process.argv.slice(2).length) {
