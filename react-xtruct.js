@@ -6,7 +6,7 @@ const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
 
-const version = '0.2.3';
+const version = '0.2.5';
 
 const localConfig = common.readLocalConfig();
 const globalConfig = common.readGlobalConfig();
@@ -68,7 +68,10 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
             if (type.toLowerCase() === 'container') {
                 console.log(chalk.green(`Generating container component "${name}"...`));
 
-                commands.generate.container(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
+                commands.generate.container(Object.assign({}, {type, name}, {
+                    cmd: options,
+                    path: process.cwd()
+                }), (error, data) => {
                     if (error)
                         return console.log(chalk.red(`${error}`));
 
@@ -77,7 +80,10 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
             } else {
                 console.log(chalk.green(`Generating component "${name}"...`));
 
-                commands.generate.component(Object.assign({}, {type, name}, {cmd: options}), (error, data) => {
+                commands.generate.component(Object.assign({}, {type, name}, {
+                    cmd: options,
+                    path: process.cwd()
+                }), (error, data) => {
                     if (error)
                         return console.log(chalk.red(`${error}`));
 
