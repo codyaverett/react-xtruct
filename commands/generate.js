@@ -13,13 +13,14 @@ class Generate {
 
     static component(options, callback) {
         try {
-            const rootDirectory = common.readLocalConfig().project.root;
+            const configs = common.readLocalConfig(options.path);
+            const rootDirectory = configs.project.root;
             const templatePath = path.resolve(__dirname, './../templates/component');
             const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
             const componentPath = path.join(projectPath, options.name);
             const componentName = common.getFilenameFromPath(options.name);
-            const style = options.cmd.style || common.readLocalConfig().project.style;
-            const router = options.cmd.router || common.readLocalConfig().project.router;
+            const style = options.cmd.style || configs.project.style;
+            const router = options.cmd.router || configs.project.router;
             let successfulMessage = 'Component generated successful!';
 
             mkdirp.sync(componentPath);
@@ -30,10 +31,9 @@ class Generate {
                 templateOptions: {
                     componentNameLower: componentName.toLowerCase(),
                     componentNameTitle: common.toTitleCase(componentName),
-                    stylesFileName: 'styles',
                     stylesExtension: style.toLowerCase()
                 },
-                outputFilename: `${componentName}.component.jsx`,
+                outputFilename: `${componentName}.jsx`,
                 outputPath: componentPath
             });
 
@@ -44,7 +44,7 @@ class Generate {
                     componentNameLower: componentName.toLowerCase(),
                     componentNameTitle: common.toTitleCase(componentName)
                 },
-                outputFilename: `${componentName}.component.spec.jsx`,
+                outputFilename: `${componentName}.spec.jsx`,
                 outputPath: componentPath
             });
 
@@ -52,7 +52,7 @@ class Generate {
                 style: options.cmd.style,
                 templateDirectory: templatePath,
                 templateFilename: 'styles_',
-                outputFilename: `${componentName}.styles`,
+                outputFilename: `${componentName}`,
                 outputPath: componentPath
             });
 
@@ -69,14 +69,15 @@ class Generate {
 
     static container(options, callback) {
         try {
-            const rootDirectory = common.readLocalConfig().project.root;
+            const configs = common.readLocalConfig(options.path);
+            const rootDirectory = configs.project.root;
             const templatePath = path.resolve(__dirname, './../templates/component');
             const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
             const componentPath = path.join(projectPath, options.name);
             const componentName = common.getFilenameFromPath(options.name);
-            const style = options.cmd.style || common.readLocalConfig().project.style;
-            const redux = options.cmd.redux || common.readLocalConfig().project.redux;
-            const router = options.cmd.router || common.readLocalConfig().project.router;
+            const style = options.cmd.style || configs.project.style;
+            const redux = options.cmd.redux || configs.project.redux;
+            const router = options.cmd.router || configs.project.router;
             let successfulMessage = 'Component generated successful!';
 
             mkdirp.sync(componentPath);
@@ -88,10 +89,9 @@ class Generate {
                     redux,
                     componentNameLower: componentName.toLowerCase(),
                     componentNameTitle: common.toTitleCase(componentName),
-                    stylesFileName: 'styles',
                     stylesExtension: style.toLowerCase()
                 },
-                outputFilename: `${componentName}.component.jsx`,
+                outputFilename: `${componentName}.jsx`,
                 outputPath: componentPath
             });
 
@@ -102,7 +102,7 @@ class Generate {
                     componentNameLower: componentName.toLowerCase(),
                     componentNameTitle: common.toTitleCase(componentName)
                 },
-                outputFilename: `${componentName}.component.spec.jsx`,
+                outputFilename: `${componentName}.spec.jsx`,
                 outputPath: componentPath
             });
 
@@ -110,7 +110,7 @@ class Generate {
                 style: options.cmd.style,
                 templateDirectory: templatePath,
                 templateFilename: 'styles_',
-                outputFilename: `${componentName}.styles`,
+                outputFilename: `${componentName}`,
                 outputPath: componentPath
             });
 
@@ -122,7 +122,7 @@ class Generate {
                         componentNameLower: componentName.toLowerCase(),
                         componentNameTitle: common.toTitleCase(componentName)
                     },
-                    outputFilename: `${componentName}.actions.js`,
+                    outputFilename: `actions.js`,
                     outputPath: componentPath
                 });
 
@@ -132,7 +132,7 @@ class Generate {
                     templateOptions: {
                         componentNameLower: componentName.toLowerCase()
                     },
-                    outputFilename: `${componentName}.reducers.js`,
+                    outputFilename: `reducers.js`,
                     outputPath: componentPath
                 });
             }
