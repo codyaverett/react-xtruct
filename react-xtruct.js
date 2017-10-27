@@ -181,7 +181,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .command('system')
         .description('Gets your system information for troubleshooting')
         .action(() => {
-            console.log(chalk.green(`${JSON.stringify(common.getSystemInfo())}`));
+            console.log(chalk.green(`{System information: ${JSON.stringify(common.getSystemInfo())}}`));
         });
 
     program
