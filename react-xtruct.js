@@ -6,7 +6,7 @@ const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
 
-const version = '0.2.2';
+const version = '0.2.3';
 
 const localConfig = common.readLocalConfig();
 const globalConfig = common.readGlobalConfig();
@@ -62,7 +62,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .description('Creates new component for project or library')
         .alias('g')
         .action((type, name, options) => {
-            if (!common.readLocalConfig())
+            if (!common.readLocalConfig(process.cwd()))
                 return preventCommandFromRunningIfNotProcessorDir();
 
             if (type.toLowerCase() === 'container') {
@@ -92,7 +92,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .alias('b')
         .option('-e, --environment <env>', 'Which environment to build')
         .action((options) => {
-            if (!common.readLocalConfig())
+            if (!common.readLocalConfig(process.cwd()))
                 return preventCommandFromRunningIfNotProcessorDir();
 
             commands.build.run(Object.assign({}, {cmd: options}), (error, data) => {
@@ -111,7 +111,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .alias('s')
         .alias('server')
         .action((options) => {
-            if (!common.readLocalConfig())
+            if (!common.readLocalConfig(process.cwd()))
                 return preventCommandFromRunningIfNotProcessorDir();
 
             commands.serve.run(Object.assign({}, {cmd: options}), (error, data) => {
@@ -127,7 +127,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .description('Lints the project or library')
         .alias('l')
         .action((options) => {
-            if (!common.readLocalConfig())
+            if (!common.readLocalConfig(process.cwd()))
                 return preventCommandFromRunningIfNotProcessorDir();
 
             commands.lint.run(options, (error, data) => {
@@ -144,7 +144,7 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         .description('Test the project or library')
         .alias('t')
         .action((options) => {
-            if (!common.readLocalConfig())
+            if (!common.readLocalConfig(process.cwd()))
                 return preventCommandFromRunningIfNotProcessorDir();
 
             commands.test.run(options, (error, data) => {
