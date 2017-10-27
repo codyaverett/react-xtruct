@@ -85,11 +85,9 @@ To serve your project using a specific port (default port is `8080`)
 To test your project:
 + COMING SOON!
 
-
 ## Eject Project
 To eject your project:
 + COMING SOON!
-
 
 ## System
 To get your system information (node, npm, yarn and os)
