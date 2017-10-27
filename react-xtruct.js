@@ -178,6 +178,13 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
         });
 
     program
+        .command('system')
+        .description('Gets your system information for troubleshooting')
+        .action(() => {
+            console.log(chalk.green(`${JSON.stringify(common.getSystemInfo())}`));
+        });
+
+    program
         .parse(process.argv);
 
     function preventCommandFromRunningIfNotProcessorDir() {

@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const spawn = require('cross-spawn');
 
 class Common {
     constructor() {
@@ -33,6 +35,17 @@ class Common {
         return config;
     }
 
+    static getSystemInfo(callback) {
+        let system = {
+            node: this.nodeVersion(),
+            npm: this.npmVersion(),
+            yarn: this.yarnVersion(),
+            os: this.osVersion()
+        };
+
+        return system;
+    }
+
     static getDependencyManager(path) {
         const localConfig = this.readLocalConfig(path);
         const globalConfig = this.readGlobalConfig();
@@ -62,6 +75,56 @@ class Common {
 
     static getFilenameFromPath(path) {
         return path.replace(/^.*[\\\/]/, '');
+    }
+
+    static npmVersion() {
+        let version = 'No version available!';
+
+        try {
+            const npm = spawn.sync('npm', ['--version']);
+
+            return `${npm.stdout.toString().replace('\n', '')}`;
+        } catch (e) {
+            return version;
+        }
+    }
+
+    static yarnVersion() {
+        let version = 'No version available!';
+
+        try {
+            const yarn = spawn.sync('yarn', ['version']);
+
+            return `${yarn.stdout.toString().replace('\n', '')}`;
+        } catch (e) {
+            return version;
+        }
+    }
+
+    static nodeVersion(callback) {
+        let version = 'No version available!';
+
+        try {
+            const node = spawn.sync('node', ['--version']);
+
+            return `${node.stdout.toString().replace('\n', '')}`;
+        } catch (e) {
+            return version;
+        }
+    }
+
+    static osVersion() {
+        let platform = os.platform();
+        let system;
+
+        if (platform === 'darwin')
+            system = 'macOS';
+        else if (platform === 'win32')
+            system = 'Windows';
+        else
+            system = 'Linux';
+
+        return `${system || 'No version available!'}`;
     }
 }
 
