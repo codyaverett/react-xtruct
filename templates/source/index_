@@ -7,10 +7,10 @@ import {Provider} from 'react-redux';
 
 <%_}-%>
 <%_if(redux){-%>
-import appReducers from './app.reducers';
+import appReducers from './reducers';
 <%_}-%>
-import App from './app.component';
-import './styles.<%=stylesExtension%>';
+import App from './app';
+import './app.<%=stylesExtension%>';
 
 <%_if(redux){-%>
 const store = createStore(appReducers, {});

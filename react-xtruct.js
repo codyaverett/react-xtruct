@@ -10,9 +10,9 @@ const version = '0.2.0';
 
 const localConfig = common.readLocalConfig();
 const globalConfig = common.readGlobalConfig();
-const dependencyManagerLocal = localConfig.options && localConfig.options.dependencyManager ?
+const dependencyManagerLocal =localConfig && localConfig.options && localConfig.options.dependencyManager ?
     localConfig.options.dependencyManager : null;
-const dependencyManagerGlobal = globalConfig.options && globalConfig.options.dependencyManager ?
+const dependencyManagerGlobal = globalConfig && globalConfig.options && globalConfig.options.dependencyManager ?
     globalConfig.options.dependencyManager : null;
 const dependencyManager = dependencyManagerLocal || dependencyManagerGlobal || 'npm';
 

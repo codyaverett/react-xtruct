@@ -39,7 +39,7 @@ class New {
 
             this.createProjectDirectoryFiles(projectOptions);
 
-            const rootDirectory = common.readLocalConfig().project.root;
+            const rootDirectory = common.readLocalConfig(projectOptions.path).project.root;
 
             projectSourcePath = path.join(projectPath, rootDirectory);
 
@@ -197,7 +197,7 @@ class New {
             templateOptions: {
                 router: options.cmd.router
             },
-            outputFilename: 'app.component.jsx',
+            outputFilename: 'app.jsx',
             outputPath: options.source
         });
 
@@ -205,7 +205,7 @@ class New {
             style: options.cmd.style,
             templateDirectory: templatePath,
             templateFilename: 'styles_',
-            outputFilename: 'styles',
+            outputFilename: 'app',
             outputPath: options.source
         });
 
@@ -217,7 +217,7 @@ class New {
                     componentNameLower: options.name.toLowerCase(),
                     componentNameTitle: common.toTitleCase(options.name)
                 },
-                outputFilename: 'app.actions.js',
+                outputFilename: 'actions.js',
                 outputPath: options.source
             });
 
@@ -228,7 +228,7 @@ class New {
                     componentNameLower: options.name.toLowerCase(),
                     componentNameTitle: common.toTitleCase(options.name)
                 },
-                outputFilename: 'app.reducers.js',
+                outputFilename: 'reducers.js',
                 outputPath: options.source
             });
         }
@@ -248,11 +248,11 @@ class New {
                         callback(error, null);
 
                     if (!options.cmd.skipDependencies) {
-                        const localConfig = common.readLocalConfig();
+                        const localConfig = common.readLocalConfig(options.path);
                         const globalConfig = common.readGlobalConfig();
-                        const dependencyManagerLocal = localConfig.options && localConfig.options.dependencyManager ?
+                        const dependencyManagerLocal = localConfig && localConfig.options && localConfig.options.dependencyManager ?
                             localConfig.options.dependencyManager : null;
-                        const dependencyManagerGlobal = globalConfig.options && globalConfig.options.dependencyManager ?
+                        const dependencyManagerGlobal = globalConfig && globalConfig.options && globalConfig.options.dependencyManager ?
                             globalConfig.options.dependencyManager : null;
                         const dependencyManager = dependencyManagerLocal || dependencyManagerGlobal || 'npm';
 

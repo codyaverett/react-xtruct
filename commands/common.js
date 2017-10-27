@@ -7,28 +7,23 @@ class Common {
     constructor() {
     }
 
-    static readLocalConfig() {
-        let config = {};
+    static readLocalConfig(pathToProject) {
+        let config;
 
         try {
-            const configPath = path.resolve(process.cwd(), './react-xtruct.json');
+            const configPath = path.resolve(pathToProject, './react-xtruct.json');
 
             config = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
 
             config.fromProcessDir = true;
         } catch (e) {
-            const configPath = path.resolve(__dirname, './../configs/react-xtruct.json');
-
-            config = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
-
-            config.fromProcessDir = false;
         }
 
         return config;
     }
 
     static readGlobalConfig() {
-        let config = {};
+        let config;
 
         try {
             const configPath = path.resolve(process.cwd(), `${this.getUserHomeDirectory()}/.react-xtruct.json`);

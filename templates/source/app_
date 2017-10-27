@@ -3,7 +3,7 @@ import React from 'react';
 import {Router, Route, hashHistory} from 'react-router';
 
 <%_}-%>
-import Home from './home/home.component';
+import Home from './home/home';
 
 class App extends React.Component {
     constructor(props) {
