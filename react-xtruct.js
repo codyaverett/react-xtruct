@@ -6,7 +6,7 @@ const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
 
-const version = '0.2.0';
+const version = '0.2.1';
 
 const localConfig = common.readLocalConfig();
 const globalConfig = common.readGlobalConfig();
@@ -180,5 +180,4 @@ commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, dat
     if (!process.argv.slice(2).length) {
         program.outputHelp();
     }
-
 });
