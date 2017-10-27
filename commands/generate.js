@@ -13,7 +13,7 @@ class Generate {
 
     static component(options, callback) {
         try {
-            const configs = common.readLocalConfig(options.path);
+            const configs = common.readLocalConfig(process.cwd());
             const rootDirectory = configs.project.root;
             const templatePath = path.resolve(__dirname, './../templates/component');
             const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
@@ -69,7 +69,7 @@ class Generate {
 
     static container(options, callback) {
         try {
-            const configs = common.readLocalConfig(options.path);
+            const configs = common.readLocalConfig(process.cwd());
             const rootDirectory = configs.project.root;
             const templatePath = path.resolve(__dirname, './../templates/component');
             const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
