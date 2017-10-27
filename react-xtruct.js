@@ -6,7 +6,7 @@ const program = require('commander');
 const commands = require('./commands');
 const common = require('./commands/common');
 const dependencyManager = common.getDependencyManager(process.cwd());
-const version = '0.2.6';
+const version = '0.2.7';
 
 commands.check.version({dependencyManager, package: 'react-xtruct'}, (error, data) => {
     if (error)
