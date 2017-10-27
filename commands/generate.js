@@ -58,7 +58,7 @@ class Generate {
 
             if (router) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
-                    ' ./' + rootDirectory + '/app.component and add it to the router.';
+                    ' ./' + rootDirectory + '/app.jsx and add it to the router if needed.';
             }
 
             callback(null, successfulMessage);
@@ -139,14 +139,14 @@ class Generate {
 
             if (redux && !router) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s ' +
-                    'reducers into ./' + rootDirectory + '/app.reducers and add it to the reducers.';
+                    'reducers into ./' + rootDirectory + '/reducers.js and add it to the reducers if needed.';
             } else if (router && !redux) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s into' +
-                    ' ./' + rootDirectory + '/app.component and add it to the router.';
+                    ' ./' + rootDirectory + '/app.jsx and add it to the router if needed.';
             } else if (redux && router) {
                 successfulMessage = 'Component generated successful!\nPlease import the component\'s reducers into' +
-                    ' ./' + rootDirectory + '/app.reducers and add it to the reducers also into ./src/app.component and add it to the ' +
-                    'router.';
+                    ' ./' + rootDirectory + '/reducers.jsx and add it to the reducers also into ./src/app.jsx and add it to the ' +
+                    'router if needed.';
             }
 
             callback(null, successfulMessage);
