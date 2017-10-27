@@ -14,8 +14,6 @@ class Common {
             const configPath = path.resolve(pathToProject, './react-xtruct.json');
 
             config = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
-
-            config.fromProcessDir = true;
         } catch (e) {
         }
 
