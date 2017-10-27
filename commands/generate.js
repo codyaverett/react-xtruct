@@ -15,12 +15,12 @@ class Generate {
         try {
             const configs = common.readLocalConfig(options.path);
             const rootDirectory = configs.project.root;
-            const templatePath = path.resolve(__dirname, './../templates/component');
-            const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
-            const componentPath = path.join(projectPath, options.name);
-            const componentName = common.getFilenameFromPath(options.name);
             const style = options.cmd.style || configs.project.style;
             const router = options.cmd.router || configs.project.router;
+            const templatePath = path.resolve(__dirname, './../templates/component');
+            const projectPath = path.join(options.path, rootDirectory);
+            const componentPath = path.join(projectPath, options.name);
+            const componentName = common.getFilenameFromPath(options.name);
             let successfulMessage = 'Component generated successful!';
 
             mkdirp.sync(componentPath);
@@ -71,13 +71,13 @@ class Generate {
         try {
             const configs = common.readLocalConfig(options.path);
             const rootDirectory = configs.project.root;
-            const templatePath = path.resolve(__dirname, './../templates/component');
-            const projectPath = options.path ? path.join(options.path, rootDirectory) : path.join(process.cwd(), rootDirectory);
-            const componentPath = path.join(projectPath, options.name);
-            const componentName = common.getFilenameFromPath(options.name);
             const style = options.cmd.style || configs.project.style;
             const redux = options.cmd.redux || configs.project.redux;
             const router = options.cmd.router || configs.project.router;
+            const templatePath = path.resolve(__dirname, './../templates/component');
+            const projectPath = path.join(options.path, rootDirectory);
+            const componentPath = path.join(projectPath, options.name);
+            const componentName = common.getFilenameFromPath(options.name);
             let successfulMessage = 'Component generated successful!';
 
             mkdirp.sync(componentPath);

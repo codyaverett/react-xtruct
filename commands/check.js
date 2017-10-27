@@ -11,7 +11,10 @@ class Check {
     static version(options, callback) {
         if (options.dependencyManager.toString() === 'yarn') {
             this.yarnVersion(options, (error, data) => {
-                if (error)
+                if (error && error.code === 'ENOENT')
+                    return callback(`You do not seem to have "yarn" installed. Please install "yarn" and try again`
+                        , null);
+                else
                     return callback(error, null);
 
                 callback(null, data);

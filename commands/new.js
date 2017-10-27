@@ -248,13 +248,7 @@ class New {
                         callback(error, null);
 
                     if (!options.cmd.skipDependencies) {
-                        const localConfig = common.readLocalConfig(options.path);
-                        const globalConfig = common.readGlobalConfig();
-                        const dependencyManagerLocal = localConfig && localConfig.options && localConfig.options.dependencyManager ?
-                            localConfig.options.dependencyManager : null;
-                        const dependencyManagerGlobal = globalConfig && globalConfig.options && globalConfig.options.dependencyManager ?
-                            globalConfig.options.dependencyManager : null;
-                        const dependencyManager = dependencyManagerLocal || dependencyManagerGlobal || 'npm';
+                        const dependencyManager = common.getDependencyManager(options.path);
 
                         this.runDependencyManager(dependencyManager, options, (error, data) => {
                             callback(error, data);
